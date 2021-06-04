@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="646.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.NewPostPageController">
+    <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="442.0" style="-fx-background-color: #778899;">
+        <children>
+            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="false" text="Time line" textFill="WHITE">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <toggleGroup>
+                    <ToggleGroup fx:id="selectionBar" />
+                </toggleGroup>
+                <font>
+                    <Font name="Georgia Italic" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="mainMenuButton" layoutX="123.0" layoutY="10.0" onAction="#loadMainMenu" text="Main Menu" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font></JFXRadioButton>
+            <JFXRadioButton fx:id="myProfileButton" layoutX="246.0" layoutY="10.0" onAction="#loadMyProfile" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="directButton" layoutX="364.0" layoutY="10.0" onAction="#loadDirect" text="Direct" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </JFXRadioButton>
+        </children>
+        <effect>
+            <DropShadow blurType="GAUSSIAN">
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+    <AnchorPane prefHeight="50.0" prefWidth="438.0" style="-fx-background-color: #778899;">
+        <children>
+            <Label alignment="CENTER" layoutY="1.0" prefHeight="48.0" prefWidth="444.0" style="-fx-background-color: #778899;" text="SBUgram" textFill="LIMEGREEN">
+                <font>
+                    <Font name="Brush Script MT Italic" size="36.0" />
+                </font>
+                <effect>
+                    <DropShadow blurType="GAUSSIAN">
+                        <color>
+                            <Color red="1.0" green="1.0" blue="1.0" />
+                        </color>
+                    </DropShadow>
+                </effect>
+            </Label>
+        </children>
+        <effect>
+            <DropShadow>
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+    <JFXButton fx:id="postButton" buttonType="RAISED" layoutX="324.0" layoutY="90.0" onAction="#post" style="-fx-background-color: #32dc32;" text="Post">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font></JFXButton>
+    <JFXTextField fx:id="title" focusColor="#32dc32" layoutX="58.0" layoutY="94.0" promptText="Title" />
+    <JFXTextArea fx:id="description" focusColor="#32dc32" layoutX="63.0" layoutY="472.0" prefHeight="124.0" prefWidth="317.0" promptText="Description of the post..." />
+   <ImageView fx:id="postImage" fitHeight="252.0" fitWidth="324.0" layoutX="60.0" layoutY="136.0" pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow />
+      </effect>
+      <image>
+         <Image url="@../" />
+      </image>
+   </ImageView>
+      <JFXButton fx:id="addPicture" buttonType="RAISED" layoutX="63.0" layoutY="396.0" onAction="#addPicture" style="-fx-background-color: #32dc32;" text="Add a pic">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font>
+   </JFXButton>
+</AnchorPane>

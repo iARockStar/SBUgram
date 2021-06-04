@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root"  prefWidth="408.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="profileImage" fitHeight="47.0" fitWidth="56.0" layoutX="28.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="file:/D:/java/sbu_gram/images/user.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="username" layoutX="16.0" layoutY="99.0" text="writer name" textFill="#161414">
+         <font>
+            <Font name="Cooper Black" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="48.0" prefHeight="30.0" prefWidth="437.0" text="post title" textFill="#161414">
+         <font>
+            <Font name="Georgia Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="26.0" fitWidth="37.0" layoutX="304.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="file:/D:/java/sbu_gram/images/like.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="47.0" fitWidth="36.0" layoutX="341.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="file:/D:/java/sbu_gram/images/repost.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="proPic" fill="DODGERBLUE" layoutX="56.0" layoutY="49.0" radius="42.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fx:id="postImageView" fitHeight="253.0" fitWidth="415.0" layoutX="11.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="description" layoutX="11.0" layoutY="403.0" strokeType="OUTSIDE" strokeWidth="0.0" text="description" wrappingWidth="415.00000000000006">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="likeButton" fitHeight="47.0" fitWidth="48.0" layoutX="14.0" layoutY="599.0" onMouseClicked="#like" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/heart_512px.png" />
+         </image>
+         <effect>
+            <DropShadow blurType="GAUSSIAN">
+               <color>
+                  <Color red="0.8666666746139526" green="0.7921568751335144" blue="0.7921568751335144" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="commentButton" fitHeight="47.0" fitWidth="47.0" layoutX="71.0" layoutY="599.0" onMouseClicked="#comment" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/speech_bubble_500px.png" />
+         </image>
+         <effect>
+            <DropShadow blurType="GAUSSIAN">
+               <color>
+                  <Color red="0.8666666746139526" green="0.7921568751335144" blue="0.7921568751335144" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="rePost" fitHeight="77.0" fitWidth="89.0" layoutX="346.0" layoutY="584.0" onMouseClicked="#rePost" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/retweet_500px.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="date" alignment="CENTER" layoutY="5.0" prefHeight="18.0" prefWidth="437.0" text="Published on:">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="descriptionLabel" layoutX="11.0" layoutY="410.0" prefWidth="415.0" text="description" wrapText="true">
+         <font>
+            <Font name="Georgia Bold Italic" size="18.0" />
+         </font>
+      </Label>
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+</AnchorPane>

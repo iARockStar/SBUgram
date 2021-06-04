@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="606.0" style="-fx-background-color: #F0F8FF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.SignupController">
+   <children>
+      <Label layoutX="11.0" layoutY="578.0" text="already have an account?">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="name" layoutX="165.0" layoutY="143.0" prefHeight="26.0" prefWidth="227.0" promptText="Name">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextField>
+      
+      <JFXButton fx:id="profilePicButton" buttonType="RAISED" layoutX="338.0" layoutY="72.0" onAction="#setProfilePic" prefHeight="40.0" prefWidth="108.0" style="-fx-background-color: #32CD32;" text="Choose a picture">
+         <effect>
+            
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <JFXButton fx:id="loginButton2" buttonType="RAISED" layoutX="11.0" layoutY="613.0" onAction="#returnToLoginMenu" style="-fx-background-color: #32CD32;" text="Login">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </JFXButton>
+      <TextField fx:id="lastName" layoutX="165.0" layoutY="179.0" prefHeight="26.0" prefWidth="227.0" promptText="LastName">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextField>
+      <TextField fx:id="username" layoutX="165.0" layoutY="213.0" prefHeight="26.0" prefWidth="227.0" promptText="Username">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextField>
+      <TextField fx:id="phoneNumber" layoutX="165.0" layoutY="313.0" prefHeight="26.0" prefWidth="227.0" promptText="phone number">
+         <effect>
+            <DropShadow />
+         </effect></TextField>
+      <TextField fx:id="fakePassfield" layoutX="165.0" layoutY="246.0" prefHeight="26.0" prefWidth="227.0" promptText="password" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextField>
+      <TextField fx:id="fakeReWritePass" layoutX="165.0" layoutY="279.0" prefHeight="26.0" prefWidth="227.0" promptText="Re_write password" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextField>
+      <JFXCheckBox fx:id="show" layoutX="400.0" layoutY="246.0" onAction="#show" text="show pass">
+         <font>
+            <Font size="18.0" />
+         </font></JFXCheckBox>
+      <PasswordField fx:id="password" layoutX="165.0" layoutY="246.0" prefHeight="26.0" prefWidth="227.0" promptText="password">
+         <effect>
+            <DropShadow />
+         </effect>
+      </PasswordField>
+      <PasswordField fx:id="re_writePassField" layoutX="165.0" layoutY="279.0" prefHeight="26.0" prefWidth="227.0" promptText="Re_write password">
+         <effect>
+            <DropShadow />
+         </effect>
+      </PasswordField>
+      <Label layoutX="35.0" layoutY="146.0" text="your name">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="17.0" layoutY="181.0" text="your lastname">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="17.0" layoutY="215.0" text="your username">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="17.0" layoutY="249.0" text="your password">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="4.0" layoutY="282.0" text="rewrite your pass">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Text fill="LIMEGREEN" layoutX="6.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="5.0" text="stay connected">
+         <font>
+            <Font name="Goudy Old Style" size="24.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Text>
+      <ImageView fitHeight="98.0" fitWidth="133.0" layoutX="19.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/87390.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <DatePicker fx:id="myDatePicker" layoutX="165.0" layoutY="349.0" onAction="#pickADate" prefHeight="26.0" prefWidth="227.0" promptText="pick your birthdate">
+         <effect>
+            <DropShadow />
+         </effect>
+      </DatePicker>
+      <Label layoutX="11.0" layoutY="315.0" text="your phoneNumber ">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <JFXButton fx:id="signupButton" buttonType="RAISED" layoutX="490.0" layoutY="613.0" onAction="#signup" style="-fx-background-color: #32CD32;" text="Signup">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <Label layoutX="17.0" layoutY="352.0" text="your birthdate">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="422.0" prefHeight="27.0" prefWidth="605.0" textFill="#b73939">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Text fill="#216940" layoutX="401.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="note: &#10;The password must contain &#10;at least one lowercase character&#10;, one uppercase character&#10;, one digit, one special character, and&#10; a length between 8 to 20. " textAlignment="JUSTIFY">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Text>
+      <Label alignment="CENTER" layoutY="456.0" prefHeight="27.0" prefWidth="606.0" text="Optional : choose a security question and answer it for retrievieng your password in the future.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="answerTextField" layoutX="147.0" layoutY="521.0" promptText="your answer" />
+      <Label layoutX="65.0" layoutY="523.0" text="Answer:">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <JFXButton fx:id="securityAnswerButton" buttonType="RAISED" layoutX="309.0" layoutY="521.0" onAction="#saveAnswerAndQuestion" style="-fx-background-color: #32CD32;" text="save my answer">
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <ChoiceBox fx:id="questions" layoutX="147.0" layoutY="481.0" prefHeight="26.0" prefWidth="262.0" />
+      <Label layoutX="47.0" layoutY="484.0" text="Question:">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label fx:id="notification" layoutX="208.0" layoutY="547.0" textFill="#216940" />
+      <TextField fx:id="email" layoutX="165.0" layoutY="383.0" prefHeight="26.0" prefWidth="227.0" promptText="E-mail">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextField>
+      <Label layoutX="35.0" layoutY="385.0" text="your email">
+         <font>
+            <Font name="MingLiU-ExtB" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="407.0" layoutY="388.0" text="(optional)" textFill="#203285" />
+      <Circle fx:id="profilePic1" fill="DODGERBLUE" layoutX="279.0" layoutY="72.0" radius="46.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</AnchorPane>

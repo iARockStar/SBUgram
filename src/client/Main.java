@@ -1,0 +1,151 @@
+package client;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+import other.*;
+
+/**
+ * <h1>SBUgram</h1>
+ * SBUgram application is for sharing your day-to-day
+ * tweets and pics with your friends and family!
+ *
+ * @author iliya Akhoondi
+ * @version 1.0
+ * @since 2021-6-4
+ */
+
+public class Main extends Application {
+    /**
+     * main method is for launching the application and
+     * is called before all other methods.
+     * this method helps clientSide and graphics connect to Server.
+     *
+     * @param args param for the launch method
+     */
+
+    public static void main(String[] args) {
+        Client.connectToServer();
+        launch(args);
+    }
+
+    /**
+     * start method is called when the launch method in main is called.
+     * <p>
+     * This method loads first page of the app
+     * which is the LoginController.
+     * it also provides calling logout method when closing the app.
+     *
+     * @param primaryStage sets the stage.
+     * @throws Exception handles any exception.
+     */
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("../FXMLs/sample.fxml"));
+        primaryStage.setTitle("SBUgram-Login menu");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+
+        Image image = new Image("images/Screenshot (122).png");
+        primaryStage.getIcons().addAll(image);
+
+
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            logout(primaryStage);
+        });
+
+    }
+
+    /**
+     * this method helps the whole app to load pages.
+     * it gives an event and loads the page related to the event.
+     *
+     * @param event
+     * @param FXMLPath param which contains fxmlPath.
+     * @param controllerName the name of the controller of the loading page.
+     * @param root
+     * @param stage
+     * @param scene
+     * @throws IOException
+     */
+
+    public static void loadAPage(ActionEvent event, String FXMLPath, String controllerName, Parent root, Stage stage, Scene scene) throws IOException {
+        root = FXMLLoader.load(Main.class.getResource(FXMLPath));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle(controllerName);
+        stage.show();
+    }
+
+    /**
+     * same method as the loadAPage method but has
+     * the event as a mouse event.
+     *
+     * @param event
+     * @param FXMLPath param which contains fxmlPath.
+     * @param controllerName the name of the controller of the loading page.
+     * @param root
+     * @param stage
+     * @param scene
+     * @throws IOException
+     */
+    public static void loadAPageMouse(MouseEvent event, String FXMLPath, String controllerName, Parent root, Stage stage, Scene scene) throws IOException {
+        root = FXMLLoader.load(Main.class.getResource(FXMLPath));
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle(controllerName);
+
+        stage.show();
+    }
+
+
+    /**
+     * logout method is called whenever the user wants to close the app.
+     * it alerts the user that the app is closing so that
+     * the user decides whether he/she wants to exit.
+     *
+     * @param stage
+     */
+    public void logout(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("you are about to logout");
+        alert.setContentText("do you want to save before exiting?: ");
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            System.out.println("CK");
+            stage.close();
+            try {
+                Client.objectOutputStream.writeObject(new CommandSender(CommandType.LOGOUT, null));
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+
+}

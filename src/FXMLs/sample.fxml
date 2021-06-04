@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="486.0" style="-fx-background-color: #F0F8FF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.LoginController">
+   <children>
+      <Pane prefHeight="273.0" prefWidth="242.0" style="-fx-background-color: #F0F8FF;">
+         <children>
+            <ImageView fitHeight="213.0" fitWidth="186.0" layoutX="28.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/87390.png" />
+               </image>
+
+               <effect>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+
+                  </Lighting>
+               </effect>
+            </ImageView>
+            <Text fill="LIMEGREEN" layoutX="32.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="stay connected&#10;" textAlignment="JUSTIFY" wrappingWidth="195.8935546875">
+               <font>
+                  <Font name="Goudy Old Style Italic" size="36.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.08627451211214066" green="0.5803921818733215" blue="0.3803921639919281" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Text>
+         </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN">
+               <color>
+                  <Color red="0.08627451211214066" green="0.5803921818733215" blue="0.3803921639919281" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Pane>
+      <Pane layoutX="243.0" layoutY="274.0" prefHeight="242.0" prefWidth="242.0" style="-fx-background-color: #ffffff;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.08627451211214066" green="0.5803921818733215" blue="0.3803921639919281" />
+               </color>
+            </DropShadow>
+         </effect>
+         <children>
+            <ImageView fitHeight="242.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/unnamed.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <JFXCheckBox fx:id="show" layoutX="281.0" layoutY="127.0" onAction="#show" text="show password">
+         <effect>
+            <Glow />
+         </effect>
+      </JFXCheckBox>
+      <TextField fx:id="nameTextField" layoutX="281.0" layoutY="42.0" promptText="username" />
+      <TextField fx:id="fakePassfield" layoutX="281.0" layoutY="92.0" promptText="password" visible="false" />
+      <PasswordField fx:id="password" layoutX="281.0" layoutY="92.0" promptText="password" />
+      <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="315.0" layoutY="172.0" onAction="#login" style="-fx-background-color: #32CD32;" text="Login">
+         <font>
+            <Font size="21.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <Label layoutX="28.0" layoutY="296.0" text="Don't have an account?">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="signupButton" buttonType="RAISED" layoutX="74.0" layoutY="330.0" onAction="#loadSignup" style="-fx-background-color: #32CD32;" text="Signup">
+         <font>
+            <Font size="21.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <JFXButton fx:id="retriever" buttonType="RAISED" layoutX="28.0" layoutY="434.0" onAction="#retrievePass" style="-fx-background-color: #32CD32;" text="Retrieve password">
+         <font>
+            <Font size="21.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </JFXButton>
+      <Label layoutX="56.0" layoutY="395.0" text="Forgot password?">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="245.0" layoutY="218.0" prefHeight="18.0" prefWidth="242.0" textFill="#c74545">
+         <font>
+            <Font name="Georgia" size="14.0" />
+         </font>
+      </Label>
+   </children>
+
+   <effect>
+      <DropShadow />
+   </effect>
+</AnchorPane>

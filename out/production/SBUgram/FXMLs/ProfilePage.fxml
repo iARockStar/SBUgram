@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="646.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.ProfilePageController">
+    <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="442.0" style="-fx-background-color: #778899;">
+        <children>
+            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="false" text="Time line" textFill="WHITE">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <toggleGroup>
+                    <ToggleGroup fx:id="selectionBar" />
+                </toggleGroup>
+                <font>
+                    <Font name="Georgia Italic" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="mainMenuButton" layoutX="123.0" layoutY="10.0" onAction="#loadMainMenu" text="Main Menu" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font></JFXRadioButton>
+            <JFXRadioButton fx:id="myProfileButton" layoutX="246.0" layoutY="10.0" onAction="#loadMyProfile" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="directButton" layoutX="364.0" layoutY="10.0" onAction="#loadDirect" text="Direct" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </JFXRadioButton>
+        </children>
+        <effect>
+            <DropShadow blurType="GAUSSIAN">
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+    <AnchorPane prefHeight="50.0" prefWidth="438.0" style="-fx-background-color: #778899;">
+        <children>
+            <Label alignment="CENTER" layoutY="1.0" prefHeight="48.0" prefWidth="444.0" style="-fx-background-color: #778899;" text="SBUgram" textFill="LIMEGREEN">
+                <font>
+                    <Font name="Brush Script MT Italic" size="36.0" />
+                </font>
+                <effect>
+                    <DropShadow blurType="GAUSSIAN">
+                        <color>
+                            <Color red="1.0" green="1.0" blue="1.0" />
+                        </color>
+                    </DropShadow>
+                </effect>
+            </Label>
+        </children>
+        <effect>
+            <DropShadow>
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+   <AnchorPane layoutY="315.0" prefHeight="291.0" prefWidth="444.0" style="-fx-background-color: #ffffff;">
+      <effect>
+         <DropShadow>
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect>
+      <children>
+         <JFXListView fx:id="postList" layoutX="-1.0" prefHeight="291.0" prefWidth="444.0" />
+      </children>
+   </AnchorPane>
+   <Circle fx:id="profilePic" fill="DODGERBLUE" layoutX="72.0" layoutY="118.0" radius="58.0" stroke="BLACK" strokeType="INSIDE" />
+   <Label fx:id="usernameLabel" layoutX="166.0" layoutY="70.0" text="Username">
+      <font>
+         <Font name="Georgia Bold Italic" size="24.0" />
+      </font>
+   </Label>
+   <Label fx:id="namePlusLastnameLabel" layoutX="165.0" layoutY="108.0" text="Name + Lastname">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <Label fx:id="birthDateLabel" layoutX="165.0" layoutY="136.0" text="BirthDate">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <Label layoutX="37.0" layoutY="217.0" text="0 Followers">
+      <font>
+         <Font name="Georgia Bold Italic" size="24.0" />
+      </font>
+   </Label>
+   <Label layoutX="223.0" layoutY="217.0" text="0 Followings">
+      <font>
+         <Font name="Georgia Bold Italic" size="24.0" />
+      </font>
+   </Label>
+   <JFXButton buttonType="RAISED" layoutX="37.0" layoutY="267.0" onAction="#block" style="-fx-background-color: #32dc32;" text="Unfollow">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font>
+   </JFXButton>
+   <JFXButton buttonType="RAISED" layoutX="320.0" layoutY="267.0" onAction="#mute" style="-fx-background-color: #32dc32;" text="Mute">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font>
+   </JFXButton>
+   <JFXCheckBox fx:id="followCheckbox" layoutX="173.0" layoutY="273.0" onAction="#follow" prefHeight="22.0" prefWidth="98.0" style="-fx-background-color: #778899;" text="Follow" textFill="WHITE">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font>
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect>
+   </JFXCheckBox>
+
+</AnchorPane>
