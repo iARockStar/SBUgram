@@ -118,7 +118,7 @@ public class DataBase {
         return null;
     }
 
-    public static User retrievePass(User user) {
+    public synchronized static User retrievePass(User user) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername()))
@@ -127,7 +127,7 @@ public class DataBase {
         return null;
     }
 
-    public static boolean saveNewPass(User user) {
+    public synchronized static boolean saveNewPass(User user) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -141,11 +141,25 @@ public class DataBase {
         return false;
     }
 
-    public static User search(String username) {
+    public synchronized static User search(String username) {
         for (User listUser :
                 listOfUsers) {
             if(listUser.getUsername().equalsIgnoreCase(username))
                 return listUser;
+        }
+        return null;
+    }
+
+    public synchronized static CopyOnWriteArrayList<Comment> addAndSendComments(Comment comment) {
+        User user = comment.getOwner();
+        for (User listUser:
+             listOfUsers) {
+            if(user.getUsername().equals(listUser.getUsername())) {
+                listUser.setPostToComment(user.getPostToComment());
+                listUser.getPostToComment().getComments().add(comment);
+                updateUser();
+                return listUser.getPostToComment().getComments();
+            }
         }
         return null;
     }

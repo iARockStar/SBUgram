@@ -1,5 +1,7 @@
 package other;
 
+import javafx.geometry.Pos;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,6 +17,7 @@ public class User implements Serializable,Comparable {
     private String email;
     private CopyOnWriteArrayList<Post> listOfPosts = new CopyOnWriteArrayList<>();
     private byte[] profileImage;
+    private Post postToComment;
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
         this.name = name;
@@ -55,6 +58,13 @@ public class User implements Serializable,Comparable {
         this.username = username;
     }
 
+    public Post getPostToComment() {
+        return postToComment;
+    }
+
+    public void setPostToComment(Post postToComment) {
+        this.postToComment = postToComment;
+    }
 
     public void addPost(Post post){
         listOfPosts.add(post);

@@ -5,10 +5,9 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="646.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.MyProfileController">
+<AnchorPane prefHeight="646.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.CommentPageController">
     <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="450.0" style="-fx-background-color: #778899;">
         <children>
             <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="true" text="Time line" textFill="WHITE">
@@ -29,7 +28,7 @@
                 <font>
                     <Font name="Georgia" size="14.0" />
                 </font></JFXRadioButton>
-            <JFXRadioButton fx:id="myProfileButton" layoutX="253.0" layoutY="10.0" onAction="#loadMyProfile" selected="true" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
+            <JFXRadioButton fx:id="myProfileButton" layoutX="253.0" layoutY="10.0" onAction="#loadMyProfile" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
                 <selectedColor>
                     <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
                 </selectedColor>
@@ -77,44 +76,21 @@
             </DropShadow>
         </effect>
     </AnchorPane>
-    <AnchorPane layoutY="315.0" prefHeight="291.0" prefWidth="444.0" style="-fx-background-color: #ffffff;">
-        <effect>
-            <DropShadow>
-                <color>
-                    <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
-                </color>
-            </DropShadow>
-        </effect>
-        <children>
-            <JFXListView fx:id="postList" layoutX="-1.0" prefHeight="291.0" prefWidth="450.0" />
-        </children>
-    </AnchorPane>
-    <Circle fx:id="profilePic" fill="DODGERBLUE" layoutX="72.0" layoutY="118.0" radius="58.0" stroke="BLACK" strokeType="INSIDE" />
-    <Label fx:id="usernameLabel" layoutX="166.0" layoutY="70.0" text="Username">
-        <font>
-            <Font name="Georgia Bold Italic" size="24.0" />
-        </font>
-    </Label>
-    <Label fx:id="namePlusLastnameLabel" layoutX="165.0" layoutY="108.0" text="Name + Lastname">
-        <font>
-            <Font size="14.0" />
-        </font>
-    </Label>
-    <Label fx:id="birthDateLabel" layoutX="165.0" layoutY="136.0" text="BirthDate">
-        <font>
-            <Font size="14.0" />
-        </font>
-    </Label>
-    <Label layoutX="37.0" layoutY="217.0" text="0 Followers">
-        <font>
-            <Font name="Georgia Bold Italic" size="24.0" />
-        </font>
-    </Label>
-    <Label layoutX="223.0" layoutY="217.0" text="0 Followings">
-        <font>
-            <Font name="Georgia Bold Italic" size="24.0" />
-        </font>
-    </Label>
-
-
+    <JFXTextArea fx:id="commentText" focusColor="#32dc32" layoutX="14.0" layoutY="65.0" prefHeight="119.0" prefWidth="237.0" promptText="What about this post?...">
+      <font>
+         <Font name="Georgia" size="14.0" />
+      </font></JFXTextArea>
+    <JFXButton buttonType="RAISED" layoutX="305.0" layoutY="150.0" onAction="#comment" style="-fx-background-color: #32dc32;" text="Comment">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font></JFXButton>
+   <ListView fx:id="commentListView" layoutY="199.0" prefHeight="408.0" prefWidth="450.0">
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect>
+   </ListView>
 </AnchorPane>

@@ -1,6 +1,7 @@
 package server;
 
 import java.io.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -63,6 +64,10 @@ public class ClientHandler extends Thread {
                         isClientOnline = false;
                         System.out.println("client disconnected.");
                         break;
+                    case COMMENT:
+                        Comment comment = (Comment) commandSender.getUser();
+                        addAndSendComment(comment);
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -74,6 +79,23 @@ public class ClientHandler extends Thread {
             objectInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void addAndSendComment(Comment comment) {
+        List<Comment> comments = DataBase.addAndSendComments(comment);
+        if(comments != null){
+            try{
+                objectOutputStream.writeObject(comments);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            try {
+                objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 

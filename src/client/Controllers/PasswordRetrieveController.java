@@ -113,7 +113,7 @@ public class PasswordRetrieveController {
         Main.loadAPageMouse(mouseEvent
                 , "../FXMLs/sample.fxml"
                 , "SBUgram - Login menu"
-                , root, stage, scene);
+        );
     }
 
 

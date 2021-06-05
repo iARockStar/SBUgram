@@ -3,8 +3,10 @@ package other;
 import client.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Post implements Serializable,Comparable {
 
@@ -14,8 +16,8 @@ public class Post implements Serializable,Comparable {
     private User owner;
     private byte[] profilePic;
     private byte[] postPic;
-
     private Date dateTime;
+    private CopyOnWriteArrayList<Comment> comments = new CopyOnWriteArrayList<>();
 
     public Post(String writer, String title, String description,Date date, byte[] profilePic, byte[] postPic) {
         this.writer = writer;
@@ -95,17 +97,28 @@ public class Post implements Serializable,Comparable {
         this.postPic = postPic;
     }
 
+    public CopyOnWriteArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(CopyOnWriteArrayList<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(title, post.title);
+        return Objects.equals(writer, post.writer) && Objects.equals(title, post.title) && Objects.equals(description, post.description) && Arrays.equals(profilePic, post.profilePic) && Arrays.equals(postPic, post.postPic) && Objects.equals(dateTime, post.dateTime) && Objects.equals(comments, post.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        int result = Objects.hash(writer, title, description, dateTime, comments);
+        result = 31 * result + Arrays.hashCode(profilePic);
+        result = 31 * result + Arrays.hashCode(postPic);
+        return result;
     }
 
     @Override

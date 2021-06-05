@@ -2,35 +2,31 @@ package client.Controllers;
 
 import client.Client;
 import client.Main;
-import other.SecurityQuestion;
 import client.thisUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import other.CommandSender;
+import other.CommandType;
+import other.SecurityQuestion;
+import other.User;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import other.*;
 
 /**
  * <h>Signup in SBUgram!</h>
@@ -46,15 +42,13 @@ public class SignupController implements Initializable {
     @FXML
     PasswordField re_writePassField;
     @FXML
-    TextField fakePassfield;
+    TextField fakePassField;
     @FXML
     TextField fakeReWritePass;
 
     @FXML
     DatePicker myDatePicker;
 
-    @FXML
-    private Button logoutButton;
     @FXML
     Label warningLabel;
     @FXML
@@ -68,24 +62,10 @@ public class SignupController implements Initializable {
 
 
     @FXML
-    private AnchorPane secondPagePane;
-    @FXML
-    Label nameLabel;
-    @FXML
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-    @FXML
-    private Button signupButton;
-    @FXML
-    private MenuButton securityQuestionItems;
-    @FXML
-    private Button securityAnswerButton;
-    @FXML
     private TextField answerTextField;
     @FXML
     ChoiceBox<String> questions;
-    private String[] choices = {"What is your mother's maiden name?"
+    private final String[] choices = {"What is your mother's maiden name?"
             , "What is the name of your first pet?"
             , "What was your first car?"
             , "What elementary school did you attend?"
@@ -95,9 +75,6 @@ public class SignupController implements Initializable {
 
     @FXML
     private TextField email;
-
-    @FXML
-    private Button loginButton2;
 
     @FXML
     private TextField username;
@@ -127,7 +104,6 @@ public class SignupController implements Initializable {
         profilePic1.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKGREEN));
         questions.getItems().addAll(choices);
         questions.setOnAction(this::getQuestion);
-
     }
 
     @FXML
@@ -136,22 +112,16 @@ public class SignupController implements Initializable {
         String lastName = this.lastName.getText();
         String username = this.username.getText();
         String phoneNumber = this.phoneNumber.getText();
-        try {
-            Long.parseLong(phoneNumber);
-        } catch (Exception e) {
-            warningLabel.setText("write a correct phone number please");
-            return;
-        }
+        if (!validPhoneNumber(phoneNumber)) return;
         String password = this.password.getText();
-        String fakePass = this.fakePassfield.getText();
+        String fakePass = this.fakePassField.getText();
         String reWritePassField = this.re_writePassField.getText();
         String fakeReWritePass = this.fakeReWritePass.getText();
         String email = this.email.getText();
-        DatePicker datePicker = this.myDatePicker;
         SecurityQuestion securityQuestion = new SecurityQuestion(question, answer);
         byte[] userImage = this.userImage;
         Matcher matcher = checkValidEmail(email);
-        if(email.length() == 0 || matcher.find()) {
+        if (email.length() == 0 || matcher.find()) {
             if (name.length() == 0
                     || username.length() == 0
                     || lastName.length() == 0
@@ -161,7 +131,7 @@ public class SignupController implements Initializable {
                 warningLabel.setText("Please fill in the information fields please!");
                 return;
             }
-            String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+            String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',?/*~$^+=<>]).{8,20}$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher2 = pattern.matcher(password);
             Matcher matcher1 = pattern.matcher(fakePass);
@@ -171,51 +141,27 @@ public class SignupController implements Initializable {
                 return;
             }
             if (reWritePassField.equals(password) || fakeReWritePass.equals(fakePass)) {
-                String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
-                User newUser =
-                        getUser(name, lastName, username, phoneNumber, password, fakePass, email, securityQuestion, userImage, FormattedDate);
-                thisUser.setUser(newUser);
-                CommandSender commandSender = new CommandSender(CommandType.SIGNUP, newUser);
-                Client.getObjectOutputStream().writeObject(commandSender);
-                Client.getObjectOutputStream().flush();
-                System.out.println("new User sent");
-                Main.loadAPage(event
-                        , "../FXMLs/MainPage.fxml"
-                        , "SBUgram - Home page"
-                        , root, stage, scene);
+                loadMainPageIfValid(
+                        event, name, lastName, username,
+                        phoneNumber, password, fakePass,
+                        email, securityQuestion, userImage
+                );
             } else {
                 warningLabel.setText("password field is not the same as it's reWritten version");
             }
-        }else {
+        } else {
             warningLabel.setText("please enter a correct email address please");
         }
     }
 
-    @FXML
-    public void show() {
-        if (!fakePassfield.isVisible()) {
-            fakePassfield.setVisible(true);
-            fakeReWritePass.setVisible(true);
-            re_writePassField.setVisible(false);
-            password.setVisible(false);
-            fakeReWritePass.setText(re_writePassField.getText());
-            fakePassfield.setText(password.getText());
-
-        } else {
-            fakePassfield.setVisible(false);
-            fakeReWritePass.setVisible(false);
-            password.setVisible(true);
-            re_writePassField.setVisible(true);
-            password.setText(fakePassfield.getText());
-            re_writePassField.setText(fakeReWritePass.getText());
+    private boolean validPhoneNumber(String phoneNumber) {
+        try {
+            Long.parseLong(phoneNumber);
+        } catch (Exception e) {
+            warningLabel.setText("write a correct phone number please");
+            return false;
         }
-    }
-
-    private Matcher checkValidEmail(String email) {
-        Pattern VALID_EMAIL_ADDRESS_REGEX =
-                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$"
-                        , Pattern.CASE_INSENSITIVE);
-        return VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return true;
     }
 
     private User getUser(String name, String lastName, String username, String phoneNumber, String password, String fakePass, String email, SecurityQuestion securityQuestion, byte[] userImage, String FormattedDate) {
@@ -239,14 +185,59 @@ public class SignupController implements Initializable {
         return newUser;
     }
 
+    private Matcher checkValidEmail(String email) {
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$"
+                        , Pattern.CASE_INSENSITIVE);
+        return VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+    }
+
+
+    private void loadMainPageIfValid(ActionEvent event, String name, String lastName, String username, String phoneNumber, String password, String fakePass, String email, SecurityQuestion securityQuestion, byte[] userImage) throws IOException {
+        String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
+        User newUser =
+                getUser(name, lastName, username, phoneNumber, password, fakePass, email, securityQuestion, userImage, FormattedDate);
+        thisUser.setUser(newUser);
+        CommandSender commandSender = new CommandSender(CommandType.SIGNUP, newUser);
+        Client.getObjectOutputStream().writeObject(commandSender);
+        Client.getObjectOutputStream().flush();
+        System.out.println("new User sent");
+        Main.loadAPage(event
+                , "../FXMLs/MainPage.fxml"
+                , "SBUgram - Home page"
+        );
+    }
+
     @FXML
-    public void pickADate(ActionEvent event) {
+    public void show() {
+        if (!fakePassField.isVisible()) {
+            fakePassField.setVisible(true);
+            fakeReWritePass.setVisible(true);
+            re_writePassField.setVisible(false);
+            password.setVisible(false);
+            fakeReWritePass.setText(re_writePassField.getText());
+            fakePassField.setText(password.getText());
+
+        } else {
+            fakePassField.setVisible(false);
+            fakeReWritePass.setVisible(false);
+            password.setVisible(true);
+            re_writePassField.setVisible(true);
+            password.setText(fakePassField.getText());
+            re_writePassField.setText(fakeReWritePass.getText());
+        }
+    }
+
+
+
+    @FXML
+    public void pickADate() {
         myDate = myDatePicker.getValue();
         String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
         System.out.println(FormattedDate);
     }
 
-    public void setProfilePic(ActionEvent event) throws URISyntaxException, IOException {
+    public void setProfilePic() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Upload your profile picture");
         File file = chooser.showOpenDialog(null);
@@ -271,11 +262,11 @@ public class SignupController implements Initializable {
         Main.loadAPage(actionEvent
                 , "../FXMLs/sample.fxml"
                 , "SBUgram - Login menu"
-                , root, stage, scene);
+        );
     }
 
     @FXML
-    public void saveAnswerAndQuestion(ActionEvent actionEvent) {
+    public void saveAnswerAndQuestion() {
 
         answer = answerTextField.getText();
         question = myQuestion;

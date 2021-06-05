@@ -51,7 +51,7 @@ public class LoginController implements Initializable {
         Main.loadAPage(actionEvent
                 , "/FXMLs/signUp.fxml"
                 , "SBUgram - Signup menu"
-                , root, stage, scene);
+        );
     }
 
     @FXML
@@ -77,7 +77,7 @@ public class LoginController implements Initializable {
             Main.loadAPage(actionEvent
                     , "../FXMLs/MainPage.fxml"
                     , "SBUgram - Home page"
-                    , root, stage, scene);
+            );
         } else {
             warningLabel.setText("wrong username or password!");
         }
@@ -122,7 +122,7 @@ public class LoginController implements Initializable {
         Main.loadAPage(event
                 , "/FXMLs/RetrievePass.fxml"
                 , "SBUgram - Retrieve password menu"
-                , root, stage, scene);
+        );
     }
 
 

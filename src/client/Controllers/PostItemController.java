@@ -1,5 +1,6 @@
 package client.Controllers;
 
+import client.Main;
 import client.thisUser;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -23,7 +24,7 @@ import java.util.Date;
 import other.*;
 import client.PageLoader;
 
-public class PostItemController {
+public class PostItemController implements ItemController {
 
     public AnchorPane root;
     public ImageView profileImage;
@@ -44,12 +45,13 @@ public class PostItemController {
     }
 
     //this anchor pane is returned to be set as the list view item
+    @Override
     public AnchorPane init() {
         username.setText(post.getWriter());
         title.setText(post.getTitle());
 //        description.setText(post.getDescription());
 
-        descriptionLabel.setText(post.getDescription());
+        descriptionLabel.setText(" "+post.getDescription());
         Image image;
         byte[] pic;
         if(thisUser.isAnotherUser()) {
@@ -62,8 +64,6 @@ public class PostItemController {
         if(postPic!=null) {
             Image postImage = new Image(new ByteArrayInputStream(postPic));
             postImageView.setImage(postImage);
-            postImageView.setFitWidth(400);
-            postImageView.setFitHeight(253.0);
         }
         proPic.setFill(new ImagePattern(image));
         proPic.setEffect(new DropShadow(+25d, 0d,+2d, Color.DARKGREEN));
@@ -83,8 +83,12 @@ public class PostItemController {
 
     }
 
-    public void comment(MouseEvent mouseEvent) {
-
+    public void comment(MouseEvent mouseEvent) throws IOException {
+        thisUser.getUser().setPostToComment(post);
+        Main.loadAPageMouse(mouseEvent
+                , "/FXMLs/CommentPage.fxml"
+                , "SBUgram - Comment menu"
+        );
     }
 
     public void rePost(MouseEvent mouseEvent) {

@@ -8,10 +8,10 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="646.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.MyProfileController">
-    <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="442.0" style="-fx-background-color: #778899;">
+<AnchorPane prefHeight="646.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.MyProfileController">
+    <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="450.0" style="-fx-background-color: #778899;">
         <children>
-            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="false" text="Time line" textFill="WHITE">
+            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="true" text="Time line" textFill="WHITE">
                 <selectedColor>
                     <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
                 </selectedColor>
@@ -22,14 +22,14 @@
                     <Font name="Georgia Italic" size="14.0" />
                 </font>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="mainMenuButton" layoutX="123.0" layoutY="10.0" onAction="#loadMainMenu" text="Main Menu" textFill="WHITE" toggleGroup="$selectionBar">
+            <JFXRadioButton fx:id="mainMenuButton" layoutX="124.0" layoutY="10.0" onAction="#loadMainMenu" selected="true" text="Main Menu" textFill="WHITE" toggleGroup="$selectionBar">
                 <selectedColor>
                     <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
                 </selectedColor>
                 <font>
                     <Font name="Georgia" size="14.0" />
                 </font></JFXRadioButton>
-            <JFXRadioButton fx:id="myProfileButton" layoutX="246.0" layoutY="10.0" onAction="#loadMyProfile" selected="true" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
+            <JFXRadioButton fx:id="myProfileButton" layoutX="253.0" layoutY="10.0" onAction="#loadMyProfile" selected="true" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
                 <selectedColor>
                     <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
                 </selectedColor>
@@ -37,7 +37,7 @@
                     <Font name="Georgia" size="14.0" />
                 </font>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="directButton" layoutX="364.0" layoutY="10.0" onAction="#loadDirect" text="Direct" textFill="WHITE" toggleGroup="$selectionBar">
+            <JFXRadioButton fx:id="directButton" layoutX="370.0" layoutY="9.0" onAction="#loadDirect" text="Direct" textFill="WHITE" toggleGroup="$selectionBar">
                 <selectedColor>
                     <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
                 </selectedColor>
@@ -56,7 +56,7 @@
     </AnchorPane>
     <AnchorPane prefHeight="50.0" prefWidth="438.0" style="-fx-background-color: #778899;">
         <children>
-            <Label alignment="CENTER" layoutY="1.0" prefHeight="48.0" prefWidth="444.0" style="-fx-background-color: #778899;" text="SBUgram" textFill="LIMEGREEN">
+            <Label alignment="CENTER" layoutY="1.0" prefHeight="48.0" prefWidth="450.0" style="-fx-background-color: #778899;" text="SBUgram" textFill="LIMEGREEN">
                 <font>
                     <Font name="Brush Script MT Italic" size="36.0" />
                 </font>
@@ -86,7 +86,7 @@
             </DropShadow>
         </effect>
         <children>
-            <JFXListView fx:id="postList" layoutX="-1.0" prefHeight="291.0" prefWidth="444.0" />
+            <JFXListView fx:id="postList" layoutX="-1.0" prefHeight="291.0" prefWidth="450.0" />
         </children>
     </AnchorPane>
     <Circle fx:id="profilePic" fill="DODGERBLUE" layoutX="72.0" layoutY="118.0" radius="58.0" stroke="BLACK" strokeType="INSIDE" />

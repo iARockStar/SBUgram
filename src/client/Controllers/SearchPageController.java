@@ -1,7 +1,6 @@
 package client.Controllers;
 
 import client.Client;
-import client.Controllers.mainPage;
 import client.Main;
 import client.thisUser;
 import com.jfoenix.controls.JFXTextField;
@@ -44,6 +43,6 @@ public class SearchPageController extends mainPage {
         Main.loadAPage(event
                 ,"../FXMLs/ProfilePage.fxml"
                 , "SBUgram - Profile page"
-                ,root,stage,scene);
+        );
     }
 }

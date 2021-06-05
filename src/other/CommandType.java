@@ -10,5 +10,7 @@ public enum CommandType {
     RETRIEVEPASS,
     RETRIEVEPASS2NDPART,
     LOGOUT,
-    SEARCHUSER
+    SEARCHUSER,
+    COMMENT,
+
 }

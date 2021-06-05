@@ -1,7 +1,6 @@
 package client.Controllers;
 
 import client.Client;
-import client.Controllers.mainPage;
 import client.Main;
 import client.thisUser;
 import com.jfoenix.controls.JFXTextArea;
@@ -51,7 +50,7 @@ public class NewPostPageController extends mainPage {
         Main.loadAPage(actionEvent
                 , "../FXMLs/MainPage.fxml"
                 , "SBUgram - Home page"
-                , root, stage, scene);
+        );
     }
 
     public void addPicture(ActionEvent event) {

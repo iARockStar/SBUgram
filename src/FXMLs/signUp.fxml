@@ -46,7 +46,7 @@
          <effect>
             <DropShadow />
          </effect></TextField>
-      <TextField fx:id="fakePassfield" layoutX="165.0" layoutY="246.0" prefHeight="26.0" prefWidth="227.0" promptText="password" visible="false">
+      <TextField fx:id="fakePassField" layoutX="165.0" layoutY="246.0" prefHeight="26.0" prefWidth="227.0" promptText="password" visible="false">
          <effect>
             <DropShadow />
          </effect>

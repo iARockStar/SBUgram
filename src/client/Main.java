@@ -12,14 +12,10 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import other.CommandSender;
+import other.CommandType;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-
-import other.*;
 
 /**
  * <h1>SBUgram</h1>
@@ -83,16 +79,13 @@ public class Main extends Application {
      * @param event
      * @param FXMLPath param which contains fxmlPath.
      * @param controllerName the name of the controller of the loading page.
-     * @param root
-     * @param stage
-     * @param scene
      * @throws IOException
      */
 
-    public static void loadAPage(ActionEvent event, String FXMLPath, String controllerName, Parent root, Stage stage, Scene scene) throws IOException {
-        root = FXMLLoader.load(Main.class.getResource(FXMLPath));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+    public static void loadAPage(ActionEvent event, String FXMLPath, String controllerName) throws IOException {
+        Parent root = FXMLLoader.load(Main.class.getResource(FXMLPath));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle(controllerName);
@@ -106,16 +99,13 @@ public class Main extends Application {
      * @param event
      * @param FXMLPath param which contains fxmlPath.
      * @param controllerName the name of the controller of the loading page.
-     * @param root
-     * @param stage
-     * @param scene
      * @throws IOException
      */
-    public static void loadAPageMouse(MouseEvent event, String FXMLPath, String controllerName, Parent root, Stage stage, Scene scene) throws IOException {
-        root = FXMLLoader.load(Main.class.getResource(FXMLPath));
+    public static void loadAPageMouse(MouseEvent event, String FXMLPath, String controllerName) throws IOException {
+        Parent root = FXMLLoader.load(Main.class.getResource(FXMLPath));
 
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle(controllerName);

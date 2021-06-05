@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root" prefHeight="113.0" prefWidth="437.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.CommentItemController">
+   <children>
+      <Circle fx:id="profilePic" fill="DODGERBLUE" layoutX="60.0" layoutY="58.0" radius="46.0" stroke="BLACK" strokeType="INSIDE" />
+      <Label fx:id="usernameLabel" layoutX="121.0" layoutY="12.0" text="username ">
+         <font>
+            <Font name="Georgia Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <VBox alignment="TOP_CENTER" layoutX="121.0" layoutY="42.0" prefWidth="316.0">
+         <children>
+            <Label fx:id="commentLabel" prefWidth="320.0" text="comment" wrapText="true">
+               <font>
+                  <Font name="Georgia" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+   <effect>
+      <DropShadow blurType="GAUSSIAN">
+         <color>
+            <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+         </color>
+      </DropShadow>
+   </effect>
+</AnchorPane>

@@ -78,22 +78,14 @@ public class MainPageController extends mainPage {
         description.setText("");
     }
 
-
     @FXML
     ListView<Post> postList;
-    @FXML
-    private AnchorPane listviewPane;
-
 
     public void newPost(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 ,"../FXMLs/NewPostPage.fxml"
                 , "SBUgram - NewPost page"
-                ,root,stage,scene);
-    }
-
-
-    public void showPost(MouseEvent mouseEvent) {
+        );
     }
 
     public void refresh(MouseEvent mouseEvent) {
@@ -102,5 +94,8 @@ public class MainPageController extends mainPage {
         } catch (IOException | ClassNotFoundException ioException) {
             ioException.printStackTrace();
         }
+    }
+
+    public void showPost(MouseEvent mouseEvent) {
     }
 }

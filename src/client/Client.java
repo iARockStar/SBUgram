@@ -9,6 +9,11 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 import other.*;
 
+/**
+ * This class provides socket and streams for connecting to
+ * the server and nothing more!
+ */
+
 public class Client {
     static Socket socket;
     static ObjectOutputStream objectOutputStream;
@@ -16,6 +21,10 @@ public class Client {
     static ConcurrentHashMap<CommandType,Object> commandSender
             = new ConcurrentHashMap<>();
 
+    /**
+     * connectToServer method is called at the beginning of the client side program.
+     * it connects client side to the server side.
+     */
     public static void connectToServer() {
         try {
             socket = new Socket("127.0.0.1", 8080);
@@ -26,20 +35,13 @@ public class Client {
         }
     }
 
+    //getters and setters
     public static ObjectOutputStream getObjectOutputStream() {
         return objectOutputStream;
     }
 
-    public static void setObjectOutputStream(ObjectOutputStream objectOutputStream) {
-        Client.objectOutputStream = objectOutputStream;
-    }
-
     public static ObjectInputStream getObjectInputStream() {
         return objectInputStream;
-    }
-
-    public static void setObjectInputStream(ObjectInputStream objectInputStream) {
-        Client.objectInputStream = objectInputStream;
     }
 
     public static ConcurrentHashMap<CommandType, Object> getCommandSender() {

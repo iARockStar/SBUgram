@@ -12,20 +12,20 @@ public class MainMenuController extends mainPage {
         Main.loadAPage(event
                 ,"../FXMLs/NewPostPage.fxml"
                 , "SBUgram - NewPost page"
-                ,root,stage,scene);
+        );
     }
 
     public void logout(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 ,"../FXMLs/sample.fxml"
                 , "SBUgram - Login menu"
-                ,root,stage,scene);
+        );
     }
 
     public void search(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 ,"../FXMLs/SearchPage.fxml"
                 , "SBUgram - Search user"
-                ,root,stage,scene);
+        );
     }
 }
