@@ -4,6 +4,7 @@ import java.io.Serializable;
 import client.*;
 
 public class CommandSender implements Serializable {
+
     private CommandType commandType;
     private Object object;
 

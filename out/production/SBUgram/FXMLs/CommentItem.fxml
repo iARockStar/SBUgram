@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="113.0" prefWidth="437.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.CommentItemController">
+<AnchorPane fx:id="root" prefHeight="113.0" prefWidth="437.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <Circle fx:id="profilePic" fill="DODGERBLUE" layoutX="60.0" layoutY="58.0" radius="46.0" stroke="BLACK" strokeType="INSIDE" />
       <Label fx:id="usernameLabel" layoutX="121.0" layoutY="12.0" text="username ">

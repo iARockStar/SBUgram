@@ -37,6 +37,8 @@ public class PostItemController implements ItemController {
     public Label date;
     Post post;
     public Label descriptionLabel;
+    public ImageView likeButton;
+    public boolean isLiked = false;
 
     //each list item will have its exclusive controller in runtime so we set the controller as we load the fxml
     public PostItemController(Post post) throws IOException {
@@ -80,6 +82,13 @@ public class PostItemController implements ItemController {
 
 
     public void like(MouseEvent mouseEvent) {
+        if(!isLiked) {
+            likeButton.setImage(new Image("/images/heart_outline_480px.png"));
+            isLiked = true;
+        }else{
+            likeButton.setImage(new Image("/images/heart_512px.png"));
+            isLiked = false;
+        }
 
     }
 

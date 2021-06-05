@@ -3,10 +3,11 @@ package other;
 import javafx.geometry.Pos;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class User implements Serializable,Comparable {
+public class User implements Serializable, Comparable {
     private String name;
     private String lastName;
     private String username;
@@ -18,6 +19,7 @@ public class User implements Serializable,Comparable {
     private CopyOnWriteArrayList<Post> listOfPosts = new CopyOnWriteArrayList<>();
     private byte[] profileImage;
     private Post postToComment;
+    private Comment newComment;
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
         this.name = name;
@@ -52,10 +54,18 @@ public class User implements Serializable,Comparable {
         this.username = username;
     }
 
-    public User(String password, SecurityQuestion securityQuestion,String username) {
+    public User(String password, SecurityQuestion securityQuestion, String username) {
         this.password = password;
         this.securityQuestion = securityQuestion;
         this.username = username;
+    }
+
+    public Comment getNewComment() {
+        return newComment;
+    }
+
+    public void setNewComment(Comment newComment) {
+        this.newComment = newComment;
     }
 
     public Post getPostToComment() {
@@ -66,7 +76,7 @@ public class User implements Serializable,Comparable {
         this.postToComment = postToComment;
     }
 
-    public void addPost(Post post){
+    public void addPost(Post post) {
         listOfPosts.add(post);
     }
 
@@ -155,12 +165,24 @@ public class User implements Serializable,Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(phoneNumber, user.phoneNumber) ;
+        return Objects.equals(name, user.name)
+                && Objects.equals(lastName, user.lastName)
+                && Objects.equals(username, user.username)
+                && Objects.equals(password, user.password)
+                && Objects.equals(phoneNumber, user.phoneNumber)
+                && Objects.equals(securityQuestion, user.securityQuestion)
+                && Objects.equals(datePicker, user.datePicker)
+                && Objects.equals(email, user.email)
+                && Objects.equals(listOfPosts, user.listOfPosts)
+                && Arrays.equals(profileImage, user.profileImage)
+                && Objects.equals(postToComment, user.postToComment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, lastName, username, password, phoneNumber, securityQuestion);
+        int result = Objects.hash(name, lastName, username, password, phoneNumber, securityQuestion, datePicker, email, listOfPosts, postToComment);
+        result = 31 * result + Arrays.hashCode(profileImage);
+        return result;
     }
 
     @Override

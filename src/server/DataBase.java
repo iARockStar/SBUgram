@@ -152,10 +152,11 @@ public class DataBase {
 
     public synchronized static CopyOnWriteArrayList<Comment> addAndSendComments(Comment comment) {
         User user = comment.getOwner();
+        Post post = comment.getPost();
         for (User listUser:
              listOfUsers) {
             if(user.getUsername().equals(listUser.getUsername())) {
-                listUser.setPostToComment(user.getPostToComment());
+                listUser.setPostToComment(post);
                 listUser.getPostToComment().getComments().add(comment);
                 updateUser();
                 return listUser.getPostToComment().getComments();
