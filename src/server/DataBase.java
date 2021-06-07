@@ -112,7 +112,7 @@ public class DataBase {
     public synchronized static User loadPost(User user) {
         for (User listUser :
                 listOfUsers) {
-            if (user.equals(listUser))
+            if (user.getUsername().equals(listUser.getUsername()))
                 return listUser;
         }
         return null;
@@ -159,6 +159,17 @@ public class DataBase {
                 listUser.setPostToComment(post);
                 listUser.getPostToComment().getComments().add(comment);
                 updateUser();
+                return listUser.getPostToComment().getComments();
+            }
+        }
+        return null;
+    }
+
+    public static CopyOnWriteArrayList<Comment> sendComments(Post post) {
+        User user = post.getOwner();
+        for (User listUser:
+                listOfUsers) {
+            if(user.equals(listUser)) {
                 return listUser.getPostToComment().getComments();
             }
         }

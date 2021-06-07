@@ -12,7 +12,7 @@ public class Server {
     public static void main(String[] args) {
         DataBase.initializeServer();
         try {
-            ServerSocket serverSocket = new ServerSocket(8080);
+            ServerSocket serverSocket = new ServerSocket(2222);
             while (true) {
                 System.out.println("waiting for client to connect");
                 Socket socket = serverSocket.accept();

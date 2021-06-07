@@ -64,6 +64,10 @@ public class ClientHandler extends Thread {
                         isClientOnline = false;
                         System.out.println("client disconnected.");
                         break;
+                    case LOADCOMMENTS:
+                        post = (Post) commandSender.getUser();
+                        sendComments(post);
+                        break;
                     case COMMENT:
                         Comment comment = (Comment) commandSender.getUser();
                         addAndSendComment(comment);
@@ -80,6 +84,10 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendComments(Post post) {
+        CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(post);
     }
 
     private void addAndSendComment(Comment comment) {

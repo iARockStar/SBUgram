@@ -9,11 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
-import other.CommandSender;
-import other.CommandType;
-import other.Comment;
-import other.Post;
+import other.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,13 +24,21 @@ public class CommentPageController extends mainPage implements Initializable{
     @FXML
     private JFXTextArea commentText;
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Post post = thisUser.getUser().getPostToComment();
+        User user = thisUser.getUser();
+        post.setOwner(user);
+        loadComments(post);
+    }
+
     CopyOnWriteArrayList<Comment> comments;
     public void comment(ActionEvent event) {
         Post post = thisUser.getUser().getPostToComment();
         Comment comment = new Comment(thisUser.getUser(),post,commentText.getText());
 
         addComment(comment);
-        loadComments();
     }
 
     private void addComment(Comment comment) {
@@ -46,9 +52,19 @@ public class CommentPageController extends mainPage implements Initializable{
             comments = new CopyOnWriteArrayList<>();
             e.printStackTrace();
         }
+
+
+        //show the post array in list view
+        commentListView.setItems(FXCollections.observableArrayList(comments));
+
+        //customize each cell of postList with new graphic object PostItem
+        commentListView.setCellFactory(commentListView -> new CommentItem());
+        thisUser.getUser().getPostToComment().setComments(comments);
     }
 
-    private void loadComments() {
+    private void loadComments(Post post) {
+        comments = thisUser.getUser().getPostToComment().getComments();
+
         //show the post array in list view
         commentListView.setItems(FXCollections.observableArrayList(comments));
 
@@ -56,8 +72,5 @@ public class CommentPageController extends mainPage implements Initializable{
         commentListView.setCellFactory(commentListView -> new CommentItem());
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    }
 }

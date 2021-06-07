@@ -27,7 +27,7 @@ public class Client {
      */
     public static void connectToServer() {
         try {
-            socket = new Socket("127.0.0.1", 8080);
+            socket = new Socket("127.0.0.1", 2222);
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException ioException) {

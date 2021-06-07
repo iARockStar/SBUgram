@@ -49,11 +49,11 @@ public class PostItemController implements ItemController {
     //this anchor pane is returned to be set as the list view item
     @Override
     public AnchorPane init() {
-        username.setText(post.getWriter());
+        username.setText("@"+post.getWriter());
         title.setText(post.getTitle());
 //        description.setText(post.getDescription());
 
-        descriptionLabel.setText(" "+post.getDescription());
+        descriptionLabel.setText(post.getDescription());
         Image image;
         byte[] pic;
         if(thisUser.isAnotherUser()) {

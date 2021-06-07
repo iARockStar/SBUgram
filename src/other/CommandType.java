@@ -12,5 +12,6 @@ public enum CommandType {
     LOGOUT,
     SEARCHUSER,
     COMMENT,
+    LOADCOMMENTS
 
 }

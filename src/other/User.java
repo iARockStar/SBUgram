@@ -165,17 +165,7 @@ public class User implements Serializable, Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name)
-                && Objects.equals(lastName, user.lastName)
-                && Objects.equals(username, user.username)
-                && Objects.equals(password, user.password)
-                && Objects.equals(phoneNumber, user.phoneNumber)
-                && Objects.equals(securityQuestion, user.securityQuestion)
-                && Objects.equals(datePicker, user.datePicker)
-                && Objects.equals(email, user.email)
-                && Objects.equals(listOfPosts, user.listOfPosts)
-                && Arrays.equals(profileImage, user.profileImage)
-                && Objects.equals(postToComment, user.postToComment);
+        return Objects.equals(username, user.username);
     }
 
     @Override

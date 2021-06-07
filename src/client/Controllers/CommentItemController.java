@@ -45,7 +45,7 @@ public class CommentItemController implements ItemController {
         image = new Image(new ByteArrayInputStream(pic));
         profilePic.setFill(new ImagePattern(image));
         profilePic.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKGREEN));
-        usernameLabel.setText(thisUser.getUser().getUsername());
+        usernameLabel.setText("@"+thisUser.getUser().getUsername());
         commentLabel.setText(thisComment.getDescription());
 
         return root;

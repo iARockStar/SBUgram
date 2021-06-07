@@ -80,7 +80,7 @@ public class ProfilePageController extends mainPage implements Initializable {
         String namePlusLastname = thisUser.getSearchedUser().getName()
                 +" "+thisUser.getSearchedUser().getLastName();
         String dateOfBirth = thisUser.getSearchedUser().getDatePicker();
-        usernameLabel.setText(username);
+        usernameLabel.setText("@"+username);
         namePlusLastnameLabel.setText(namePlusLastname);
         birthDateLabel.setText("birthDate: "+dateOfBirth);
     }

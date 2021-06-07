@@ -104,7 +104,9 @@ public class LoginController implements Initializable {
 
     public CommandSender createCommandSender() {
         CommandSender commandSender;
-        if (password.getText().length() == 0)
+        if (password.getText().length() == 0
+                || password.getText().length() <=
+                fakePassfield.getText().length())
             commandSender =
                     new CommandSender(CommandType.LOGIN
                             , new User(nameTextField.getText()

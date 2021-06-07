@@ -71,7 +71,7 @@ public class MyProfileController extends mainPage implements Initializable {
         String namePlusLastname = thisUser.getUser().getName()
                 +" "+thisUser.getUser().getLastName();
         String dateOfBirth = thisUser.getUser().getDatePicker();
-        usernameLabel.setText(username);
+        usernameLabel.setText("@"+username);
         namePlusLastnameLabel.setText(namePlusLastname);
         birthDateLabel.setText("birthDate: "+dateOfBirth);
     }
