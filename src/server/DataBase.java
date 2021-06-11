@@ -9,6 +9,7 @@ import other.*;
 
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DataBase {
 
@@ -167,8 +168,7 @@ public class DataBase {
         return null;
     }
 
-    public static CopyOnWriteArrayList<Comment> sendComments(Post post) {
-        User user = post.getOwner();
+    public static CopyOnWriteArrayList<Comment> sendComments(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -176,5 +176,44 @@ public class DataBase {
             }
         }
         return null;
+    }
+
+    public synchronized static void follow(User following, User follower) {
+        for (User listUser :
+                listOfUsers) {
+            if (following.getUsername().equals(listUser.getUsername())) {
+                AtomicInteger x = listUser.getNumOfFollowers();
+                listUser.addFollower(follower);
+                break;
+            }
+        }
+        for (User listUser :
+                listOfUsers) {
+            if (follower.getUsername().equals(listUser.getUsername())) {
+                AtomicInteger x = listUser.getNumOfFollowings();
+
+                listUser.addFollowing(following);
+                updateUser();
+                return;
+            }
+        }
+    }
+
+    public synchronized static void unfollow(User following, User follower) {
+        for (User listUser :
+                listOfUsers) {
+            if (following.getUsername().equals(listUser.getUsername())) {
+                listUser.removeFollower(follower);
+                break;
+            }
+        }
+        for (User listUser :
+                listOfUsers) {
+            if (follower.getUsername().equals(listUser.getUsername())) {
+                listUser.removeFollowing(following);
+                updateUser();
+                return;
+            }
+        }
     }
 }

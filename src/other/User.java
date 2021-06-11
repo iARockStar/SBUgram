@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements Serializable, Comparable {
     private String name;
@@ -18,8 +19,12 @@ public class User implements Serializable, Comparable {
     private String email;
     private CopyOnWriteArrayList<Post> listOfPosts = new CopyOnWriteArrayList<>();
     private byte[] profileImage;
-    private Post postToComment;
+    private Post postToComment = new Post();
     private Comment newComment;
+    private CopyOnWriteArrayList<User> followers = new CopyOnWriteArrayList<>();
+    private AtomicInteger numOfFollowers = new AtomicInteger(0);
+    private AtomicInteger numOfFollowings = new AtomicInteger(0);
+    private CopyOnWriteArrayList<User> followings = new CopyOnWriteArrayList<>();
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
         this.name = name;
@@ -58,6 +63,50 @@ public class User implements Serializable, Comparable {
         this.password = password;
         this.securityQuestion = securityQuestion;
         this.username = username;
+    }
+
+    public void addFollower(User follower){
+        followers.add(follower);
+        numOfFollowers.addAndGet(1);
+    }
+
+    public void addFollowing(User following){
+        followings.add(following);
+        numOfFollowings.addAndGet(1);
+    }
+
+    public void removeFollower(User follower){
+        followers.remove(follower);
+        numOfFollowers.addAndGet(-1);
+    }
+
+    public void removeFollowing(User following){
+        followings.remove(following);
+        numOfFollowings.addAndGet(-1);
+    }
+
+    public CopyOnWriteArrayList<User> getFollowers() {
+        return followers;
+    }
+
+    public CopyOnWriteArrayList<User> getFollowings() {
+        return followings;
+    }
+
+    public AtomicInteger getNumOfFollowers() {
+        return numOfFollowers;
+    }
+
+    public AtomicInteger getNumOfFollowings() {
+        return numOfFollowings;
+    }
+
+    public void setNumOfFollowers(AtomicInteger numOfFollowers) {
+        this.numOfFollowers = numOfFollowers;
+    }
+
+    public void setNumOfFollowings(AtomicInteger numOfFollowings) {
+        this.numOfFollowings = numOfFollowings;
     }
 
     public Comment getNewComment() {

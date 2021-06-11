@@ -105,12 +105,12 @@
          <Font size="14.0" />
       </font>
    </Label>
-   <Label layoutX="48.0" layoutY="217.0" text="0 Followers">
+   <Label fx:id="followerLabel" layoutX="48.0" layoutY="217.0" text="0 Followers">
       <font>
          <Font name="Georgia Bold Italic" size="24.0" />
       </font>
    </Label>
-   <Label layoutX="233.0" layoutY="217.0" text="0 Followings">
+   <Label fx:id="followingLabel" layoutX="225.0" layoutY="217.0" text="0 Followings">
       <font>
          <Font name="Georgia Bold Italic" size="24.0" />
       </font>
@@ -120,12 +120,12 @@
          <Font name="Georgia" size="18.0" />
       </font>
    </JFXButton>
-   <JFXButton buttonType="RAISED" layoutX="330.0" layoutY="267.0" onAction="#mute" style="-fx-background-color: #32dc32;" text="Mute">
+   <JFXButton buttonType="RAISED" layoutX="322.0" layoutY="267.0" onAction="#mute" style="-fx-background-color: #32dc32;" text="Mute">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
    </JFXButton>
-   <JFXCheckBox fx:id="followCheckbox" layoutX="173.0" layoutY="273.0" onAction="#follow" prefHeight="22.0" prefWidth="98.0" style="-fx-background-color: #778899;" text="Follow" textFill="WHITE">
+   <JFXCheckBox fx:id="followCheckbox" layoutX="184.0" layoutY="272.0" onAction="#follow" prefHeight="22.0" prefWidth="98.0" style="-fx-background-color: #778899;" text="Follow" textFill="WHITE">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>

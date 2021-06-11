@@ -37,6 +37,10 @@ public class MyProfileController extends mainPage implements Initializable {
     Label birthDateLabel;
     @FXML
     Circle profilePic;
+    @FXML
+    Label followerLabel;
+    @FXML
+    Label followingLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -74,6 +78,8 @@ public class MyProfileController extends mainPage implements Initializable {
         usernameLabel.setText("@"+username);
         namePlusLastnameLabel.setText(namePlusLastname);
         birthDateLabel.setText("birthDate: "+dateOfBirth);
+        followerLabel.setText(thisUser.getUser().getNumOfFollowers() +" Followers");
+        followingLabel.setText(thisUser.getUser().getNumOfFollowings() +" Followings");
     }
 
     public void loadPosts(User user) throws IOException {

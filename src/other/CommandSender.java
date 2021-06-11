@@ -10,8 +10,10 @@ public class CommandSender implements Serializable {
     private Post postToLike;
     private Post postToComment;
     private User userOfThePost;
+    private User userWhoWantsToPost;;
     private Comment comment;
-    private User userToFollow;
+    private User userToFollowOrUnfollow;
+    private User followerOrUnfollower;
 
 
     public CommandSender(CommandType commandType, Object object) {
@@ -19,10 +21,11 @@ public class CommandSender implements Serializable {
         this.object =object;
     }
 
-    public CommandSender(CommandType commandType, Post postToComment, User userOfThePost, Comment comment) {
+    public CommandSender(CommandType commandType, Post postToComment, User userOfThePost, User userWhoWantsToPost, Comment comment) {
         this.commandType = commandType;
         this.postToComment = postToComment;
         this.userOfThePost = userOfThePost;
+        this.userWhoWantsToPost = userWhoWantsToPost;
         this.comment = comment;
     }
 
@@ -30,6 +33,20 @@ public class CommandSender implements Serializable {
         this.commandType = commandType;
         this.postToLike = postToLike;
         this.userOfThePost = userOfThePost;
+    }
+
+    public CommandSender(CommandType commandType, User userToFollow, User follower) {
+        this.commandType = commandType;
+        this.userToFollowOrUnfollow = userToFollow;
+        this.followerOrUnfollower = follower;
+    }
+
+    public User getFollower() {
+        return followerOrUnfollower;
+    }
+
+    public User getUserWhoWantsToPost() {
+        return userWhoWantsToPost;
     }
 
     public Object getObject() {
@@ -53,7 +70,7 @@ public class CommandSender implements Serializable {
     }
 
     public User getUserToFollow() {
-        return userToFollow;
+        return userToFollowOrUnfollow;
     }
 
     public CommandType getCommandType() {

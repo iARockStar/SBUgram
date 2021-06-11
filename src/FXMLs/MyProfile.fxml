@@ -105,12 +105,12 @@
             <Font size="14.0" />
         </font>
     </Label>
-    <Label layoutX="37.0" layoutY="217.0" text="0 Followers">
+    <Label fx:id="followerLabel" layoutX="37.0" layoutY="217.0" text="0 Followers">
         <font>
             <Font name="Georgia Bold Italic" size="24.0" />
         </font>
     </Label>
-    <Label layoutX="223.0" layoutY="217.0" text="0 Followings">
+    <Label fx:id="followingLabel" layoutX="239.0" layoutY="217.0" text="0 Followings">
         <font>
             <Font name="Georgia Bold Italic" size="24.0" />
         </font>

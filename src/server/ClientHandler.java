@@ -65,14 +65,26 @@ public class ClientHandler extends Thread {
                         System.out.println("client disconnected.");
                         break;
                     case LOADCOMMENTS:
-                        post = (Post) commandSender.getUser();
-                        sendComments(post);
+                        post = (Post) commandSender.getPostToComment();
+                        user = commandSender.getUserOfThePost();
+                        sendComments(user,post);
                         break;
                     case COMMENT:
                         Comment comment = commandSender.getComment();
                         user = commandSender.getUserOfThePost();
+                        User commenter = commandSender.getUserWhoWantsToPost();
                         post = commandSender.getPostToComment();
                         addAndSendComment(user,post,comment);
+                        break;
+                    case FOLLOW:
+                        User follower = commandSender.getUserToFollow();
+                        User following = commandSender.getFollower();
+                        follow(following,follower);
+                        break;
+                    case UNFOLLOW:
+                        follower = commandSender.getUserToFollow();
+                        following = commandSender.getFollower();
+                        unfollow(following,follower);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -88,11 +100,19 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void sendComments(Post post) {
-        CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(post);
+    private void unfollow(User following, User follower) {
+        DataBase.unfollow(following,follower);
+    }
+
+    private void follow(User following, User follower) {
+        DataBase.follow(following,follower);
+    }
+
+    private void sendComments(User user, Post post) {
+        CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(user,post);
         try{
             if(comments != null){
-                objectOutputStream.writeObject(comments);
+                objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
                 objectOutputStream.flush();
             }
         }catch (Exception e){

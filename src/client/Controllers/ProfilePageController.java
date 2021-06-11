@@ -4,6 +4,7 @@ import client.Client;
 import client.Controllers.mainPage;
 import client.PostItem;
 import client.thisUser;
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,17 +42,30 @@ public class ProfilePageController extends mainPage implements Initializable {
     Label namePlusLastnameLabel;
     @FXML
     Label birthDateLabel;
+    @FXML
+    JFXCheckBox followCheckbox;
+    @FXML
+    Label followingLabel;
+    @FXML
+    Label followerLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         User user = thisUser.getSearchedUser();
+        User myUser = thisUser.getUser();
         thisUser.setIsAnotherUser(true);
+        for (User listUser :
+                myUser.getFollowers()) {
+            if (user.getUsername().equals(listUser.getUsername())) {
+                followCheckbox.setSelected(true);
+                break;
+            }
+        }
         try {
             loadPosts(user);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-
 
 
         //show the post array in list view
@@ -68,28 +82,31 @@ public class ProfilePageController extends mainPage implements Initializable {
     private void setProfileDetails() {
         Image image;
         byte[] pic;
-        if(thisUser.isAnotherUser()) {
+        if (thisUser.isAnotherUser()) {
             pic = thisUser.getSearchedUser().getProfileImage();
-        }else{
+        } else {
             pic = thisUser.getUser().getProfileImage();
         }
+        User user = thisUser.getSearchedUser();
         image = new Image(new ByteArrayInputStream(pic));
         profilePic.setFill(new ImagePattern(image));
-        profilePic.setEffect(new DropShadow(+25d, 0d,+2d, Color.DARKGREEN));
+        profilePic.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKGREEN));
         String username = thisUser.getSearchedUser().getUsername();
         String namePlusLastname = thisUser.getSearchedUser().getName()
-                +" "+thisUser.getSearchedUser().getLastName();
+                + " " + thisUser.getSearchedUser().getLastName();
         String dateOfBirth = thisUser.getSearchedUser().getDatePicker();
-        usernameLabel.setText("@"+username);
+        usernameLabel.setText("@" + username);
         namePlusLastnameLabel.setText(namePlusLastname);
-        birthDateLabel.setText("birthDate: "+dateOfBirth);
+        birthDateLabel.setText("birthDate: " + dateOfBirth);
+        followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
+        followingLabel.setText(thisUser.getSearchedUser().getNumOfFollowings() + " Followings");
     }
 
     public void loadPosts(User user) throws IOException {
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
         try {
             posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
-        }catch (Exception e){
+        } catch (Exception e) {
             posts = new CopyOnWriteArrayList<>();
             e.printStackTrace();
         }
@@ -99,6 +116,29 @@ public class ProfilePageController extends mainPage implements Initializable {
     }
 
     public void follow(ActionEvent event) {
+        if (followCheckbox.isSelected()) {
+            try {
+                CommandSender commandSender = new CommandSender(CommandType.FOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
+                thisUser.getSearchedUser().addFollower(thisUser.getUser());
+                thisUser.getUser().addFollowing(thisUser.getSearchedUser());
+                followingLabel.setText(thisUser.getSearchedUser().getNumOfFollowings() + " Followings");
+                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
+                Client.getObjectOutputStream().writeObject(commandSender);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        } else {
+            try {
+                CommandSender commandSender = new CommandSender(CommandType.UNFOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
+                thisUser.getSearchedUser().removeFollower(thisUser.getUser());
+                thisUser.getUser().removeFollowing(thisUser.getSearchedUser());
+                followingLabel.setText(thisUser.getSearchedUser().getNumOfFollowings() + " Followings");
+                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
+                Client.getObjectOutputStream().writeObject(commandSender);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void mute(ActionEvent event) {

@@ -12,6 +12,9 @@ public enum CommandType {
     LOGOUT,
     SEARCHUSER,
     COMMENT,
-    LOADCOMMENTS
+    LOADCOMMENTS,
+    FOLLOW,
+    UNFOLLOW
+
 
 }

@@ -29,14 +29,12 @@ public class CommentPageController extends mainPage implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Post post = thisUser.getUser().getPostToComment();
-        User user = thisUser.getUser();
-        post.setOwner(user);
+        Post post = thisUser.getUser().getPostToComment();;
         loadComments(post);
     }
 
 
-    public void comment(ActionEvent event) {
+    public void comment() {
         Post post = thisUser.getUser().getPostToComment();
         Comment comment = new Comment(thisUser.getUser(),post,commentText.getText());
         addComment(post,comment);
@@ -44,7 +42,7 @@ public class CommentPageController extends mainPage implements Initializable{
 
     private void addComment(Post post,Comment comment) {
         CommandSender commandSender =
-                new CommandSender(CommandType.COMMENT, post,thisUser.getUser(),comment);
+                new CommandSender(CommandType.COMMENT, post, post.getOwner(),thisUser.getUser(),comment);
         try {
             Client.getObjectOutputStream().writeObject(commandSender);
             Client.getObjectOutputStream().flush();
@@ -64,7 +62,7 @@ public class CommentPageController extends mainPage implements Initializable{
     }
 
     private void loadComments(Post post) {
-        CommandSender commandSender = new CommandSender(CommandType.LOADCOMMENTS,post);
+        CommandSender commandSender = new CommandSender(CommandType.LOADCOMMENTS,post,post.getOwner(),thisUser.getUser(),null);
         try{
             Client.getObjectOutputStream().writeObject(commandSender);
             comments = (CopyOnWriteArrayList<Comment>) Client.getObjectInputStream().readObject();

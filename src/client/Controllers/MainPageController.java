@@ -25,15 +25,6 @@ public class MainPageController extends mainPage {
     public void initialize() throws IOException, ClassNotFoundException {
         loadPosts(thisUser.getUser());
 
-        //initialize posts array list to be shown in list view
-//        for (int i = 1; i <= 5; i++) {
-//            Post p = new Post();
-//            p.setTitle("post" + i);
-//            p.setDescription("description" + i);
-//            p.setWriter("user" + i);
-//            posts.add(p);
-//        }
-
         //show the post array in list view
         postList.setItems(FXCollections.observableArrayList(posts));
 
