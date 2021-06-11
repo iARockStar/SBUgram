@@ -69,8 +69,10 @@ public class ClientHandler extends Thread {
                         sendComments(post);
                         break;
                     case COMMENT:
-                        Comment comment = (Comment) commandSender.getUser();
-                        addAndSendComment(comment);
+                        Comment comment = commandSender.getComment();
+                        user = commandSender.getUserOfThePost();
+                        post = commandSender.getPostToComment();
+                        addAndSendComment(user,post,comment);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -88,13 +90,21 @@ public class ClientHandler extends Thread {
 
     private void sendComments(Post post) {
         CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(post);
+        try{
+            if(comments != null){
+                objectOutputStream.writeObject(comments);
+                objectOutputStream.flush();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    private void addAndSendComment(Comment comment) {
-        List<Comment> comments = DataBase.addAndSendComments(comment);
+    private void addAndSendComment(User user,Post post,Comment comment) {
+        List<Comment> comments = DataBase.addAndSendComments(user,post,comment);
         if(comments != null){
             try{
-                objectOutputStream.writeObject(comments);
+                objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -152,7 +162,8 @@ public class ClientHandler extends Thread {
     }
 
     public synchronized void signup(User user) throws IOException, ClassNotFoundException {
-        DataBase.signupUpdate(user);
+        DataBase.
+                signupUpdate(user);
     }
 
     public synchronized void updatePost(Post post, User user) {

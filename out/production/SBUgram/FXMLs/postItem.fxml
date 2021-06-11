@@ -8,9 +8,9 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="575.0" prefWidth="444.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" prefWidth="444.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="575.0" prefWidth="402.0">
+      <VBox alignment="TOP_CENTER"  prefWidth="402.0">
          <children>
             <Label fx:id="date" alignment="CENTER" prefHeight="18.0" prefWidth="437.0" text="Published on:">
                <font>
@@ -38,7 +38,7 @@
                   <Font name="Georgia Bold Italic" size="18.0" />
                </font>
             </Text>
-            <Label fx:id="descriptionLabel" prefHeight="63.0" prefWidth="421.0" text="dsdfsdfsdfsdfsdfsdfsdfsdfsdfsdsdfsdfskjvbsblefbafcbiasnbfquifajkv njksb ewhfbd vlkdsbvhylAEbfuvbfhyevbfl&gt;Uebfyhujbvhjvbfuevf" wrapText="true">
+            <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefWidth="422.0" text="dfhdghgfh&#10;dgdhdghfgh&#10;fghfhfghfgh&#10;dhfghfghfghfghfgh&#10;fdhdhgfhfghfghfghfghfgh&#10;hfghfghfghfghfghfgh">
                <font>
                   <Font name="Georgia Italic" size="18.0" />
                </font>

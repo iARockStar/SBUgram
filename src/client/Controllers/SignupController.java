@@ -166,7 +166,7 @@ public class SignupController implements Initializable {
 
     private User getUser(String name, String lastName, String username, String phoneNumber, String password, String fakePass, String email, SecurityQuestion securityQuestion, byte[] userImage, String FormattedDate) {
         User newUser;
-        if (password.length() != 0)
+        if (password.length() != 0 && password.length() >= fakePass.length())
             if (this.userImage != null)
                 newUser = new User(name, lastName, username
                         , password, phoneNumber
@@ -227,7 +227,6 @@ public class SignupController implements Initializable {
             re_writePassField.setText(fakeReWritePass.getText());
         }
     }
-
 
 
     @FXML

@@ -1,7 +1,10 @@
 package server;
 
+import javafx.geometry.Pos;
 import other.User;
+
 import java.io.*;
+
 import other.*;
 
 import java.util.Collections;
@@ -92,8 +95,8 @@ public class DataBase {
     }
 
     private synchronized static void sortPosts() {
-        for (User user:
-             listOfUsers) {
+        for (User user :
+                listOfUsers) {
             Collections.sort(user.getListOfPosts());
         }
     }
@@ -131,11 +134,11 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
-                if(user.getSecurityQuestion().equals(listUser.getSecurityQuestion())) {
+                if (user.getSecurityQuestion().equals(listUser.getSecurityQuestion())) {
                     listUser.setPassword(user.getPassword());
                     updateUser();
                     return true;
-                }else return false;
+                } else return false;
             }
         }
         return false;
@@ -144,19 +147,18 @@ public class DataBase {
     public synchronized static User search(String username) {
         for (User listUser :
                 listOfUsers) {
-            if(listUser.getUsername().equalsIgnoreCase(username))
+            if (listUser.getUsername().equalsIgnoreCase(username))
                 return listUser;
         }
         return null;
     }
 
-    public synchronized static CopyOnWriteArrayList<Comment> addAndSendComments(Comment comment) {
-        User user = comment.getOwner();
-        Post post = comment.getPost();
-        for (User listUser:
-             listOfUsers) {
-            if(user.getUsername().equals(listUser.getUsername())) {
-                listUser.setPostToComment(post);
+    public synchronized static CopyOnWriteArrayList<Comment> addAndSendComments(User user, Post post, Comment comment) {
+        for (User listUser :
+                listOfUsers) {
+            if (user.getUsername().equals(listUser.getUsername())) {
+                if (listUser.getPostToComment() == null)
+                    listUser.setPostToComment(post);
                 listUser.getPostToComment().getComments().add(comment);
                 updateUser();
                 return listUser.getPostToComment().getComments();
@@ -167,9 +169,9 @@ public class DataBase {
 
     public static CopyOnWriteArrayList<Comment> sendComments(Post post) {
         User user = post.getOwner();
-        for (User listUser:
+        for (User listUser :
                 listOfUsers) {
-            if(user.equals(listUser)) {
+            if (user.getUsername().equals(listUser.getUsername())) {
                 return listUser.getPostToComment().getComments();
             }
         }

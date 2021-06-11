@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import other.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -23,6 +24,7 @@ public class CommentPageController extends mainPage implements Initializable{
     private ListView<Comment> commentListView;
     @FXML
     private JFXTextArea commentText;
+    CopyOnWriteArrayList<Comment> comments;
 
 
     @Override
@@ -33,17 +35,16 @@ public class CommentPageController extends mainPage implements Initializable{
         loadComments(post);
     }
 
-    CopyOnWriteArrayList<Comment> comments;
+
     public void comment(ActionEvent event) {
         Post post = thisUser.getUser().getPostToComment();
         Comment comment = new Comment(thisUser.getUser(),post,commentText.getText());
-
-        addComment(comment);
+        addComment(post,comment);
     }
 
-    private void addComment(Comment comment) {
+    private void addComment(Post post,Comment comment) {
         CommandSender commandSender =
-                new CommandSender(CommandType.COMMENT, comment);
+                new CommandSender(CommandType.COMMENT, post,thisUser.getUser(),comment);
         try {
             Client.getObjectOutputStream().writeObject(commandSender);
             Client.getObjectOutputStream().flush();
@@ -63,7 +64,15 @@ public class CommentPageController extends mainPage implements Initializable{
     }
 
     private void loadComments(Post post) {
-        comments = thisUser.getUser().getPostToComment().getComments();
+        CommandSender commandSender = new CommandSender(CommandType.LOADCOMMENTS,post);
+        try{
+            Client.getObjectOutputStream().writeObject(commandSender);
+            comments = (CopyOnWriteArrayList<Comment>) Client.getObjectInputStream().readObject();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //show the post array in list view
         commentListView.setItems(FXCollections.observableArrayList(comments));
