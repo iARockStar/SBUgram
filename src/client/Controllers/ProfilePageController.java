@@ -55,7 +55,7 @@ public class ProfilePageController extends mainPage implements Initializable {
         User myUser = thisUser.getUser();
         thisUser.setIsAnotherUser(true);
         for (User listUser :
-                myUser.getFollowers()) {
+                myUser.getFollowings()) {
             if (user.getUsername().equals(listUser.getUsername())) {
                 followCheckbox.setSelected(true);
                 break;

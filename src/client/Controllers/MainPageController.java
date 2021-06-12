@@ -33,7 +33,8 @@ public class MainPageController extends mainPage {
     }
 
     public void loadPosts(User user) throws IOException {
-        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
+        thisUser.setIsAnotherUser(true);
+        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADFOLLOWINGPOSTS, user));
         try {
             posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
         }catch (Exception e){

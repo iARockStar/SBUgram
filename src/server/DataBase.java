@@ -191,7 +191,6 @@ public class DataBase {
                 listOfUsers) {
             if (follower.getUsername().equals(listUser.getUsername())) {
                 AtomicInteger x = listUser.getNumOfFollowings();
-
                 listUser.addFollowing(following);
                 updateUser();
                 return;
@@ -211,6 +210,38 @@ public class DataBase {
                 listOfUsers) {
             if (follower.getUsername().equals(listUser.getUsername())) {
                 listUser.removeFollowing(following);
+                updateUser();
+                return;
+            }
+        }
+    }
+
+    public static CopyOnWriteArrayList<Post> loadFollowingPosts(User user) {
+        CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
+        for (User listUser: listOfUsers) {
+            if(user.getFollowings().contains(listUser))
+                posts.addAll(listUser.getListOfPosts());
+        }
+        Collections.sort(posts);
+        return posts;
+    }
+
+    public synchronized static void like(User user, Post post) {
+        for (User listUser: listOfUsers) {
+            if(post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
+                post.getNumOfLikes().addAndGet(1);
+                listUser.addLikedPost(post);
+                updateUser();
+                return;
+            }
+        }
+    }
+
+    public synchronized static void dislike(User user, Post post) {
+        for (User listUser: listOfUsers) {
+            if(post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
+                post.getNumOfLikes().addAndGet(-1);
+                listUser.removeLikedPost(post);
                 updateUser();
                 return;
             }

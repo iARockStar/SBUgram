@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="root" prefWidth="444.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="TOP_CENTER"  prefWidth="402.0">
+      <VBox alignment="TOP_CENTER" prefWidth="402.0">
          <children>
             <Label fx:id="date" alignment="CENTER" prefHeight="18.0" prefWidth="437.0" text="Published on:">
                <font>
@@ -50,7 +50,7 @@
                         <Image url="@../images/retweet_500px.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="commentButton" fitHeight="47.0" fitWidth="47.0" layoutX="71.0" layoutY="7.0" onMouseClicked="#comment" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="commentButton" fitHeight="47.0" fitWidth="47.0" layoutX="120.0" layoutY="8.0" onMouseClicked="#comment" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/speech_bubble_500px.png" />
                      </image>
@@ -62,7 +62,7 @@
                         </DropShadow>
                      </effect>
                   </ImageView>
-                  <ImageView fx:id="likeButton" fitHeight="47.0" fitWidth="48.0" layoutX="14.0" layoutY="7.0" onMouseClicked="#like" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="likeButton" fitHeight="47.0" fitWidth="48.0" layoutX="66.0" layoutY="8.0" onMouseClicked="#like" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/heart_512px.png" />
                      </image>
@@ -74,6 +74,16 @@
                         </DropShadow>
                      </effect>
                   </ImageView>
+                  <Label fx:id="likeLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="10.0" prefHeight="47.0" prefWidth="69.0" text="  0&#10;likes">
+                     <font>
+                        <Font name="Georgia Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="repostLabel" alignment="CENTER" layoutX="288.0" layoutY="12.0" text="     0&#10;Reposts">
+                     <font>
+                        <Font name="Georgia Bold" size="18.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children></VBox>

@@ -14,6 +14,7 @@ public class CommandSender implements Serializable {
     private Comment comment;
     private User userToFollowOrUnfollow;
     private User followerOrUnfollower;
+    private User userWhoLiked;
 
 
     public CommandSender(CommandType commandType, Object object) {
@@ -29,10 +30,10 @@ public class CommandSender implements Serializable {
         this.comment = comment;
     }
 
-    public CommandSender(CommandType commandType, Post postToLike, User userOfThePost) {
+    public CommandSender(CommandType commandType, Post postToLike,User userWhoLiked) {
         this.commandType = commandType;
         this.postToLike = postToLike;
-        this.userOfThePost = userOfThePost;
+        this.userWhoLiked = userWhoLiked;
     }
 
     public CommandSender(CommandType commandType, User userToFollow, User follower) {
@@ -79,5 +80,13 @@ public class CommandSender implements Serializable {
 
     public Object getUser() {
         return object;
+    }
+
+    public User getUserWhoLiked() {
+        return userWhoLiked;
+    }
+
+    public void setUserWhoLiked(User userWhoLiked) {
+        this.userWhoLiked = userWhoLiked;
     }
 }

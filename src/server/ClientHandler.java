@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javafx.geometry.Pos;
 import other.*;
 
 public class ClientHandler extends Thread {
@@ -29,7 +30,7 @@ public class ClientHandler extends Thread {
                         User user = (User) commandSender.getUser();
                         String username = user.getUsername();
                         String password = user.getPassword();
-                        login(username,password);
+                        login(username, password);
                         break;
                     case SIGNUP:
                         user = (User) commandSender.getUser();
@@ -67,24 +68,38 @@ public class ClientHandler extends Thread {
                     case LOADCOMMENTS:
                         post = (Post) commandSender.getPostToComment();
                         user = commandSender.getUserOfThePost();
-                        sendComments(user,post);
+                        sendComments(user, post);
                         break;
                     case COMMENT:
                         Comment comment = commandSender.getComment();
                         user = commandSender.getUserOfThePost();
                         User commenter = commandSender.getUserWhoWantsToPost();
                         post = commandSender.getPostToComment();
-                        addAndSendComment(user,post,comment);
+                        addAndSendComment(user, post, comment);
                         break;
                     case FOLLOW:
                         User follower = commandSender.getUserToFollow();
                         User following = commandSender.getFollower();
-                        follow(following,follower);
+                        follow(following, follower);
                         break;
                     case UNFOLLOW:
                         follower = commandSender.getUserToFollow();
                         following = commandSender.getFollower();
-                        unfollow(following,follower);
+                        unfollow(following, follower);
+                        break;
+                    case LOADFOLLOWINGPOSTS:
+                        user = (User) commandSender.getUser();
+                        loadFollowingsPosts(user);
+                        break;
+                    case LIKE:
+                        post = commandSender.getPostToLike();
+                        user = commandSender.getUserWhoLiked();
+                        like( user,post);
+                        break;
+                    case DISLIKE:
+                        post = commandSender.getPostToLike();
+                        user = commandSender.getUserWhoLiked();
+                        dislike( user,post);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -100,35 +115,52 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void unfollow(User following, User follower) {
-        DataBase.unfollow(following,follower);
+    private void dislike(User user, Post post) {
+        DataBase.dislike(user,post);
     }
 
-    private void follow(User following, User follower) {
-        DataBase.follow(following,follower);
+    private void like(User user, Post post) {
+        DataBase.like(user,post);
     }
 
-    private void sendComments(User user, Post post) {
-        CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(user,post);
-        try{
-            if(comments != null){
-                objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
-                objectOutputStream.flush();
-            }
-        }catch (Exception e){
+    private void loadFollowingsPosts(User user) {
+        CopyOnWriteArrayList<Post> posts = DataBase.loadFollowingPosts(user);
+        try {
+            objectOutputStream.writeObject(posts);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void addAndSendComment(User user,Post post,Comment comment) {
-        List<Comment> comments = DataBase.addAndSendComments(user,post,comment);
-        if(comments != null){
-            try{
+    private void unfollow(User following, User follower) {
+        DataBase.unfollow(following, follower);
+    }
+
+    private void follow(User following, User follower) {
+        DataBase.follow(following, follower);
+    }
+
+    private void sendComments(User user, Post post) {
+        CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(user, post);
+        try {
+            if (comments != null) {
                 objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
-            }catch (Exception e){
+                objectOutputStream.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addAndSendComment(User user, Post post, Comment comment) {
+        List<Comment> comments = DataBase.addAndSendComments(user, post, comment);
+        if (comments != null) {
+            try {
+                objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             try {
                 objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
             } catch (IOException ioException) {
@@ -139,16 +171,16 @@ public class ClientHandler extends Thread {
 
     private void search(String username) {
         User user = DataBase.search(username);
-        if(user != null){
-            try{
+        if (user != null) {
+            try {
                 objectOutputStream.writeObject(user);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
-            try{
+        } else {
+            try {
                 objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -178,7 +210,7 @@ public class ClientHandler extends Thread {
 
 
     private synchronized void login(String username, String password) throws IOException, ClassNotFoundException {
-        DataBase.login(objectOutputStream,username,password);
+        DataBase.login(objectOutputStream, username, password);
     }
 
     public synchronized void signup(User user) throws IOException, ClassNotFoundException {

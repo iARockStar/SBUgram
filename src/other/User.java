@@ -25,6 +25,7 @@ public class User implements Serializable, Comparable {
     private AtomicInteger numOfFollowers = new AtomicInteger(0);
     private AtomicInteger numOfFollowings = new AtomicInteger(0);
     private CopyOnWriteArrayList<User> followings = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Post> postsLiked = new CopyOnWriteArrayList<>();
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
         this.name = name;
@@ -79,6 +80,15 @@ public class User implements Serializable, Comparable {
         followers.remove(follower);
         numOfFollowers.addAndGet(-1);
     }
+
+    public void addLikedPost(Post post){
+        postsLiked.add(post);
+    }
+
+    public void removeLikedPost(Post post){
+        postsLiked.remove(post);
+    }
+
 
     public void removeFollowing(User following){
         followings.remove(following);
@@ -227,5 +237,13 @@ public class User implements Serializable, Comparable {
     @Override
     public int compareTo(Object o) {
         return 0;
+    }
+
+    public CopyOnWriteArrayList<Post> getPostsLiked() {
+        return postsLiked;
+    }
+
+    public void setPostsLiked(CopyOnWriteArrayList<Post> postsLiked) {
+        this.postsLiked = postsLiked;
     }
 }

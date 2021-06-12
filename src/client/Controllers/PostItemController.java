@@ -1,5 +1,6 @@
 package client.Controllers;
 
+import client.Client;
 import client.Main;
 import client.thisUser;
 import javafx.scene.control.Label;
@@ -20,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import other.*;
 import client.PageLoader;
@@ -39,6 +41,8 @@ public class PostItemController implements ItemController {
     public Label descriptionLabel;
     public ImageView likeButton;
     public boolean isLiked = false;
+    public Label likeLabel;
+    public Label repostLabel;
 
     //each list item will have its exclusive controller in runtime so we set the controller as we load the fxml
     public PostItemController(Post post) throws IOException {
@@ -51,11 +55,19 @@ public class PostItemController implements ItemController {
     public AnchorPane init() {
         username.setText("@"+post.getWriter());
         title.setText(post.getTitle());
+        for (Post listPost:
+             thisUser.getUser().getPostsLiked()) {
+            if(listPost.getOwner().getUsername().equalsIgnoreCase(post.getOwner().getUsername())) {
+                isLiked = true;
+                likeButton.setImage(new Image("/images/heart_512px.png"));
+            }
+        }
 //        description.setText(post.getDescription());
 
         descriptionLabel.setText(post.getDescription());
         Image image;
         byte[] pic;
+        thisUser.setSearchedUser(post.getOwner());
         if(thisUser.isAnotherUser()) {
             pic = thisUser.getSearchedUser().getProfileImage();
         }else{
@@ -73,6 +85,8 @@ public class PostItemController implements ItemController {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dateAsString = dateFormat.format(dateTime);
         date.setText("Published on: "+dateAsString);
+        likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
+//        likeLabel.setText("   "+"0"+"\n"+"Reposts");
 
         //set another image dynamically
         if (post.getWriter().equals("s"))
@@ -85,9 +99,26 @@ public class PostItemController implements ItemController {
         if(!isLiked) {
             likeButton.setImage(new Image("/images/heart_outline_480px.png"));
             isLiked = true;
+            post.getNumOfLikes().addAndGet(1);
+            try {
+                Client.getObjectOutputStream().writeObject(
+                        new CommandSender(CommandType.LIKE, post,thisUser.getUser()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
+            thisUser.getUser().addLikedPost(post);
         }else{
             likeButton.setImage(new Image("/images/heart_512px.png"));
             isLiked = false;
+            post.getNumOfLikes().addAndGet(-1);
+            try {
+                Client.getObjectOutputStream().writeObject(
+                        new CommandSender(CommandType.DISLIKE, post,thisUser.getUser()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
         }
 
     }

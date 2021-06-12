@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Post implements Serializable,Comparable {
 
@@ -18,6 +19,7 @@ public class Post implements Serializable,Comparable {
     private byte[] postPic;
     private Date dateTime;
     private CopyOnWriteArrayList<Comment> comments = new CopyOnWriteArrayList<>();
+    private AtomicInteger numOfLikes = new AtomicInteger(0);
 
     public Post(String writer, String title, String description,Date date, byte[] profilePic, byte[] postPic) {
         this.writer = writer;
@@ -129,5 +131,13 @@ public class Post implements Serializable,Comparable {
     @Override
     public int compareTo(Object o) {
         return ((Post)o).getDateTime().compareTo(this.getDateTime());
+    }
+
+    public AtomicInteger getNumOfLikes() {
+        return numOfLikes;
+    }
+
+    public void setNumOfLikes(AtomicInteger numOfLikes) {
+        this.numOfLikes = numOfLikes;
     }
 }

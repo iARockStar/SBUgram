@@ -6,6 +6,8 @@ public enum CommandType {
     LOGIN,
     SIGNUP,
     NEWPOST,
+    LIKE,
+    DISLIKE,
     LOADAPOST,
     RETRIEVEPASS,
     RETRIEVEPASS2NDPART,
@@ -14,7 +16,6 @@ public enum CommandType {
     COMMENT,
     LOADCOMMENTS,
     FOLLOW,
-    UNFOLLOW
-
-
+    UNFOLLOW,
+    LOADFOLLOWINGPOSTS
 }
