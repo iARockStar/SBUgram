@@ -51,6 +51,7 @@ public class ProfilePageController extends mainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateUser();
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
         thisUser.setIsAnotherUser(true);
@@ -79,7 +80,20 @@ public class ProfilePageController extends mainPage implements Initializable {
 
     }
 
+    private void updateUser() {
+        try {
+            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
+            User user = (User) Client.getObjectInputStream().readObject();
+            thisUser.setUser(user);
+        }catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setProfileDetails() {
+        updateUser();
         Image image;
         byte[] pic;
         if (thisUser.isAnotherUser()) {
@@ -121,9 +135,9 @@ public class ProfilePageController extends mainPage implements Initializable {
                 CommandSender commandSender = new CommandSender(CommandType.FOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
                 thisUser.getSearchedUser().addFollower(thisUser.getUser());
                 thisUser.getUser().addFollowing(thisUser.getSearchedUser());
-                followingLabel.setText(thisUser.getSearchedUser().getNumOfFollowings() + " Followings");
-                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
+//                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
                 Client.getObjectOutputStream().writeObject(commandSender);
+                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -132,9 +146,9 @@ public class ProfilePageController extends mainPage implements Initializable {
                 CommandSender commandSender = new CommandSender(CommandType.UNFOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
                 thisUser.getSearchedUser().removeFollower(thisUser.getUser());
                 thisUser.getUser().removeFollowing(thisUser.getSearchedUser());
-                followingLabel.setText(thisUser.getSearchedUser().getNumOfFollowings() + " Followings");
-                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
+//                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
                 Client.getObjectOutputStream().writeObject(commandSender);
+                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
             } catch (Exception e) {
                 e.printStackTrace();
             }

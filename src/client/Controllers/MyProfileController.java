@@ -44,6 +44,7 @@ public class MyProfileController extends mainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateUser();
         User user = thisUser.getUser();
         thisUser.setIsAnotherUser(false);
         try {
@@ -61,6 +62,7 @@ public class MyProfileController extends mainPage implements Initializable {
     }
 
     private void setProfileDetails() {
+        updateUser();
         Image image;
         byte[] pic;
         if(thisUser.isAnotherUser()) {
@@ -81,6 +83,19 @@ public class MyProfileController extends mainPage implements Initializable {
         followerLabel.setText(thisUser.getUser().getNumOfFollowers() +" Followers");
         followingLabel.setText(thisUser.getUser().getNumOfFollowings() +" Followings");
     }
+
+    private void updateUser() {
+        try {
+            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
+            User user = (User) Client.getObjectInputStream().readObject();
+            thisUser.setUser(user);
+        }catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void loadPosts(User user) throws IOException {
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));

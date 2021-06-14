@@ -218,8 +218,16 @@ public class DataBase {
 
     public static CopyOnWriteArrayList<Post> loadFollowingPosts(User user) {
         CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
-        for (User listUser: listOfUsers) {
-            if(user.getFollowings().contains(listUser))
+        User user2 = null;
+        for (User listUser:
+             listOfUsers) {
+            if(user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
+                user2 = listUser;
+                break;
+            }
+        }
+        for (User listUser : listOfUsers) {
+            if (user2.getFollowings().contains(listUser))
                 posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
@@ -227,8 +235,8 @@ public class DataBase {
     }
 
     public synchronized static void like(User user, Post post) {
-        for (User listUser: listOfUsers) {
-            if(post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
+        for (User listUser : listOfUsers) {
+            if (post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
                 listUser.addLikedPost(post);
                 updateUser();
@@ -238,13 +246,22 @@ public class DataBase {
     }
 
     public synchronized static void dislike(User user, Post post) {
-        for (User listUser: listOfUsers) {
-            if(post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
+        for (User listUser : listOfUsers) {
+            if (post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
                 listUser.removeLikedPost(post);
                 updateUser();
                 return;
             }
         }
+    }
+
+    public static User updateUser(String username) {
+        for (User user :
+                listOfUsers) {
+            if (user.getUsername().equalsIgnoreCase(username))
+                return user;
+        }
+        return null;
     }
 }

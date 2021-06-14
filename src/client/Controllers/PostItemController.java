@@ -50,20 +50,18 @@ public class PostItemController implements ItemController {
         this.post = post;
     }
 
-    //this anchor pane is returned to be set as the list view item
     @Override
     public AnchorPane init() {
+        updateUser();
         username.setText("@"+post.getWriter());
         title.setText(post.getTitle());
         for (Post listPost:
              thisUser.getUser().getPostsLiked()) {
             if(listPost.getOwner().getUsername().equalsIgnoreCase(post.getOwner().getUsername())) {
                 isLiked = true;
-                likeButton.setImage(new Image("/images/heart_512px.png"));
+                likeButton.setImage(new Image("/images/heart_outline_480px.png"));
             }
         }
-//        description.setText(post.getDescription());
-
         descriptionLabel.setText(post.getDescription());
         Image image;
         byte[] pic;
@@ -86,13 +84,21 @@ public class PostItemController implements ItemController {
         String dateAsString = dateFormat.format(dateTime);
         date.setText("Published on: "+dateAsString);
         likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
-//        likeLabel.setText("   "+"0"+"\n"+"Reposts");
-
-        //set another image dynamically
-        if (post.getWriter().equals("s"))
-            profileImage.setImage(new Image(Paths.get("images/ali_alavi.jpg").toUri().toString()));
         return root;
     }
+
+    private void updateUser() {
+        try {
+            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
+            User user = (User) Client.getObjectInputStream().readObject();
+            thisUser.setUser(user);
+        }catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public void like(MouseEvent mouseEvent) {

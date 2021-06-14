@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class User implements Serializable, Comparable {
+public class User implements Serializable {
     private String name;
     private String lastName;
     private String username;
@@ -229,15 +229,9 @@ public class User implements Serializable, Comparable {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, lastName, username, password, phoneNumber, securityQuestion, datePicker, email, listOfPosts, postToComment);
-        result = 31 * result + Arrays.hashCode(profileImage);
-        return result;
+        return Objects.hash(username);
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
 
     public CopyOnWriteArrayList<Post> getPostsLiked() {
         return postsLiked;

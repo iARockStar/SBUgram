@@ -23,6 +23,7 @@ public class MainPageController extends mainPage {
 
     @FXML
     public void initialize() throws IOException, ClassNotFoundException {
+        updateUser();
         loadPosts(thisUser.getUser());
 
         //show the post array in list view
@@ -34,7 +35,8 @@ public class MainPageController extends mainPage {
 
     public void loadPosts(User user) throws IOException {
         thisUser.setIsAnotherUser(true);
-        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADFOLLOWINGPOSTS, user));
+        Client.getObjectOutputStream().writeObject(
+                new CommandSender(CommandType.LOADFOLLOWINGPOSTS, user));
         try {
             posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
         }catch (Exception e){
@@ -42,6 +44,19 @@ public class MainPageController extends mainPage {
             e.printStackTrace();
         }
     }
+
+    private void updateUser() {
+        try {
+            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
+            User user = (User) Client.getObjectInputStream().readObject();
+            thisUser.setUser(user);
+        }catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 

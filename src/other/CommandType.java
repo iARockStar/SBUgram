@@ -3,6 +3,7 @@ package other;
 
 
 public enum CommandType {
+    UPDATEUSER,
     LOGIN,
     SIGNUP,
     NEWPOST,

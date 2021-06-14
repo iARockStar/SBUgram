@@ -26,9 +26,13 @@ public class ClientHandler extends Thread {
                 CommandSender commandSender = (CommandSender) objectInputStream.readObject();
                 CommandType commandType = commandSender.getCommandType();
                 switch (commandType) {
+                    case UPDATEUSER:
+                        String username = ((User) commandSender.getUser()).getUsername();
+                        updateUser(username);
+                        break;
                     case LOGIN:
                         User user = (User) commandSender.getUser();
-                        String username = user.getUsername();
+                         username = user.getUsername();
                         String password = user.getPassword();
                         login(username, password);
                         break;
@@ -115,6 +119,15 @@ public class ClientHandler extends Thread {
         }
     }
 
+    private void updateUser(String username) {
+        User user = DataBase.updateUser(username);
+        try{
+            objectOutputStream.writeObject(user);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     private void dislike(User user, Post post) {
         DataBase.dislike(user,post);
     }
@@ -126,7 +139,7 @@ public class ClientHandler extends Thread {
     private void loadFollowingsPosts(User user) {
         CopyOnWriteArrayList<Post> posts = DataBase.loadFollowingPosts(user);
         try {
-            objectOutputStream.writeObject(posts);
+            objectOutputStream.writeObject(new CopyOnWriteArrayList<>(posts));
         } catch (IOException e) {
             e.printStackTrace();
         }
