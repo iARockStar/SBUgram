@@ -28,7 +28,6 @@ public class thisUser {
     }
 
     public static void setSearchedUser(User searchedUser) {
-
         thisUser.searchedUser = searchedUser;
     }
 }

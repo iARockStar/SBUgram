@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfilePageController extends mainPage implements Initializable {
 
@@ -51,7 +52,7 @@ public class ProfilePageController extends mainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        updateUser();
+//        updateUser();
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
         thisUser.setIsAnotherUser(true);
@@ -93,7 +94,7 @@ public class ProfilePageController extends mainPage implements Initializable {
     }
 
     private void setProfileDetails() {
-        updateUser();
+//        updateUser();
         Image image;
         byte[] pic;
         if (thisUser.isAnotherUser()) {
@@ -137,9 +138,10 @@ public class ProfilePageController extends mainPage implements Initializable {
                 thisUser.getUser().addFollowing(thisUser.getSearchedUser());
 //                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
                 Client.getObjectOutputStream().writeObject(commandSender);
-                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+                AtomicInteger atomicInteger = (AtomicInteger) Client.getObjectInputStream().readObject();
+                followerLabel.setText(atomicInteger + " Followers");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             try {
@@ -148,7 +150,8 @@ public class ProfilePageController extends mainPage implements Initializable {
                 thisUser.getUser().removeFollowing(thisUser.getSearchedUser());
 //                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
                 Client.getObjectOutputStream().writeObject(commandSender);
-                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
+                AtomicInteger atomicInteger = (AtomicInteger) Client.getObjectInputStream().readObject();
+                followerLabel.setText(atomicInteger + " Followers");
             } catch (Exception e) {
                 e.printStackTrace();
             }

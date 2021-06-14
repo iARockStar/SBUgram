@@ -1,6 +1,5 @@
 package server;
 
-import javafx.geometry.Pos;
 import other.User;
 
 import java.io.*;
@@ -178,31 +177,34 @@ public class DataBase {
         return null;
     }
 
-    public synchronized static void follow(User following, User follower) {
+    public synchronized static AtomicInteger follow(User following, User follower) {
+        AtomicInteger atomicInteger = new AtomicInteger(0);
         for (User listUser :
                 listOfUsers) {
             if (following.getUsername().equals(listUser.getUsername())) {
-                AtomicInteger x = listUser.getNumOfFollowers();
                 listUser.addFollower(follower);
+                atomicInteger = listUser.getNumOfFollowers();
                 break;
             }
         }
         for (User listUser :
                 listOfUsers) {
             if (follower.getUsername().equals(listUser.getUsername())) {
-                AtomicInteger x = listUser.getNumOfFollowings();
                 listUser.addFollowing(following);
                 updateUser();
-                return;
+                return atomicInteger;
             }
         }
+        return new AtomicInteger(0);
     }
 
-    public synchronized static void unfollow(User following, User follower) {
+    public synchronized static AtomicInteger unfollow(User following, User follower) {
+        AtomicInteger atomicInteger = new AtomicInteger(0);
         for (User listUser :
                 listOfUsers) {
             if (following.getUsername().equals(listUser.getUsername())) {
                 listUser.removeFollower(follower);
+                atomicInteger = listUser.getNumOfFollowers();
                 break;
             }
         }
@@ -211,17 +213,18 @@ public class DataBase {
             if (follower.getUsername().equals(listUser.getUsername())) {
                 listUser.removeFollowing(following);
                 updateUser();
-                return;
+                return atomicInteger;
             }
         }
+        return atomicInteger;
     }
 
     public static CopyOnWriteArrayList<Post> loadFollowingPosts(User user) {
         CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
         User user2 = null;
-        for (User listUser:
-             listOfUsers) {
-            if(user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
+        for (User listUser :
+                listOfUsers) {
+            if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 user2 = listUser;
                 break;
             }

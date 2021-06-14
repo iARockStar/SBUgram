@@ -62,7 +62,6 @@ public class MyProfileController extends mainPage implements Initializable {
     }
 
     private void setProfileDetails() {
-        updateUser();
         Image image;
         byte[] pic;
         if(thisUser.isAnotherUser()) {
@@ -87,8 +86,8 @@ public class MyProfileController extends mainPage implements Initializable {
     private void updateUser() {
         try {
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-            User user = (User) Client.getObjectInputStream().readObject();
-            thisUser.setUser(user);
+            Object object =  Client.getObjectInputStream().readObject();
+            thisUser.setUser((User) object);
         }catch (IOException e){
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

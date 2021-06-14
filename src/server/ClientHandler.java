@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.geometry.Pos;
 import other.*;
@@ -32,7 +33,7 @@ public class ClientHandler extends Thread {
                         break;
                     case LOGIN:
                         User user = (User) commandSender.getUser();
-                         username = user.getUsername();
+                        username = user.getUsername();
                         String password = user.getPassword();
                         login(username, password);
                         break;
@@ -146,11 +147,23 @@ public class ClientHandler extends Thread {
     }
 
     private void unfollow(User following, User follower) {
-        DataBase.unfollow(following, follower);
+
+        AtomicInteger atomicInteger = DataBase.unfollow(following, follower);
+        try{
+            objectOutputStream.writeObject(new AtomicInteger(atomicInteger.intValue()));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void follow(User following, User follower) {
-        DataBase.follow(following, follower);
+
+        AtomicInteger atomicInteger = DataBase.follow(following, follower);
+        try{
+            objectOutputStream.writeObject(new AtomicInteger(atomicInteger.intValue()));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void sendComments(User user, Post post) {

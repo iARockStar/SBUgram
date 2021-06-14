@@ -23,7 +23,6 @@ public class MainPageController extends mainPage {
 
     @FXML
     public void initialize() throws IOException, ClassNotFoundException {
-        updateUser();
         loadPosts(thisUser.getUser());
 
         //show the post array in list view
@@ -44,20 +43,6 @@ public class MainPageController extends mainPage {
             e.printStackTrace();
         }
     }
-
-    private void updateUser() {
-        try {
-            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-            User user = (User) Client.getObjectInputStream().readObject();
-            thisUser.setUser(user);
-        }catch (IOException e){
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 
 
     public void post(JFXTextField title, JFXTextArea description,ActionEvent event) throws IOException {
