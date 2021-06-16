@@ -85,7 +85,7 @@ public class DataBase {
     private synchronized static void updateUser() {
         sortPosts();
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\USER\\IdeaProjects\\signUp.bin");
+            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\USER\\IdeaProjects\\signUp.bin",false);
             ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream);
             objectOutputStream1.writeObject(listOfUsers);
             objectOutputStream1.flush();
@@ -103,7 +103,7 @@ public class DataBase {
 
     public synchronized static void updatePost(Post post, User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
-            if (user.equals(listOfUsers.get(i))) {
+            if (user.getUsername().equals(listOfUsers.get(i).getUsername())) {
                 listOfUsers.get(i).addPost(post);
                 updateUser();
             }
@@ -239,22 +239,42 @@ public class DataBase {
 
     public synchronized static void like(User user, Post post) {
         for (User listUser : listOfUsers) {
-            if (post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
+            if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
                 listUser.addLikedPost(post);
                 updateUser();
-                return;
+                break;
+            }
+        }
+        for (User listUser:
+             listOfUsers) {
+            for (Post listPost:
+                 listUser.getListOfPosts()) {
+                if(listPost.equals(post)) {
+                    listPost.getNumOfLikes().addAndGet(1);
+                    return;
+                }
             }
         }
     }
 
     public synchronized static void dislike(User user, Post post) {
         for (User listUser : listOfUsers) {
-            if (post.getOwner().getUsername().equalsIgnoreCase(listUser.getUsername())) {
+            if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
                 listUser.removeLikedPost(post);
                 updateUser();
-                return;
+                break;
+            }
+        }
+        for (User listUser:
+                listOfUsers) {
+            for (Post listPost:
+                    listUser.getListOfPosts()) {
+                if(listPost.equals(post)) {
+                    listPost.getNumOfLikes().addAndGet(-1);
+                    return;
+                }
             }
         }
     }
@@ -266,5 +286,13 @@ public class DataBase {
                 return user;
         }
         return null;
+    }
+
+    public synchronized static void repost(User user, Post post) {
+        for (User listUser:
+             listOfUsers) {
+            if(user.getUsername().equalsIgnoreCase(listUser.getUsername()))
+                user.getListOfPosts().add(post);
+        }
     }
 }

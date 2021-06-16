@@ -42,10 +42,11 @@ public class MyProfileController extends mainPage implements Initializable {
     @FXML
     Label followingLabel;
 
+    private User user;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateUser();
-        User user = thisUser.getUser();
         thisUser.setIsAnotherUser(false);
         try {
             loadPosts(user);
@@ -79,15 +80,15 @@ public class MyProfileController extends mainPage implements Initializable {
         usernameLabel.setText("@"+username);
         namePlusLastnameLabel.setText(namePlusLastname);
         birthDateLabel.setText("birthDate: "+dateOfBirth);
-        followerLabel.setText(thisUser.getUser().getNumOfFollowers() +" Followers");
-        followingLabel.setText(thisUser.getUser().getNumOfFollowings() +" Followings");
+        followerLabel.setText(user.getNumOfFollowers() +" Followers");
+        followingLabel.setText(user.getNumOfFollowings() +" Followings");
     }
 
     private void updateUser() {
         try {
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-            Object object =  Client.getObjectInputStream().readObject();
-            thisUser.setUser((User) object);
+            user =  (User) Client.getObjectInputStream().readObject();
+            thisUser.setUser(user);
         }catch (IOException e){
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

@@ -20,29 +20,41 @@ public class SearchPageController extends mainPage {
     private Label warningLabel;
     @FXML
     private JFXTextField username;
+
     public void searchUser(ActionEvent event) throws IOException {
         CommandType searchUserCommand = CommandType.SEARCHUSER;
         CommandSender searchTheServer =
-                new CommandSender(searchUserCommand,username.getText());
-        try{
+                new CommandSender(searchUserCommand, username.getText());
+        try {
             Client.getObjectOutputStream().writeObject(searchTheServer);
             Object object;
             User user;
-            if((object = Client.getObjectInputStream().readObject()) instanceof User) {
+            if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
                 user = (User) object;
+                boolean isEquals  = false;
+                if(thisUser.getSearchedUser() != null)
+                    isEquals = user.getNumOfFollowers().equals(thisUser.getSearchedUser().getNumOfFollowers());
+                System.out.println(isEquals);
+                System.out.println(user.getNumOfFollowers());
                 thisUser.setSearchedUser(user);
-            }else{
+            } else {
                 warningLabel.setText("Username not found!");
                 warningLabel.setTextFill(Color.RED);
                 return;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Main.loadAPage(event
-                ,"../FXMLs/ProfilePage.fxml"
-                , "SBUgram - Profile page"
-        );
+        if (thisUser.getSearchedUser().getUsername()
+                .equalsIgnoreCase(thisUser.getUser().getUsername()))
+            Main.loadAPage(event
+                    , "../FXMLs/MyProfile.fxml"
+                    , "SBUgram - Your profile"
+            );
+        else
+            Main.loadAPage(event
+                    , "../FXMLs/ProfilePage.fxml"
+                    , "SBUgram - Profile page"
+            );
     }
 }

@@ -45,12 +45,12 @@
             </Label>
             <AnchorPane prefHeight="63.0" prefWidth="438.0">
                <children>
-                  <ImageView fx:id="rePost" fitHeight="77.0" fitWidth="62.0" layoutX="362.0" onMouseClicked="#rePost" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="rePost" fitHeight="77.0" fitWidth="62.0" layoutX="362.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/retweet_500px.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="commentButton" fitHeight="47.0" fitWidth="47.0" layoutX="120.0" layoutY="8.0" onMouseClicked="#comment" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="commentButton" fitHeight="47.0" fitWidth="47.0" layoutX="120.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/speech_bubble_500px.png" />
                      </image>
@@ -62,7 +62,7 @@
                         </DropShadow>
                      </effect>
                   </ImageView>
-                  <ImageView fx:id="likeButton" fitHeight="47.0" fitWidth="48.0" layoutX="66.0" layoutY="8.0" onMouseClicked="#like" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="likeButton" fitHeight="47.0" fitWidth="48.0" layoutX="66.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/heart_512px.png" />
                      </image>
@@ -84,6 +84,9 @@
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
                   </Label>
+                  <Button layoutX="64.0" layoutY="3.0" mnemonicParsing="false" onAction="#like" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button" />
+                  <Button layoutX="118.0" layoutY="9.0" mnemonicParsing="false" onAction="#comment" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button" />
+                  <Button layoutX="367.0" layoutY="5.0" mnemonicParsing="false" onAction="#rePost" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button" />
                </children>
             </AnchorPane>
          </children></VBox>

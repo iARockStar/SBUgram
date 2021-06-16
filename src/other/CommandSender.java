@@ -15,7 +15,17 @@ public class CommandSender implements Serializable {
     private User userToFollowOrUnfollow;
     private User followerOrUnfollower;
     private User userWhoLiked;
+    private User reposter;
+    private User userOfTheRepostedPost;
+    private Post repostedPost;
 
+
+    public CommandSender(CommandType commandType, User reposter, User userOfTheRepostedPost, Post repostedPost) {
+        this.commandType = commandType;
+        this.reposter = reposter;
+        this.userOfTheRepostedPost = userOfTheRepostedPost;
+        this.repostedPost = repostedPost;
+    }
 
     public CommandSender(CommandType commandType, Object object) {
         this.commandType = commandType;
@@ -88,5 +98,29 @@ public class CommandSender implements Serializable {
 
     public void setUserWhoLiked(User userWhoLiked) {
         this.userWhoLiked = userWhoLiked;
+    }
+
+    public User getReposter() {
+        return reposter;
+    }
+
+    public void setReposter(User reposter) {
+        this.reposter = reposter;
+    }
+
+    public User getUserOfTheRepostedPost() {
+        return userOfTheRepostedPost;
+    }
+
+    public void setUserOfTheRepostedPost(User userOfTheRepostedPost) {
+        this.userOfTheRepostedPost = userOfTheRepostedPost;
+    }
+
+    public Post getRepostedPost() {
+        return repostedPost;
+    }
+
+    public void setRepostedPost(Post repostedPost) {
+        this.repostedPost = repostedPost;
     }
 }

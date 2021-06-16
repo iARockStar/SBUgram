@@ -112,12 +112,12 @@ public class Post implements Serializable,Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(writer, post.writer) && Objects.equals(title, post.title) && Objects.equals(description, post.description) && Arrays.equals(profilePic, post.profilePic) && Arrays.equals(postPic, post.postPic) && Objects.equals(dateTime, post.dateTime) && Objects.equals(comments, post.comments);
+        return Objects.equals(writer, post.writer) && Objects.equals(title, post.title) && Objects.equals(description, post.description) && Arrays.equals(profilePic, post.profilePic) && Arrays.equals(postPic, post.postPic) && Objects.equals(dateTime, post.dateTime);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(writer, title, description, dateTime, comments);
+        int result = Objects.hash(writer, title, description, dateTime);
         result = 31 * result + Arrays.hashCode(profilePic);
         result = 31 * result + Arrays.hashCode(postPic);
         return result;

@@ -3,6 +3,7 @@ package client.Controllers;
 import client.Client;
 import client.Main;
 import client.thisUser;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -57,9 +59,10 @@ public class PostItemController implements ItemController {
         title.setText(post.getTitle());
         for (Post listPost:
              thisUser.getUser().getPostsLiked()) {
-            if(listPost.getOwner().getUsername().equalsIgnoreCase(post.getOwner().getUsername())) {
+            if(listPost.equals(post)) {
                 isLiked = true;
                 likeButton.setImage(new Image("/images/heart_outline_480px.png"));
+                break;
             }
         }
         descriptionLabel.setText(post.getDescription());
@@ -101,7 +104,7 @@ public class PostItemController implements ItemController {
 
 
 
-    public void like(MouseEvent mouseEvent) {
+    public void like(ActionEvent actionEvent) {
         if(!isLiked) {
             likeButton.setImage(new Image("/images/heart_outline_480px.png"));
             isLiked = true;
@@ -125,20 +128,27 @@ public class PostItemController implements ItemController {
                 e.printStackTrace();
             }
             likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
+            thisUser.getUser().removeLikedPost(post);
         }
 
     }
 
-    public void comment(MouseEvent mouseEvent) throws IOException {
+    public void comment(ActionEvent actionEvent) throws IOException {
         thisUser.getUser().setPostToComment(post);
-        Main.loadAPageMouse(mouseEvent
+        Main.loadAPage(actionEvent
                 , "/FXMLs/CommentPage.fxml"
                 , "SBUgram - Comment menu"
         );
     }
 
-    public void rePost(MouseEvent mouseEvent) {
-
+    public void rePost(ActionEvent actionEvent) {
+        CommandSender repost = new CommandSender
+                (CommandType.REPOST,thisUser.getUser(),post.getOwner(),post);
+        try {
+            Client.getObjectOutputStream().writeObject(repost);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
     /*
     you can also add on mouse click for like and repost image 

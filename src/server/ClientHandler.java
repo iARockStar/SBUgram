@@ -106,6 +106,13 @@ public class ClientHandler extends Thread {
                         user = commandSender.getUserWhoLiked();
                         dislike( user,post);
                         break;
+                    case REPOST:
+                        user = commandSender.getReposter();
+                        user1 = commandSender.getUserOfTheRepostedPost();
+                        post = commandSender.getRepostedPost();
+                        repost(user , post);
+                        System.out.println("repost done");
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -118,6 +125,10 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void repost(User user, Post post) {
+        DataBase.repost(user,post);
     }
 
     private void updateUser(String username) {
