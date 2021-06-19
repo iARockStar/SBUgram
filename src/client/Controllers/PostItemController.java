@@ -87,6 +87,7 @@ public class PostItemController implements ItemController {
         String dateAsString = dateFormat.format(dateTime);
         date.setText("Published on: "+dateAsString);
         likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
+        repostLabel.setText("   "+post.getNumOfReposts()+"\n"+"Reposts");
         return root;
     }
 
@@ -128,6 +129,7 @@ public class PostItemController implements ItemController {
                 e.printStackTrace();
             }
             likeLabel.setText("   "+post.getNumOfLikes()+"\n"+"likes");
+
             thisUser.getUser().removeLikedPost(post);
         }
 
@@ -142,11 +144,22 @@ public class PostItemController implements ItemController {
     }
 
     public void rePost(ActionEvent actionEvent) {
+
         CommandSender repost = new CommandSender
                 (CommandType.REPOST,thisUser.getUser(),post.getOwner(),post);
         try {
             Client.getObjectOutputStream().writeObject(repost);
+            ApprovedType approvedType = (ApprovedType) Client.getObjectInputStream().readObject();
+            if(approvedType == ApprovedType.APPROVED){
+                post.getNumOfReposts().addAndGet(1);
+                repostLabel.setText("   "+post.getNumOfReposts()+"\n"+"Reposts");
+            }
+            else{
+                repostLabel.setText("   "+post.getNumOfReposts()+"\n"+"Reposts");
+            }
         }catch (IOException e){
+            e.printStackTrace();
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

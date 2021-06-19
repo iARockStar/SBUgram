@@ -47,14 +47,19 @@ public class DataBase {
     public synchronized static void login(ObjectOutputStream objectOutputStream
             , String username, String password) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream1 = null;
+        CopyOnWriteArrayList<User> users = new CopyOnWriteArrayList<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(USERS_FILE);
             objectInputStream1 = new ObjectInputStream(fileInputStream);
+            users = (CopyOnWriteArrayList<User>) objectInputStream1.readObject();
+        } catch (EOFException e){
+            objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
+            objectOutputStream.flush();
+            return;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        CopyOnWriteArrayList<User> users =
-                (CopyOnWriteArrayList<User>) objectInputStream1.readObject();
+
         for (User user :
                 users) {
             boolean isValid = user.getUsername().equalsIgnoreCase(username)
@@ -105,20 +110,21 @@ public class DataBase {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (user.getUsername().equals(listOfUsers.get(i).getUsername())) {
                 listOfUsers.get(i).addPost(post);
-                updateUser();
             }
         }
+        updateUser();
 
     }
 
 
     public synchronized static User loadPost(User user) {
+        User foundUser = null;
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername()))
-                return listUser;
+                foundUser = listUser;
         }
-        return null;
+        return foundUser;
     }
 
     public synchronized static User retrievePass(User user) {
@@ -191,11 +197,10 @@ public class DataBase {
                 listOfUsers) {
             if (follower.getUsername().equals(listUser.getUsername())) {
                 listUser.addFollowing(following);
-                updateUser();
-                return atomicInteger;
             }
         }
-        return new AtomicInteger(0);
+        updateUser();
+        return atomicInteger;
     }
 
     public synchronized static AtomicInteger unfollow(User following, User follower) {
@@ -212,10 +217,9 @@ public class DataBase {
                 listOfUsers) {
             if (follower.getUsername().equals(listUser.getUsername())) {
                 listUser.removeFollowing(following);
-                updateUser();
-                return atomicInteger;
             }
         }
+        updateUser();
         return atomicInteger;
     }
 
@@ -238,12 +242,11 @@ public class DataBase {
     }
 
     public synchronized static void like(User user, Post post) {
+        boolean isLiked = false;
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
                 listUser.addLikedPost(post);
-                updateUser();
-                break;
             }
         }
         for (User listUser:
@@ -251,20 +254,21 @@ public class DataBase {
             for (Post listPost:
                  listUser.getListOfPosts()) {
                 if(listPost.equals(post)) {
-                    listPost.getNumOfLikes().addAndGet(1);
-                    return;
+                    if(!isLiked) {
+                        listPost.getNumOfLikes().addAndGet(1);
+                    }
                 }
             }
         }
+        updateUser();
     }
 
     public synchronized static void dislike(User user, Post post) {
+        boolean isDisLiked = false;
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
                 listUser.removeLikedPost(post);
-                updateUser();
-                break;
             }
         }
         for (User listUser:
@@ -272,11 +276,13 @@ public class DataBase {
             for (Post listPost:
                     listUser.getListOfPosts()) {
                 if(listPost.equals(post)) {
-                    listPost.getNumOfLikes().addAndGet(-1);
-                    return;
+                    if(!isDisLiked) {
+                        listPost.getNumOfLikes().addAndGet(-1);
+                    }
                 }
             }
         }
+        updateUser();
     }
 
     public static User updateUser(String username) {
@@ -288,11 +294,26 @@ public class DataBase {
         return null;
     }
 
-    public synchronized static void repost(User user, Post post) {
+    public synchronized static ApprovedType repost(User user, Post post) {
         for (User listUser:
              listOfUsers) {
-            if(user.getUsername().equalsIgnoreCase(listUser.getUsername()))
-                user.getListOfPosts().add(post);
+            if(user.getUsername().equalsIgnoreCase(listUser.getUsername()) && !user.getListOfPosts().contains(post)) {
+                post.getNumOfReposts().addAndGet(1);
+                listUser.getListOfPosts().add(post);
+                updateUser();
+                return ApprovedType.APPROVED;
+            }
         }
+        return ApprovedType.NOT_APPROVED;
+    }
+
+    public synchronized static void settingUpdate(User user) {
+        for (int i = 0; i < listOfUsers.size(); i++) {
+            if(listOfUsers.get(i).getUsername().equalsIgnoreCase(user.getUsername())){
+                listOfUsers.add(i,user);
+                break;
+            }
+        }
+        updateUser();
     }
 }

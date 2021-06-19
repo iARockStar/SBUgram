@@ -6,6 +6,7 @@ public enum CommandType {
     UPDATEUSER,
     LOGIN,
     SIGNUP,
+    SETTING,
     NEWPOST,
     LIKE,
     DISLIKE,

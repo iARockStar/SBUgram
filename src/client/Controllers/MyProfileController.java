@@ -1,9 +1,11 @@
 package client.Controllers;
 
 import client.Client;
+import client.Main;
 import client.PostItem;
 import client.thisUser;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -105,5 +107,12 @@ public class MyProfileController extends mainPage implements Initializable {
             posts = new CopyOnWriteArrayList<>();
             e.printStackTrace();
         }
+    }
+
+    public void setting(ActionEvent actionEvent) throws IOException {
+        Main.loadAPage(actionEvent
+                ,"/FXMLs/settingPage.fxml"
+                , "SBUgram - change your info"
+        );
     }
 }

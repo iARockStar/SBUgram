@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
@@ -10,7 +11,7 @@
 <AnchorPane prefHeight="646.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.SearchPageController">
     <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="450.0" style="-fx-background-color: #778899;">
         <children>
-            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="true" text="Time line" textFill="WHITE">
+            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" text="Time line" textFill="WHITE">
                 <selectedColor>
                     <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
                 </selectedColor>
@@ -91,5 +92,10 @@
          <Font name="Georgia" size="18.0" />
       </font>
    </Label>
+   <ImageView fitHeight="48.0" fitWidth="50.0" layoutX="14.0" layoutY="57.0" onMouseClicked="#returnToMainMenu" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/left_arrow_500px.png" />
+      </image>
+   </ImageView>
 
 </AnchorPane>

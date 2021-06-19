@@ -32,7 +32,6 @@ public class Main extends Application {
      * main method is for launching the application and
      * is called before all other methods.
      * this method helps clientSide and graphics connect to Server.
-     *
      * @param args param for the launch method
      */
 

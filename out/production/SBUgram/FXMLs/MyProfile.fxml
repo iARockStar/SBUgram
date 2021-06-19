@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
@@ -115,6 +117,23 @@
             <Font name="Georgia Bold Italic" size="24.0" />
         </font>
     </Label>
+   <ImageView fitHeight="74.0" fitWidth="75.0" layoutX="364.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/settings_400px.png" />
+      </image>
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect>
+   </ImageView>
+   <Button layoutX="376.0" layoutY="66.0" mnemonicParsing="false" onAction="#setting" opacity="0.0" prefHeight="64.0" prefWidth="52.0" text="Button">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
 
 
 </AnchorPane>

@@ -20,6 +20,10 @@ public class Post implements Serializable,Comparable {
     private Date dateTime;
     private CopyOnWriteArrayList<Comment> comments = new CopyOnWriteArrayList<>();
     private AtomicInteger numOfLikes = new AtomicInteger(0);
+    private AtomicInteger numOfReposts = new AtomicInteger(0);
+    private int postId;
+    private static AtomicInteger idCounter = new AtomicInteger(0);
+    private Post referencePost;
 
     public Post(String writer, String title, String description,Date date, byte[] profilePic, byte[] postPic) {
         this.writer = writer;
@@ -28,6 +32,8 @@ public class Post implements Serializable,Comparable {
         this.profilePic = profilePic;
         this.postPic = postPic;
         this.dateTime = date;
+        this.postId = idCounter.intValue();
+        idCounter.addAndGet(1);
     }
 
     public Post(String writer, String title, String description,Date date, byte[] profilePic) {
@@ -36,9 +42,17 @@ public class Post implements Serializable,Comparable {
         this.description = description;
         this.profilePic = profilePic;
         this.dateTime = date;
+        this.postId = idCounter.intValue();
+        idCounter.addAndGet(1);
     }
 
     public Post() {
+        this.postId = idCounter.intValue();
+        idCounter.addAndGet(1);
+    }
+
+    public void rePost(Post post){
+        this.referencePost = post;
     }
 
 
@@ -112,15 +126,12 @@ public class Post implements Serializable,Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(writer, post.writer) && Objects.equals(title, post.title) && Objects.equals(description, post.description) && Arrays.equals(profilePic, post.profilePic) && Arrays.equals(postPic, post.postPic) && Objects.equals(dateTime, post.dateTime);
+        return postId == post.postId;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(writer, title, description, dateTime);
-        result = 31 * result + Arrays.hashCode(profilePic);
-        result = 31 * result + Arrays.hashCode(postPic);
-        return result;
+        return Objects.hash(postId);
     }
 
     @Override
@@ -139,5 +150,13 @@ public class Post implements Serializable,Comparable {
 
     public void setNumOfLikes(AtomicInteger numOfLikes) {
         this.numOfLikes = numOfLikes;
+    }
+
+    public AtomicInteger getNumOfReposts() {
+        return numOfReposts;
+    }
+
+    public void setNumOfReposts(AtomicInteger numOfReposts) {
+        this.numOfReposts = numOfReposts;
     }
 }

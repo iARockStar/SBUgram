@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import other.CommandType;
 import other.CommandSender;
@@ -56,5 +57,11 @@ public class SearchPageController extends mainPage {
                     , "../FXMLs/ProfilePage.fxml"
                     , "SBUgram - Profile page"
             );
+    }
+
+    public void returnToMainMenu(MouseEvent mouseEvent) throws IOException {
+        Main.loadAPageMouse(mouseEvent
+        ,"../FXMLs/MainMenu.fxml"
+        ,"SBUgram - Main menu");
     }
 }

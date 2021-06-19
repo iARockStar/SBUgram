@@ -99,19 +99,23 @@ public class ClientHandler extends Thread {
                     case LIKE:
                         post = commandSender.getPostToLike();
                         user = commandSender.getUserWhoLiked();
-                        like( user,post);
+                        like(user, post);
                         break;
                     case DISLIKE:
                         post = commandSender.getPostToLike();
                         user = commandSender.getUserWhoLiked();
-                        dislike( user,post);
+                        dislike(user, post);
                         break;
                     case REPOST:
                         user = commandSender.getReposter();
                         user1 = commandSender.getUserOfTheRepostedPost();
                         post = commandSender.getRepostedPost();
-                        repost(user , post);
+                        repost(user, post);
                         System.out.println("repost done");
+                        break;
+                    case SETTING:
+                        user = (User) commandSender.getUser();
+                        settingUpdate(user);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -127,25 +131,35 @@ public class ClientHandler extends Thread {
         }
     }
 
+    private void settingUpdate(User user) {
+        DataBase.settingUpdate(user);
+    }
+
     private void repost(User user, Post post) {
-        DataBase.repost(user,post);
+
+        ApprovedType approvedType = DataBase.repost(user, post);
+        try{
+            objectOutputStream.writeObject(approvedType);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void updateUser(String username) {
         User user = DataBase.updateUser(username);
-        try{
+        try {
             objectOutputStream.writeObject(user);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void dislike(User user, Post post) {
-        DataBase.dislike(user,post);
+        DataBase.dislike(user, post);
     }
 
     private void like(User user, Post post) {
-        DataBase.like(user,post);
+        DataBase.like(user, post);
     }
 
     private void loadFollowingsPosts(User user) {
@@ -160,19 +174,18 @@ public class ClientHandler extends Thread {
     private void unfollow(User following, User follower) {
 
         AtomicInteger atomicInteger = DataBase.unfollow(following, follower);
-        try{
+        try {
             objectOutputStream.writeObject(new AtomicInteger(atomicInteger.intValue()));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void follow(User following, User follower) {
-
         AtomicInteger atomicInteger = DataBase.follow(following, follower);
-        try{
+        try {
             objectOutputStream.writeObject(new AtomicInteger(atomicInteger.intValue()));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

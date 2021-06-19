@@ -27,6 +27,7 @@ public class User implements Serializable {
     private CopyOnWriteArrayList<User> followings = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<Post> postsLiked = new CopyOnWriteArrayList<>();
 
+
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
         this.name = name;
         this.lastName = lastName;
@@ -65,6 +66,8 @@ public class User implements Serializable {
         this.securityQuestion = securityQuestion;
         this.username = username;
     }
+
+
 
     public void addFollower(User follower){
         followers.add(follower);
@@ -218,6 +221,8 @@ public class User implements Serializable {
     public void setProfileImage(byte[] profileImage) {
         this.profileImage = profileImage;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
