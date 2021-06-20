@@ -111,7 +111,7 @@ public class MyProfileController extends mainPage implements Initializable {
 
     public void setting(ActionEvent actionEvent) throws IOException {
         Main.loadAPage(actionEvent
-                ,"/FXMLs/settingPage.fxml"
+                ,"../FXMLs/settingPage.fxml"
                 , "SBUgram - change your info"
         );
     }
