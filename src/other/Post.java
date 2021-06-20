@@ -20,6 +20,8 @@ public class Post implements Serializable,Comparable {
     private Date dateTime;
     private CopyOnWriteArrayList<Comment> comments = new CopyOnWriteArrayList<>();
     private AtomicInteger numOfLikes = new AtomicInteger(0);
+    private CopyOnWriteArrayList<User> likers = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<User> reposters = new CopyOnWriteArrayList<>();
     private AtomicInteger numOfReposts = new AtomicInteger(0);
     private int postId;
     private static int idCounter = 0;
@@ -48,6 +50,22 @@ public class Post implements Serializable,Comparable {
 
     public Post() {
 
+    }
+
+    public void addToLikers(User user){
+        likers.add(user);
+    }
+
+    public void removeFromLikers(User user){
+        likers.remove(user);
+    }
+
+    public CopyOnWriteArrayList<User> getLikers() {
+        return likers;
+    }
+
+    public void setLikers(CopyOnWriteArrayList<User> likers) {
+        this.likers = likers;
     }
 
     public void rePost(Post post){

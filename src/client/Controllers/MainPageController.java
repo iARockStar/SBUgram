@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import other.*;
 
 
@@ -80,7 +79,7 @@ public class MainPageController extends mainPage {
         );
     }
 
-    public void refresh(MouseEvent mouseEvent) {
+    public void refresh(ActionEvent mouseEvent) {
         try {
             this.initialize();
         } catch (IOException | ClassNotFoundException ioException) {

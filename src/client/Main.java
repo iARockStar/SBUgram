@@ -53,7 +53,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../FXMLs/sample.fxml"));
-        primaryStage.setTitle("SBUgram-Login menu");
+        primaryStage.setTitle("SBUgram - Login menu");
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.DECORATED);
         primaryStage.setResizable(false);

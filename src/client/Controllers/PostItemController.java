@@ -110,6 +110,8 @@ public class PostItemController implements ItemController {
             likeButton.setImage(new Image("/images/heart_outline_480px.png"));
             isLiked = true;
             post.getReferencePost().getNumOfLikes().addAndGet(1);
+            post.getReferencePost().addToLikers(thisUser.getUser());
+
             try {
                 Client.getObjectOutputStream().writeObject(
                         new CommandSender(CommandType.LIKE, post, thisUser.getUser()));
@@ -122,6 +124,7 @@ public class PostItemController implements ItemController {
             likeButton.setImage(new Image("/images/heart_512px.png"));
             isLiked = false;
             post.getReferencePost().getNumOfLikes().addAndGet(-1);
+            post.getReferencePost().removeFromLikers(thisUser.getUser());
             try {
                 Client.getObjectOutputStream().writeObject(
                         new CommandSender(CommandType.DISLIKE, post, thisUser.getUser()));

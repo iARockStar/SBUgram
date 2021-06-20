@@ -105,7 +105,7 @@
          <Font name="Georgia" size="18.0" />
       </font>
    </JFXButton>
-   <JFXButton fx:id="newPostButton2" buttonType="RAISED" layoutX="175.0" layoutY="372.0" onAction="#newPost" style="-fx-background-color: #32cd32;" text="New Post">
+   <JFXButton fx:id="newPostButton2" buttonType="RAISED" layoutX="175.0" layoutY="371.0" onAction="#newPost" style="-fx-background-color: #32cd32;" text="New Post">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
@@ -115,9 +115,13 @@
          <Font name="Georgia" size="18.0" />
       </font>
    </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="163.0" layoutY="427.0" onAction="#search" style="-fx-background-color: #32cd32;" text="Search users">
+      <JFXButton buttonType="RAISED" layoutX="163.0" layoutY="420.0" onAction="#search" style="-fx-background-color: #32cd32;" text="Search users">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
    </JFXButton>
+    <JFXButton buttonType="RAISED" layoutX="152.0" layoutY="512.0" onAction="#deleteAccount" style="-fx-background-color: #B22222;" text="Delete Account">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font></JFXButton>
 </AnchorPane>

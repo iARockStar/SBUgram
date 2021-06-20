@@ -116,8 +116,13 @@ public class ClientHandler extends Thread {
                         System.out.println("repost done");
                         break;
                     case SETTING:
-                        User updatedUser = (User) commandSender.getUser();
+                        Holder holder = (Holder) commandSender.getUser();
+                        User updatedUser = holder.getUser();
                         settingUpdate(updatedUser);
+                        break;
+                    case DELETEACCOUNT:
+                        User deletedUser = (User) commandSender.getUser();
+                        deleteAccount(deletedUser);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -131,6 +136,10 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void deleteAccount(User deletedUser) {
+        DataBase.deleteAccount(deletedUser);
     }
 
     private void settingUpdate(User user) {
@@ -150,6 +159,7 @@ public class ClientHandler extends Thread {
     private void updateUser(String username) {
         User user = DataBase.updateUser(username);
         try {
+            objectOutputStream.reset();
             objectOutputStream.writeObject(user);
         } catch (IOException e) {
             e.printStackTrace();
@@ -167,6 +177,7 @@ public class ClientHandler extends Thread {
     private void loadFollowingsPosts(User user) {
         CopyOnWriteArrayList<Post> posts = DataBase.loadFollowingPosts(user);
         try {
+            objectOutputStream.reset();
             objectOutputStream.writeObject(new CopyOnWriteArrayList<>(posts));
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,6 +188,7 @@ public class ClientHandler extends Thread {
 
         AtomicInteger atomicInteger = DataBase.unfollow(following, follower);
         try {
+            objectOutputStream.reset();
             objectOutputStream.writeObject(new AtomicInteger(atomicInteger.intValue()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,6 +198,7 @@ public class ClientHandler extends Thread {
     private void follow(User following, User follower) {
         AtomicInteger atomicInteger = DataBase.follow(following, follower);
         try {
+            objectOutputStream.reset();
             objectOutputStream.writeObject(new AtomicInteger(atomicInteger.intValue()));
         } catch (IOException e) {
             e.printStackTrace();

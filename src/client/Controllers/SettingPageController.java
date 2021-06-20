@@ -18,10 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import other.CommandSender;
-import other.CommandType;
-import other.SecurityQuestion;
-import other.User;
+import other.*;
 
 
 import java.io.File;
@@ -184,8 +181,12 @@ public class SettingPageController extends mainPage implements Initializable {
             String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
             thisUser.getUser().setDatePicker(FormattedDate);
         }
+        Holder holder = Holder.getInstance();
+        holder.setUser(user);
+        System.out.println(user.getPassword());
+        Client.getObjectOutputStream().reset();
         Client.getObjectOutputStream().writeObject(
-                new CommandSender(CommandType.SETTING, user));
+                new CommandSender(CommandType.SETTING, holder));
         Client.getObjectOutputStream().flush();
         Main.loadAPage(event
                 , "../FXMLs/MyProfile.fxml"

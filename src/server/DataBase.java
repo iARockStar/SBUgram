@@ -255,6 +255,7 @@ public class DataBase {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
                 listUser.addLikedPost(post);
+                post.addToLikers(listUser);
             }
         }
         for (User listUser :
@@ -264,6 +265,7 @@ public class DataBase {
                 if (listPost.equals(post)) {
                     if (!isLiked) {
                         listPost.getNumOfLikes().addAndGet(1);
+                        listPost.addToLikers(user);
                     }
                 }
             }
@@ -277,6 +279,7 @@ public class DataBase {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
                 listUser.removeLikedPost(post);
+                post.removeFromLikers(listUser);
             }
         }
         for (User listUser :
@@ -284,9 +287,8 @@ public class DataBase {
             for (Post listPost :
                     listUser.getListOfPosts()) {
                 if (listPost.equals(post)) {
-                    if (!isDisLiked) {
                         listPost.getNumOfLikes().addAndGet(-1);
-                    }
+                        listPost.removeFromLikers(user);
                 }
             }
         }
@@ -318,10 +320,61 @@ public class DataBase {
     public synchronized static void settingUpdate(User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (listOfUsers.get(i).getUsername().equalsIgnoreCase(user.getUsername())) {
+                listOfUsers.remove(i);
                 listOfUsers.add(i, user);
+                listOfUsers.get(i).setPassword(user.getPassword());
                 break;
             }
         }
         updateUser();
+    }
+
+    public synchronized static void deleteAccount(User deletedUser) {
+
+        for (User listUser :
+                listOfUsers) {
+            for (Post post:
+                 listUser.getListOfPosts()) {
+                if(post.getLikers().contains(deletedUser)) {
+                    post.removeFromLikers(deletedUser);
+                    post.getNumOfLikes().addAndGet(-1);
+                }
+            }
+        }
+
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getFollowers().contains(deletedUser)){
+                listUser.getFollowers().remove(deletedUser);
+                listUser.getNumOfFollowers().addAndGet(-1);
+            }
+
+            if (listUser.getFollowings().contains(deletedUser)){
+                listUser.getFollowings().remove(deletedUser);
+                listUser.getNumOfFollowings().addAndGet(-1);
+            }
+        }
+
+  for (User listUser :
+                listOfUsers) {
+            if (deletedUser.getUsername().equalsIgnoreCase(listUser.getUsername())) {
+                listOfUsers.remove(listUser);
+                break;
+            }
+        }
+
+        for (User listUser :
+                listOfUsers) {
+            for (Post post :
+                    listUser.getListOfPosts()) {
+                post.getComments().removeIf(
+                        comment -> comment.getOwner().equals(deletedUser)
+                );
+            }
+        }
+
+
+
+         updateUser();
     }
 }

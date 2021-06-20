@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -29,7 +30,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ProfilePageController extends mainPage implements Initializable {
+public class ProfilePageController extends mainPage  {
 
     @FXML
     ListView<Post> postList;
@@ -50,8 +51,8 @@ public class ProfilePageController extends mainPage implements Initializable {
     @FXML
     Label followerLabel;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
 //        updateUser();
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
@@ -159,5 +160,9 @@ public class ProfilePageController extends mainPage implements Initializable {
     }
 
     public void mute(ActionEvent event) {
+    }
+
+    public void refresh(MouseEvent mouseEvent) {
+        this.initialize();
     }
 }

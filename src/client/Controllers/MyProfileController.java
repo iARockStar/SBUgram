@@ -103,6 +103,8 @@ public class MyProfileController extends mainPage implements Initializable {
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
         try {
             posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
+            if(!posts.isEmpty())
+            this.user = posts.get(0).getOwner();
         }catch (Exception e){
             posts = new CopyOnWriteArrayList<>();
             e.printStackTrace();
