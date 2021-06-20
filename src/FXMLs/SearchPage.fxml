@@ -82,7 +82,10 @@
     <JFXButton buttonType="RAISED" layoutX="152.0" layoutY="306.0" onAction="#searchUser" style="-fx-background-color: #32dc32;" text="Search the user">
       <font>
          <Font name="Georgia" size="18.0" />
-      </font></JFXButton>
+      </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXButton>
    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="189.0" prefHeight="18.0" prefWidth="442.0" text="Please enter the username you want to search">
       <font>
          <Font name="Georgia" size="18.0" />

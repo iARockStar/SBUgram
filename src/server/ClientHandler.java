@@ -124,6 +124,16 @@ public class ClientHandler extends Thread {
                         User deletedUser = (User) commandSender.getUser();
                         deleteAccount(deletedUser);
                         break;
+                    case MUTE:
+                        User muter = commandSender.getUserToFollow();
+                        User muted = commandSender.getFollower();
+                        mute(muter,muted);
+                        break;
+                    case UNMUTE:
+                        User unMuter = commandSender.getUserToFollow();
+                        User unMuted = commandSender.getFollower();
+                        unMute(unMuter,unMuted);
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -136,6 +146,14 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void unMute(User unMuter, User unMuted) {
+        DataBase.unMute(unMuter,unMuted);
+    }
+
+    private void mute(User muter, User muted) {
+        DataBase.mute(muter,muted);
     }
 
     private void deleteAccount(User deletedUser) {

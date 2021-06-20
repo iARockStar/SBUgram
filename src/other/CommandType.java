@@ -21,5 +21,7 @@ public enum CommandType {
     FOLLOW,
     UNFOLLOW,
     LOADFOLLOWINGPOSTS,
-    DELETEACCOUNT
+    DELETEACCOUNT,
+    MUTE,
+    UNMUTE
 }

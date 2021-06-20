@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -26,7 +27,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class MyProfileController extends mainPage implements Initializable {
+public class MyProfileController extends mainPage  {
     @FXML
     ListView<Post> postList;
     CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
@@ -46,8 +47,8 @@ public class MyProfileController extends mainPage implements Initializable {
 
     private User user;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         updateUser();
         thisUser.setIsAnotherUser(false);
         try {
@@ -116,5 +117,9 @@ public class MyProfileController extends mainPage implements Initializable {
                 ,"../FXMLs/settingPage.fxml"
                 , "SBUgram - change your info"
         );
+    }
+
+    public void refresh(MouseEvent mouseEvent) {
+        this.initialize();
     }
 }

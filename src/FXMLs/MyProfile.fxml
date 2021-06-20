@@ -134,6 +134,16 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
-
+    <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="406.0" layoutY="6.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/reset_500px.png" />
+        </image>
+        <effect>
+            <DropShadow blurType="GAUSSIAN" />
+        </effect>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+    </ImageView>
 
 </AnchorPane>

@@ -243,6 +243,7 @@ public class DataBase {
         }
         for (User listUser : listOfUsers) {
             if (user2.getFollowings().contains(listUser))
+                if(!user2.getMutedList().contains(listUser))
                 posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
@@ -287,8 +288,8 @@ public class DataBase {
             for (Post listPost :
                     listUser.getListOfPosts()) {
                 if (listPost.equals(post)) {
-                        listPost.getNumOfLikes().addAndGet(-1);
-                        listPost.removeFromLikers(user);
+                    listPost.getNumOfLikes().addAndGet(-1);
+                    listPost.removeFromLikers(user);
                 }
             }
         }
@@ -333,9 +334,9 @@ public class DataBase {
 
         for (User listUser :
                 listOfUsers) {
-            for (Post post:
-                 listUser.getListOfPosts()) {
-                if(post.getLikers().contains(deletedUser)) {
+            for (Post post :
+                    listUser.getListOfPosts()) {
+                if (post.getLikers().contains(deletedUser)) {
                     post.removeFromLikers(deletedUser);
                     post.getNumOfLikes().addAndGet(-1);
                 }
@@ -344,18 +345,18 @@ public class DataBase {
 
         for (User listUser :
                 listOfUsers) {
-            if (listUser.getFollowers().contains(deletedUser)){
+            if (listUser.getFollowers().contains(deletedUser)) {
                 listUser.getFollowers().remove(deletedUser);
                 listUser.getNumOfFollowers().addAndGet(-1);
             }
 
-            if (listUser.getFollowings().contains(deletedUser)){
+            if (listUser.getFollowings().contains(deletedUser)) {
                 listUser.getFollowings().remove(deletedUser);
                 listUser.getNumOfFollowings().addAndGet(-1);
             }
         }
 
-  for (User listUser :
+        for (User listUser :
                 listOfUsers) {
             if (deletedUser.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 listOfUsers.remove(listUser);
@@ -374,7 +375,28 @@ public class DataBase {
         }
 
 
+        updateUser();
+    }
 
-         updateUser();
+    public synchronized static void mute(User muter, User muted) {
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getUsername().equals(muter.getUsername())) {
+                listUser.addMuted(muted);
+                break;
+            }
+        }
+        updateUser();
+    }
+
+    public synchronized static void unMute(User unMuter, User unMuted) {
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getUsername().equals(unMuter.getUsername())) {
+                listUser.removeMuted(unMuted);
+                break;
+            }
+        }
+        updateUser();
     }
 }

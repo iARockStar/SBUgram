@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -99,29 +100,47 @@
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </JFXButton>
    <JFXButton fx:id="directButton2" buttonType="RAISED" layoutX="149.0" layoutY="323.0" onAction="#loadDirect" style="-fx-background-color: #32cd32;" text="Direct messages">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </JFXButton>
    <JFXButton fx:id="newPostButton2" buttonType="RAISED" layoutX="175.0" layoutY="371.0" onAction="#newPost" style="-fx-background-color: #32cd32;" text="New Post">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </JFXButton>
    <JFXButton fx:id="logoutButton" buttonType="RAISED" layoutX="185.0" layoutY="555.0" onAction="#logout" style="-fx-background-color: #B22222;" text="Logout">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </JFXButton>
       <JFXButton buttonType="RAISED" layoutX="163.0" layoutY="420.0" onAction="#search" style="-fx-background-color: #32cd32;" text="Search users">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </JFXButton>
     <JFXButton buttonType="RAISED" layoutX="152.0" layoutY="512.0" onAction="#deleteAccount" style="-fx-background-color: #B22222;" text="Delete Account">
       <font>
          <Font name="Georgia" size="18.0" />
-      </font></JFXButton>
+      </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXButton>
 </AnchorPane>

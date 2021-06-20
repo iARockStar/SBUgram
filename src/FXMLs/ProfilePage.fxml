@@ -70,7 +70,7 @@
                     </DropShadow>
                 </effect>
             </Label>
-         <ImageView fitHeight="38.0" fitWidth="51.0" layoutX="398.0" layoutY="6.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+         <ImageView fitHeight="38.0" fitWidth="51.0" layoutX="405.0" layoutY="6.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../images/reset_500px.png" />
             </image>
@@ -78,11 +78,7 @@
                <Cursor fx:constant="HAND" />
             </cursor>
             <effect>
-               <DropShadow blurType="GAUSSIAN">
-                  <color>
-                     <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
-                  </color>
-               </DropShadow>
+               <DropShadow blurType="GAUSSIAN" />
             </effect>
          </ImageView>
         </children>
@@ -147,7 +143,7 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </JFXCheckBox>
-<JFXCheckBox fx:id="muteCheckBox" layoutX="309.0" layoutY="272.0" onAction="#mute" prefHeight="22.0" prefWidth="77.0" style="-fx-background-color: #778899;" text="Mute" textFill="WHITE">
+<JFXCheckBox fx:id="muteCheckBox" layoutX="309.0" layoutY="272.0" onAction="#mute" prefHeight="22.0" prefWidth="77.0" style="-fx-background-color: #778899;" text="Mute" textFill="WHITE" visible="false">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>

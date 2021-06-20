@@ -26,6 +26,7 @@ public class User implements Serializable {
     private AtomicInteger numOfFollowings = new AtomicInteger(0);
     private CopyOnWriteArrayList<User> followings = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<Post> postsLiked = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<User> mutedList = new CopyOnWriteArrayList<>();
 
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
@@ -96,6 +97,15 @@ public class User implements Serializable {
     public void removeFollowing(User following){
         followings.remove(following);
         numOfFollowings.addAndGet(-1);
+    }
+
+
+    public void addMuted(User user){
+        mutedList.add(user);
+    }
+
+    public void removeMuted(User user){
+        mutedList.remove(user);
     }
 
     public CopyOnWriteArrayList<User> getFollowers() {
@@ -244,5 +254,13 @@ public class User implements Serializable {
 
     public void setPostsLiked(CopyOnWriteArrayList<Post> postsLiked) {
         this.postsLiked = postsLiked;
+    }
+
+    public CopyOnWriteArrayList<User> getMutedList() {
+        return mutedList;
+    }
+
+    public void setMutedList(CopyOnWriteArrayList<User> mutedList) {
+        this.mutedList = mutedList;
     }
 }

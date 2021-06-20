@@ -27,10 +27,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ProfilePageController extends mainPage  {
+public class ProfilePageController extends mainPage {
 
     @FXML
     ListView<Post> postList;
@@ -50,6 +51,8 @@ public class ProfilePageController extends mainPage  {
     Label followingLabel;
     @FXML
     Label followerLabel;
+    @FXML
+    private JFXCheckBox muteCheckBox;
 
     @FXML
     public void initialize() {
@@ -60,7 +63,10 @@ public class ProfilePageController extends mainPage  {
         for (User listUser :
                 myUser.getFollowings()) {
             if (user.getUsername().equals(listUser.getUsername())) {
+                muteCheckBox.setVisible(true);
                 followCheckbox.setSelected(true);
+                if(myUser.getMutedList().contains(listUser))
+                    muteCheckBox.setSelected(true);
                 break;
             }
         }
@@ -87,7 +93,7 @@ public class ProfilePageController extends mainPage  {
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
             User user = (User) Client.getObjectInputStream().readObject();
             thisUser.setUser(user);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -133,33 +139,72 @@ public class ProfilePageController extends mainPage  {
 
     public void follow(ActionEvent event) {
         if (followCheckbox.isSelected()) {
-            try {
-                CommandSender commandSender = new CommandSender(CommandType.FOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
-                thisUser.getSearchedUser().addFollower(thisUser.getUser());
-                thisUser.getUser().addFollowing(thisUser.getSearchedUser());
-//                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
-                Client.getObjectOutputStream().writeObject(commandSender);
-                AtomicInteger atomicInteger = (AtomicInteger) Client.getObjectInputStream().readObject();
-                followerLabel.setText(atomicInteger + " Followers");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            followUser();
         } else {
-            try {
-                CommandSender commandSender = new CommandSender(CommandType.UNFOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
-                thisUser.getSearchedUser().removeFollower(thisUser.getUser());
-                thisUser.getUser().removeFollowing(thisUser.getSearchedUser());
-//                followerLabel.setText(thisUser.getSearchedUser().getNumOfFollowers() + " Followers");
-                Client.getObjectOutputStream().writeObject(commandSender);
-                AtomicInteger atomicInteger = (AtomicInteger) Client.getObjectInputStream().readObject();
-                followerLabel.setText(atomicInteger + " Followers");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            unfollowUser();
+        }
+    }
+
+    private void unfollowUser() {
+        try {
+            muteCheckBox.setVisible(false);
+            CommandSender commandSender = new CommandSender(CommandType.UNFOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
+            thisUser.getSearchedUser().removeFollower(thisUser.getUser());
+            thisUser.getUser().removeFollowing(thisUser.getSearchedUser());
+            Client.getObjectOutputStream().writeObject(commandSender);
+            AtomicInteger atomicInteger = (AtomicInteger) Client.getObjectInputStream().readObject();
+            followerLabel.setText(atomicInteger + " Followers");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void followUser() {
+        try {
+            muteCheckBox.setVisible(true);
+            CommandSender commandSender = new CommandSender(CommandType.FOLLOW, thisUser.getUser(), thisUser.getSearchedUser());
+            thisUser.getSearchedUser().addFollower(thisUser.getUser());
+            thisUser.getUser().addFollowing(thisUser.getSearchedUser());
+            Client.getObjectOutputStream().writeObject(commandSender);
+            AtomicInteger atomicInteger = (AtomicInteger) Client.getObjectInputStream().readObject();
+            followerLabel.setText(atomicInteger + " Followers");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void mute(ActionEvent event) {
+        if (muteCheckBox.isSelected()) {
+            muteUser();
+        }else{
+            unmuteUser();
+        }
+    }
+
+    private void muteUser() {
+        CommandSender commandSender = new CommandSender(
+                CommandType.MUTE, thisUser.getUser(), thisUser.getSearchedUser()
+        );
+        try {
+            thisUser.getUser().getMutedList().add(thisUser.getSearchedUser());
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(commandSender);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void unmuteUser() {
+        CommandSender commandSender = new CommandSender(
+                CommandType.UNMUTE, thisUser.getUser(), thisUser.getSearchedUser()
+        );
+        try {
+            thisUser.getUser().getMutedList().remove(thisUser.getSearchedUser());
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(commandSender);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void refresh(MouseEvent mouseEvent) {
