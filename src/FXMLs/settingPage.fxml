@@ -98,7 +98,10 @@
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor></JFXButton>
-    <JFXCheckBox checkedColor="#32dc32" layoutX="309.0" layoutY="293.0" onAction="#show" text="showPass" />
+    <JFXCheckBox checkedColor="#32dc32" layoutX="309.0" layoutY="293.0" onAction="#show" text="showPass">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXCheckBox>
     <JFXTextField fx:id="fakePassField" focusColor="#32dc32" layoutX="157.0" layoutY="280.0" promptText="newPassword" visible="false" />
     <JFXTextField fx:id="numberField" focusColor="#32dc32" layoutX="158.0" layoutY="347.0" promptText="newPhoneNumber" />
    <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="528.0" prefHeight="20.0" prefWidth="450.0" textFill="#b22222">
@@ -114,5 +117,8 @@
       </cursor>
    </Button>
    <Circle fx:id="profilePicCircle" fill="DODGERBLUE" layoutX="78.0" layoutY="183.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
-    <JFXButton buttonType="RAISED" layoutX="24.0" layoutY="241.0" onAction="#changeProfilePic" style="-fx-background-color: #32dc32;" text="change profilePic" />
+    <JFXButton buttonType="RAISED" layoutX="24.0" layoutY="241.0" onAction="#changeProfilePic" style="-fx-background-color: #32dc32;" text="change profilePic">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXButton>
 </AnchorPane>

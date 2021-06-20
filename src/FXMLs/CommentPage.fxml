@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
@@ -67,6 +69,17 @@
                     </DropShadow>
                 </effect>
             </Label>
+         <ImageView fitHeight="34.0" fitWidth="54.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/left_arrow_500px.png" />
+            </image>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+               <DropShadow blurType="GAUSSIAN" />
+            </effect>
+         </ImageView>
         </children>
         <effect>
             <DropShadow>
@@ -83,7 +96,10 @@
     <JFXButton buttonType="RAISED" layoutX="305.0" layoutY="150.0" onAction="#comment" style="-fx-background-color: #32dc32;" text="Comment">
       <font>
          <Font name="Georgia" size="18.0" />
-      </font></JFXButton>
+      </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXButton>
    <ListView fx:id="commentListView" layoutY="199.0" prefHeight="408.0" prefWidth="450.0">
       <effect>
          <DropShadow blurType="GAUSSIAN">

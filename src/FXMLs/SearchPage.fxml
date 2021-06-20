@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -92,10 +93,15 @@
          <Font name="Georgia" size="18.0" />
       </font>
    </Label>
-   <ImageView fitHeight="48.0" fitWidth="50.0" layoutX="14.0" layoutY="57.0" onMouseClicked="#returnToMainMenu" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="48.0" fitWidth="50.0" layoutX="14.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/left_arrow_500px.png" />
       </image>
    </ImageView>
+   <Button layoutX="12.0" layoutY="69.0" mnemonicParsing="false" onAction="#returnToMainMenu" opacity="0.0" text="Button">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
 
 </AnchorPane>

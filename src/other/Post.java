@@ -22,7 +22,7 @@ public class Post implements Serializable,Comparable {
     private AtomicInteger numOfLikes = new AtomicInteger(0);
     private AtomicInteger numOfReposts = new AtomicInteger(0);
     private int postId;
-    private static AtomicInteger idCounter = new AtomicInteger(0);
+    private static int idCounter = 0;
     private Post referencePost;
 
     public Post(String writer, String title, String description,Date date, byte[] profilePic, byte[] postPic) {
@@ -32,8 +32,8 @@ public class Post implements Serializable,Comparable {
         this.profilePic = profilePic;
         this.postPic = postPic;
         this.dateTime = date;
-        this.postId = idCounter.intValue();
-        idCounter.addAndGet(1);
+        this.postId = idCounter++;
+        this.referencePost = this;
     }
 
     public Post(String writer, String title, String description,Date date, byte[] profilePic) {
@@ -42,19 +42,25 @@ public class Post implements Serializable,Comparable {
         this.description = description;
         this.profilePic = profilePic;
         this.dateTime = date;
-        this.postId = idCounter.intValue();
-        idCounter.addAndGet(1);
+        this.postId = idCounter++;
+        this.referencePost = this;
     }
 
     public Post() {
-        this.postId = idCounter.intValue();
-        idCounter.addAndGet(1);
+
     }
 
     public void rePost(Post post){
         this.referencePost = post;
     }
 
+    public Post getReferencePost() {
+        return referencePost;
+    }
+
+    public void setReferencePost(Post referencePost) {
+        this.referencePost = referencePost;
+    }
 
     public Date getDateTime() {
         return dateTime;

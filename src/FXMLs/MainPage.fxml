@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -12,7 +13,10 @@
     <JFXButton fx:id="newPostButton" buttonType="RAISED" layoutX="183.0" layoutY="58.0" onAction="#newPost" style="-fx-background-color: #32cd32;" text="New Post">
       <font>
          <Font name="Georgia" size="14.0" />
-      </font></JFXButton>
+      </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXButton>
     <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="450.0" style="-fx-background-color: #778899;">
         <children>
             <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="true" text="Time line" textFill="WHITE">
@@ -72,11 +76,19 @@
                </DropShadow>
             </effect>
          </Label>
-         <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="406.0" layoutY="6.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+         <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="406.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../images/reset_500px.png" />
             </image>
+            <effect>
+               <DropShadow blurType="GAUSSIAN" />
+            </effect>
          </ImageView>
+         <Button layoutX="406.0" layoutY="7.0" mnemonicParsing="false" onAction="#refresh" opacity="0.0" prefHeight="38.0" prefWidth="38.0" text="Button">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </Button>
       </children>
       <effect>
          <DropShadow>

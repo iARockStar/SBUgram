@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -109,8 +108,8 @@ public class PasswordRetrieveController {
     }
 
 
-    public void goBack(MouseEvent mouseEvent) throws IOException {
-        Main.loadAPageMouse(mouseEvent
+    public void goBack(ActionEvent event) throws IOException {
+        Main.loadAPage(event
                 , "../FXMLs/sample.fxml"
                 , "SBUgram - Login menu"
         );

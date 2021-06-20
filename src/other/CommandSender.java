@@ -52,6 +52,8 @@ public class CommandSender implements Serializable {
         this.followerOrUnfollower = follower;
     }
 
+
+
     public User getFollower() {
         return followerOrUnfollower;
     }
@@ -60,9 +62,6 @@ public class CommandSender implements Serializable {
         return userWhoWantsToPost;
     }
 
-    public Object getObject() {
-        return object;
-    }
 
     public Post getPostToLike() {
         return postToLike;
@@ -90,6 +89,10 @@ public class CommandSender implements Serializable {
 
     public Object getUser() {
         return object;
+    }
+
+    public void setUser(Object object){
+        this.object = object;
     }
 
     public User getUserWhoLiked() {

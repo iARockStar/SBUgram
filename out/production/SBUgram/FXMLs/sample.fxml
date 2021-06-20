@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -78,6 +79,9 @@
          <effect>
             <DropShadow />
          </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <Label layoutX="28.0" layoutY="296.0" text="Don't have an account?">
          <font>
@@ -91,6 +95,9 @@
          <effect>
             <DropShadow />
          </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="retriever" buttonType="RAISED" layoutX="28.0" layoutY="434.0" onAction="#retrievePass" style="-fx-background-color: #32CD32;" text="Retrieve password">
          <font>

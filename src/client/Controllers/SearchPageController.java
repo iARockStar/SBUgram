@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import other.CommandType;
 import other.CommandSender;
@@ -59,8 +58,8 @@ public class SearchPageController extends mainPage {
             );
     }
 
-    public void returnToMainMenu(MouseEvent mouseEvent) throws IOException {
-        Main.loadAPageMouse(mouseEvent
+    public void returnToMainMenu(ActionEvent Event) throws IOException {
+        Main.loadAPage(Event
         ,"../FXMLs/MainMenu.fxml"
         ,"SBUgram - Main menu");
     }

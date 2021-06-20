@@ -33,12 +33,14 @@ public class ClientHandler extends Thread {
                         break;
                     case LOGIN:
                         User user = (User) commandSender.getUser();
+                        commandSender.setUser(null);
                         username = user.getUsername();
                         String password = user.getPassword();
                         login(username, password);
                         break;
                     case SIGNUP:
                         user = (User) commandSender.getUser();
+                        commandSender.setUser(null);
                         signup(user);
                         System.out.println("user signed up successfully");
                         break;
@@ -114,8 +116,8 @@ public class ClientHandler extends Thread {
                         System.out.println("repost done");
                         break;
                     case SETTING:
-                        user = (User) commandSender.getUser();
-                        settingUpdate(user);
+                        User updatedUser = (User) commandSender.getUser();
+                        settingUpdate(updatedUser);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {

@@ -21,7 +21,6 @@ import java.io.IOException;
  * <h1>SBUgram</h1>
  * SBUgram application is for sharing your day-to-day
  * tweets and pics with your friends and family!
- *
  * @author iliya Akhoondi
  * @version 1.0
  * @since 2021-6-4

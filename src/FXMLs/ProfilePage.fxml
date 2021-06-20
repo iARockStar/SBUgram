@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
@@ -115,17 +116,7 @@
          <Font name="Georgia Bold Italic" size="24.0" />
       </font>
    </Label>
-   <JFXButton buttonType="RAISED" layoutX="48.0" layoutY="267.0" onAction="#block" style="-fx-background-color: #32dc32;" text="Unfollow">
-      <font>
-         <Font name="Georgia" size="18.0" />
-      </font>
-   </JFXButton>
-   <JFXButton buttonType="RAISED" layoutX="322.0" layoutY="267.0" onAction="#mute" style="-fx-background-color: #32dc32;" text="Mute">
-      <font>
-         <Font name="Georgia" size="18.0" />
-      </font>
-   </JFXButton>
-   <JFXCheckBox fx:id="followCheckbox" layoutX="184.0" layoutY="272.0" onAction="#follow" prefHeight="22.0" prefWidth="98.0" style="-fx-background-color: #778899;" text="Follow" textFill="WHITE">
+   <JFXCheckBox fx:id="followCheckbox" layoutX="172.0" layoutY="272.0" onAction="#follow" prefHeight="22.0" prefWidth="98.0" style="-fx-background-color: #778899;" text="Follow" textFill="WHITE">
       <font>
          <Font name="Georgia" size="18.0" />
       </font>
@@ -136,6 +127,36 @@
             </color>
          </DropShadow>
       </effect>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </JFXCheckBox>
-
+<JFXCheckBox fx:id="muteCheckBox" layoutX="309.0" layoutY="272.0" onAction="#mute" prefHeight="22.0" prefWidth="77.0" style="-fx-background-color: #778899;" text="Mute" textFill="WHITE">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font>
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXCheckBox>
+    <JFXCheckBox fx:id="blockCheckbox" layoutX="58.0" layoutY="272.0" onAction="#block" prefHeight="22.0" prefWidth="78.0" style="-fx-background-color: #778899;" text="block" textFill="WHITE">
+      <font>
+         <Font name="Georgia" size="18.0" />
+      </font>
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></JFXCheckBox>
 </AnchorPane>

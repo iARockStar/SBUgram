@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -84,9 +85,18 @@
                         <Font name="Georgia Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="64.0" layoutY="3.0" mnemonicParsing="false" onAction="#like" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button" />
-                  <Button layoutX="118.0" layoutY="9.0" mnemonicParsing="false" onAction="#comment" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button" />
-                  <Button layoutX="367.0" layoutY="5.0" mnemonicParsing="false" onAction="#rePost" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button" />
+                  <Button layoutX="64.0" layoutY="3.0" mnemonicParsing="false" onAction="#like" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <Button layoutX="118.0" layoutY="9.0" mnemonicParsing="false" onAction="#comment" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <Button layoutX="367.0" layoutY="5.0" mnemonicParsing="false" onAction="#rePost" opacity="0.0" prefHeight="47.0" prefWidth="52.0" text="Button">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </children>
             </AnchorPane>
          </children></VBox>

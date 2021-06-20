@@ -91,7 +91,6 @@ public class SettingPageController extends mainPage implements Initializable {
         String name = this.nameField.getText();
         if (name.length() != 0)
             thisUser.getUser().setName(name);
-        System.out.println(thisUser.getUser().getName());
         String lastName = this.lastNameField.getText();
         if (lastName.length() != 0)
             thisUser.getUser().setLastName(lastName);
@@ -185,15 +184,12 @@ public class SettingPageController extends mainPage implements Initializable {
             String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
             thisUser.getUser().setDatePicker(FormattedDate);
         }
-        System.out.println(user.getName());
-        CommandSender commandSender = new CommandSender(CommandType.SETTING, user);
-        Client.getObjectOutputStream().writeObject(commandSender);
+        Client.getObjectOutputStream().writeObject(
+                new CommandSender(CommandType.SETTING, user));
         Client.getObjectOutputStream().flush();
         Main.loadAPage(event
                 , "../FXMLs/MyProfile.fxml"
                 , "SBUgram - Your Profile"
         );
     }
-
-
 }

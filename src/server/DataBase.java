@@ -7,6 +7,7 @@ import java.io.*;
 import other.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -52,7 +53,7 @@ public class DataBase {
             FileInputStream fileInputStream = new FileInputStream(USERS_FILE);
             objectInputStream1 = new ObjectInputStream(fileInputStream);
             users = (CopyOnWriteArrayList<User>) objectInputStream1.readObject();
-        } catch (EOFException e){
+        } catch (EOFException e) {
             objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
             objectOutputStream.flush();
             return;
@@ -90,7 +91,7 @@ public class DataBase {
     private synchronized static void updateUser() {
         sortPosts();
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\USER\\IdeaProjects\\signUp.bin",false);
+            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\USER\\IdeaProjects\\signUp.bin", false);
             ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream);
             objectOutputStream1.writeObject(listOfUsers);
             objectOutputStream1.flush();
@@ -160,14 +161,18 @@ public class DataBase {
     }
 
     public synchronized static CopyOnWriteArrayList<Comment> addAndSendComments(User user, Post post, Comment comment) {
+        List<Comment> commentList = new CopyOnWriteArrayList<>();
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
-                if (listUser.getPostToComment() == null)
-                    listUser.setPostToComment(post);
-                listUser.getPostToComment().getComments().add(comment);
+                for (Post listUserPost : listUser.getListOfPosts()) {
+                    if (listUserPost.equals(post)) {
+                        listUserPost.getComments().add(comment);
+                        commentList = listUserPost.getComments();
+                    }
+                }
                 updateUser();
-                return listUser.getPostToComment().getComments();
+                return (CopyOnWriteArrayList<Comment>) commentList;
             }
         }
         return null;
@@ -177,7 +182,10 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
-                return listUser.getPostToComment().getComments();
+                for (Post listUserPost : listUser.getListOfPosts()) {
+                    if (listUserPost.equals(post))
+                        return listUserPost.getComments();
+                }
             }
         }
         return null;
@@ -249,12 +257,12 @@ public class DataBase {
                 listUser.addLikedPost(post);
             }
         }
-        for (User listUser:
-             listOfUsers) {
-            for (Post listPost:
-                 listUser.getListOfPosts()) {
-                if(listPost.equals(post)) {
-                    if(!isLiked) {
+        for (User listUser :
+                listOfUsers) {
+            for (Post listPost :
+                    listUser.getListOfPosts()) {
+                if (listPost.equals(post)) {
+                    if (!isLiked) {
                         listPost.getNumOfLikes().addAndGet(1);
                     }
                 }
@@ -271,12 +279,12 @@ public class DataBase {
                 listUser.removeLikedPost(post);
             }
         }
-        for (User listUser:
+        for (User listUser :
                 listOfUsers) {
-            for (Post listPost:
+            for (Post listPost :
                     listUser.getListOfPosts()) {
-                if(listPost.equals(post)) {
-                    if(!isDisLiked) {
+                if (listPost.equals(post)) {
+                    if (!isDisLiked) {
                         listPost.getNumOfLikes().addAndGet(-1);
                     }
                 }
@@ -295,10 +303,10 @@ public class DataBase {
     }
 
     public synchronized static ApprovedType repost(User user, Post post) {
-        for (User listUser:
-             listOfUsers) {
-            if(user.getUsername().equalsIgnoreCase(listUser.getUsername()) && !user.getListOfPosts().contains(post)) {
-                post.getNumOfReposts().addAndGet(1);
+        for (User listUser :
+                listOfUsers) {
+            if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) && !listUser.getListOfPosts().contains(post.getReferencePost())) {
+                post.getReferencePost().getNumOfReposts().addAndGet(1);
                 listUser.getListOfPosts().add(post);
                 updateUser();
                 return ApprovedType.APPROVED;
@@ -309,8 +317,8 @@ public class DataBase {
 
     public synchronized static void settingUpdate(User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
-            if(listOfUsers.get(i).getUsername().equalsIgnoreCase(user.getUsername())){
-                listOfUsers.add(i,user);
+            if (listOfUsers.get(i).getUsername().equalsIgnoreCase(user.getUsername())) {
+                listOfUsers.add(i, user);
                 break;
             }
         }
