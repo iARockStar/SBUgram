@@ -27,15 +27,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Vector;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfilePageController extends mainPage {
 
     @FXML
     ListView<Post> postList;
-    CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
+    Vector<Post> posts = new Vector<>();
 
     @FXML
     Circle profilePic;
@@ -116,9 +117,9 @@ public class ProfilePageController extends mainPage {
         Client.getObjectOutputStream().reset();
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
         try {
-            posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
+            posts = (Vector<Post>) Client.getObjectInputStream().readObject();
         } catch (Exception e) {
-            posts = new CopyOnWriteArrayList<>();
+            posts = new Vector<>();
             e.printStackTrace();
         }
     }

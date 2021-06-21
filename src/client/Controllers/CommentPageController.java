@@ -16,7 +16,8 @@ import other.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
+
 
 public class CommentPageController extends mainPage implements Initializable{
 
@@ -24,7 +25,7 @@ public class CommentPageController extends mainPage implements Initializable{
     private ListView<Comment> commentListView;
     @FXML
     private JFXTextArea commentText;
-    CopyOnWriteArrayList<Comment> comments;
+    Vector<Comment> comments;
 
 
     @Override
@@ -46,9 +47,9 @@ public class CommentPageController extends mainPage implements Initializable{
         try {
             Client.getObjectOutputStream().writeObject(commandSender);
             Client.getObjectOutputStream().flush();
-            comments = (CopyOnWriteArrayList<Comment>) Client.getObjectInputStream().readObject();
+            comments = (Vector<Comment>) Client.getObjectInputStream().readObject();
         }catch (Exception e){
-            comments = new CopyOnWriteArrayList<>();
+            comments = new Vector<>();
             e.printStackTrace();
         }
 
@@ -65,7 +66,7 @@ public class CommentPageController extends mainPage implements Initializable{
         CommandSender commandSender = new CommandSender(CommandType.LOADCOMMENTS,post,post.getOwner(),thisUser.getUser(),null);
         try{
             Client.getObjectOutputStream().writeObject(commandSender);
-            comments = (CopyOnWriteArrayList<Comment>) Client.getObjectInputStream().readObject();
+            comments = (Vector<Comment>) Client.getObjectInputStream().readObject();
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (ClassNotFoundException e) {

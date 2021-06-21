@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Post implements Serializable,Comparable {
@@ -15,13 +16,13 @@ public class Post implements Serializable,Comparable {
     private String title;
     private String description;
     private User owner;
-    private byte[] profilePic;
-    private byte[] postPic;
+    private transient byte[] profilePic;
+    private transient byte[] postPic;
     private Date dateTime;
-    private CopyOnWriteArrayList<Comment> comments = new CopyOnWriteArrayList<>();
+    private Vector<Comment> comments = new Vector<>();
     private AtomicInteger numOfLikes = new AtomicInteger(0);
-    private CopyOnWriteArrayList<User> likers = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<User> reposters = new CopyOnWriteArrayList<>();
+    private Vector<User> likers = new Vector<>();
+    private Vector<User> reposters = new Vector<>();
     private AtomicInteger numOfReposts = new AtomicInteger(0);
     private int postId;
     private static int idCounter = 0;
@@ -49,7 +50,7 @@ public class Post implements Serializable,Comparable {
     }
 
     public Post() {
-
+        this.postId = idCounter++;
     }
 
     public void addToLikers(User user){
@@ -60,11 +61,11 @@ public class Post implements Serializable,Comparable {
         likers.remove(user);
     }
 
-    public CopyOnWriteArrayList<User> getLikers() {
+    public Vector<User> getLikers() {
         return likers;
     }
 
-    public void setLikers(CopyOnWriteArrayList<User> likers) {
+    public void setLikers(Vector<User> likers) {
         this.likers = likers;
     }
 
@@ -137,11 +138,11 @@ public class Post implements Serializable,Comparable {
         this.postPic = postPic;
     }
 
-    public CopyOnWriteArrayList<Comment> getComments() {
+    public Vector<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(CopyOnWriteArrayList<Comment> comments) {
+    public void setComments(Vector<Comment> comments) {
         this.comments = comments;
     }
 
@@ -185,11 +186,11 @@ public class Post implements Serializable,Comparable {
         this.numOfReposts = numOfReposts;
     }
 
-    public CopyOnWriteArrayList<User> getReposters() {
+    public Vector<User> getReposters() {
         return reposters;
     }
 
-    public void setReposters(CopyOnWriteArrayList<User> reposters) {
+    public void setReposters(Vector<User> reposters) {
         this.reposters = reposters;
     }
 

@@ -5,7 +5,8 @@ import javafx.geometry.Pos;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements Serializable {
@@ -17,16 +18,16 @@ public class User implements Serializable {
     private SecurityQuestion securityQuestion;
     private String datePicker;
     private String email;
-    private CopyOnWriteArrayList<Post> listOfPosts = new CopyOnWriteArrayList<>();
+    private Vector<Post> listOfPosts = new Vector<>();
     private byte[] profileImage;
     private Post postToComment = new Post();
     private Comment newComment;
-    private CopyOnWriteArrayList<User> followers = new CopyOnWriteArrayList<>();
+    private Vector<User> followers = new Vector<>();
     private AtomicInteger numOfFollowers = new AtomicInteger(0);
     private AtomicInteger numOfFollowings = new AtomicInteger(0);
-    private CopyOnWriteArrayList<User> followings = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<Post> postsLiked = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<User> mutedList = new CopyOnWriteArrayList<>();
+    private Vector<User> followings = new Vector<>();
+    private Vector<Post> postsLiked = new Vector<>();
+    private Vector<User> mutedList = new Vector<>();
 
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
@@ -108,11 +109,11 @@ public class User implements Serializable {
         mutedList.remove(user);
     }
 
-    public CopyOnWriteArrayList<User> getFollowers() {
+    public Vector<User> getFollowers() {
         return followers;
     }
 
-    public CopyOnWriteArrayList<User> getFollowings() {
+    public Vector<User> getFollowings() {
         return followings;
     }
 
@@ -152,11 +153,11 @@ public class User implements Serializable {
         listOfPosts.add(post);
     }
 
-    public CopyOnWriteArrayList<Post> getListOfPosts() {
+    public Vector<Post> getListOfPosts() {
         return listOfPosts;
     }
 
-    public void setListOfPosts(CopyOnWriteArrayList<Post> listOfPosts) {
+    public void setListOfPosts(Vector<Post> listOfPosts) {
         this.listOfPosts = listOfPosts;
     }
 
@@ -248,19 +249,19 @@ public class User implements Serializable {
     }
 
 
-    public CopyOnWriteArrayList<Post> getPostsLiked() {
+    public Vector<Post> getPostsLiked() {
         return postsLiked;
     }
 
-    public void setPostsLiked(CopyOnWriteArrayList<Post> postsLiked) {
+    public void setPostsLiked(Vector<Post> postsLiked) {
         this.postsLiked = postsLiked;
     }
 
-    public CopyOnWriteArrayList<User> getMutedList() {
+    public Vector<User> getMutedList() {
         return mutedList;
     }
 
-    public void setMutedList(CopyOnWriteArrayList<User> mutedList) {
+    public void setMutedList(Vector<User> mutedList) {
         this.mutedList = mutedList;
     }
 }

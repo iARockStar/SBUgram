@@ -12,12 +12,13 @@ import other.*;
 
 
 import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
+
 
 public class MainPageController extends mainPage {
 
     Post currentPost = new Post();
-    CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
+    Vector<Post> posts = new Vector<>();
 
 
     @FXML
@@ -36,38 +37,13 @@ public class MainPageController extends mainPage {
         Client.getObjectOutputStream().writeObject(
                 new CommandSender(CommandType.LOADFOLLOWINGPOSTS, user));
         try {
-            posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
+            posts = (Vector<Post>) Client.getObjectInputStream().readObject();
         }catch (Exception e){
-            posts = new CopyOnWriteArrayList<>();
+            posts = new Vector<>();
             e.printStackTrace();
         }
     }
 
-
-    public void post(JFXTextField title, JFXTextArea description,ActionEvent event) throws IOException {
-        currentPost.setTitle(title.getText());
-        currentPost.setDescription(description.getText());
-        currentPost.setWriter("ali alavi");
-
-        //save the post in arraylist
-        posts.add(currentPost);
-
-        //show the arraylist in listview
-        postList.setItems(FXCollections.observableArrayList(posts));
-        postList.setCellFactory(postList -> new PostItem());
-
-        /*
-        if the listview cells are not customized and list view is made of strings
-        this code will add new post title to the list view
-        postList.getItems().add(currentPost.getTitle());
-         */
-
-        currentPost = new Post();
-
-        //empty fields
-        title.setText("");
-        description.setText("");
-    }
 
     @FXML
     ListView<Post> postList;

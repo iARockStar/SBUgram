@@ -25,12 +25,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
+
 
 public class MyProfileController extends mainPage  {
     @FXML
     ListView<Post> postList;
-    CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
+    Vector<Post> posts = new Vector<>();
 
     @FXML
     Label usernameLabel;
@@ -104,9 +105,9 @@ public class MyProfileController extends mainPage  {
     public void loadPosts(User user) throws IOException {
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
         try {
-            posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();
+            posts = (Vector<Post>) Client.getObjectInputStream().readObject();
         }catch (Exception e){
-            posts = new CopyOnWriteArrayList<>();
+            posts = new Vector<>();
             e.printStackTrace();
         }
     }

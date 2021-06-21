@@ -8,7 +8,7 @@ import other.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DataBase {
@@ -16,8 +16,8 @@ public class DataBase {
     private static final String USERS_FILE
             = "C:\\Users\\USER\\IdeaProjects\\signUp.bin";
 
-    private static CopyOnWriteArrayList<User> listOfUsers
-            = new CopyOnWriteArrayList<>();
+    private static Vector<User> listOfUsers
+            = new Vector<>();
 
 
     public static void initializeServer() {
@@ -33,11 +33,11 @@ public class DataBase {
         try {
             FileInputStream fin = new FileInputStream(USERS_FILE);
             ObjectInputStream inFromFile = new ObjectInputStream(fin);
-            listOfUsers = (CopyOnWriteArrayList<User>) inFromFile.readObject();
+            listOfUsers = (Vector<User>) inFromFile.readObject();
             inFromFile.close();
             fin.close();
         } catch (EOFException | StreamCorruptedException e) {
-            listOfUsers = new CopyOnWriteArrayList<>();
+            listOfUsers = new Vector<>();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,11 +48,11 @@ public class DataBase {
     public synchronized static void login(ObjectOutputStream objectOutputStream
             , String username, String password) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream1 = null;
-        CopyOnWriteArrayList<User> users = new CopyOnWriteArrayList<>();
+        Vector<User> users = new Vector<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(USERS_FILE);
             objectInputStream1 = new ObjectInputStream(fileInputStream);
-            users = (CopyOnWriteArrayList<User>) objectInputStream1.readObject();
+            users = (Vector<User>) objectInputStream1.readObject();
         } catch (EOFException e) {
             objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
             objectOutputStream.flush();
@@ -91,13 +91,17 @@ public class DataBase {
     private synchronized static void updateUser() {
         sortPosts();
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\USER\\IdeaProjects\\signUp.bin", false);
+            File file = new File("C:\\Users\\USER\\IdeaProjects\\signUp.bin");
+            file.delete();
+            File file1 = new File("C:\\Users\\USER\\IdeaProjects\\signUp.bin");
+            file1.createNewFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(USERS_FILE, false);
             ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream);
             objectOutputStream1.writeObject(listOfUsers);
             objectOutputStream1.flush();
             fileOutputStream.close();
-        } catch (IOException ignored) {
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -115,7 +119,6 @@ public class DataBase {
             }
         }
         updateUser();
-
     }
 
 
@@ -161,8 +164,8 @@ public class DataBase {
         return null;
     }
 
-    public synchronized static CopyOnWriteArrayList<Comment> addAndSendComments(User user, Post post, Comment comment) {
-        List<Comment> commentList = new CopyOnWriteArrayList<>();
+    public synchronized static Vector<Comment> addAndSendComments(User user, Post post, Comment comment) {
+        List<Comment> commentList = new Vector<>();
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -173,13 +176,13 @@ public class DataBase {
                     }
                 }
                 updateUser();
-                return (CopyOnWriteArrayList<Comment>) commentList;
+                return (Vector<Comment>) commentList;
             }
         }
         return null;
     }
 
-    public synchronized static CopyOnWriteArrayList<Comment> sendComments(User user, Post post) {
+    public synchronized static Vector<Comment> sendComments(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -232,8 +235,8 @@ public class DataBase {
         return atomicInteger;
     }
 
-    public synchronized static CopyOnWriteArrayList<Post> loadFollowingPosts(User user) {
-        CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
+    public synchronized static Vector<Post> loadFollowingPosts(User user) {
+        Vector<Post> posts = new Vector<>();
         User user2 = null;
         for (User listUser :
                 listOfUsers) {
@@ -244,8 +247,8 @@ public class DataBase {
         }
         for (User listUser : listOfUsers) {
             if (user2.getFollowings().contains(listUser))
-                if(!user2.getMutedList().contains(listUser))
-                posts.addAll(listUser.getListOfPosts());
+                if (!user2.getMutedList().contains(listUser))
+                    posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
         return posts;
@@ -264,8 +267,8 @@ public class DataBase {
             for (Post listPost :
                     listUser.getListOfPosts()) {
                 if (listPost.equals(post) && !listPost.getLikers().contains(user)) {
-                        listPost.getNumOfLikes().addAndGet(1);
-                        listPost.addToLikers(user);
+                    listPost.getNumOfLikes().addAndGet(1);
+                    listPost.addToLikers(user);
                 }
             }
         }
@@ -312,7 +315,7 @@ public class DataBase {
                 post.addToRepsters(user);
                 listUser.getListOfPosts().add(post);
                 for (int i = listOfUsers.size() - 1; i >= 0; i--) {
-                    if(listOfUsers.get(i).getListOfPosts().contains(post)){
+                    if (listOfUsers.get(i).getListOfPosts().contains(post)) {
                         int indexOfPost =
                                 listOfUsers.get(i).getListOfPosts().indexOf(post);
                         listOfUsers.get(i).getListOfPosts().set(indexOfPost, post);
@@ -340,6 +343,7 @@ public class DataBase {
     /**
      * this method is for deleting accounts and consists of deleting
      * different parts which are related to the deleted user.
+     *
      * @param deletedUser is the user whom the user tends to delete.
      */
     public synchronized static void deleteAccount(User deletedUser) {

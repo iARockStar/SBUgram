@@ -55,7 +55,7 @@ public class PostItemController implements ItemController {
 
     @Override
     public AnchorPane init() {
-        updateUser();
+//        updateUser();
         username.setText("@" + post.getWriter());
         title.setText(post.getTitle());
         for (Post listPost :
@@ -87,19 +87,19 @@ public class PostItemController implements ItemController {
         repostLabel.setText("   " + post.getNumOfReposts() + "\n" + "Reposts");
         return root;
     }
-
-    private void updateUser() {
-        try {
-            Client.getObjectOutputStream().reset();
-            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-            User user = (User) Client.getObjectInputStream().readObject();
-            thisUser.setUser(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    private void updateUser() {
+//        try {
+//            Client.getObjectOutputStream().reset();
+//            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
+//            User user = (User) Client.getObjectInputStream().readObject();
+//            thisUser.setUser(user);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public void like(ActionEvent actionEvent) {

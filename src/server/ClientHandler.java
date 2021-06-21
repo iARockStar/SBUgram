@@ -3,7 +3,8 @@ package server;
 import java.io.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.geometry.Pos;
@@ -195,10 +196,10 @@ public class ClientHandler extends Thread {
     }
 
     private void loadFollowingsPosts(User user) {
-        CopyOnWriteArrayList<Post> posts = DataBase.loadFollowingPosts(user);
+        Vector<Post> posts = DataBase.loadFollowingPosts(user);
         try {
             objectOutputStream.reset();
-            objectOutputStream.writeObject(new CopyOnWriteArrayList<>(posts));
+            objectOutputStream.writeObject(new Vector<>(posts));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -226,11 +227,11 @@ public class ClientHandler extends Thread {
     }
 
     private void sendComments(User user, Post post) {
-        CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(user, post);
+        Vector<Comment> comments = DataBase.sendComments(user, post);
         try {
             if (comments != null) {
                 objectOutputStream.reset();
-                objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
+                objectOutputStream.writeObject(new Vector<>(comments));
                 objectOutputStream.flush();
             }
         } catch (Exception e) {
@@ -243,7 +244,7 @@ public class ClientHandler extends Thread {
         if (comments != null) {
             try {
                 objectOutputStream.reset();
-                objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
+                objectOutputStream.writeObject(new Vector<>(comments));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -319,7 +320,7 @@ public class ClientHandler extends Thread {
         if (user1 != null)
             try {
                 objectOutputStream.writeObject(
-                        new CopyOnWriteArrayList<>(user1.getListOfPosts()));
+                        new Vector<>(user1.getListOfPosts()));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
