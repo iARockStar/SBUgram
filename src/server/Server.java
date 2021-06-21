@@ -14,9 +14,7 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(2222);
             while (true) {
-                System.out.println("waiting for client to connect");
                 Socket socket = serverSocket.accept();
-                System.out.println("client connected("+Thread.currentThread().getId()+")");
                 new ClientHandler(new ObjectInputStream(socket.getInputStream())
                         , new ObjectOutputStream(socket.getOutputStream())).start();
             }

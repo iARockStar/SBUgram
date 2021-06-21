@@ -13,10 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import other.CommandSender;
-import other.CommandType;
-import other.SecurityQuestion;
-import other.User;
+import other.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,59 +35,46 @@ import java.util.regex.Pattern;
 public class SignupController implements Initializable {
 
     @FXML
-    PasswordField password;
+    private PasswordField password;
     @FXML
-    PasswordField re_writePassField;
+    private PasswordField re_writePassField;
     @FXML
-    TextField fakePassField;
+    private TextField fakePassField;
     @FXML
-    TextField fakeReWritePass;
-
+    private TextField fakeReWritePass;
     @FXML
-    DatePicker myDatePicker;
-
+    private DatePicker myDatePicker;
     @FXML
-    Label warningLabel;
+    private Label warningLabel;
     @FXML
     private TextField name;
     @FXML
     private TextField lastName;
     @FXML
     private TextField phoneNumber;
-
-    private byte[] userImage;
-
-
     @FXML
     private TextField answerTextField;
     @FXML
     ChoiceBox<String> questions;
+    @FXML
+    private TextField email;
+    @FXML
+    private TextField username;
+    @FXML
+    private Circle profilePic1;
+    @FXML
+    Label notification;
+    String question;
+    String answer;
+    private Image profilePicImage;
+    private LocalDate myDate;
+    private byte[] userImage;
     private final String[] choices = {"What is your mother's maiden name?"
             , "What is the name of your first pet?"
             , "What was your first car?"
             , "What elementary school did you attend?"
             , "What is the name of the town where you were born?"};
     private String myQuestion;
-
-
-    @FXML
-    private TextField email;
-
-    @FXML
-    private TextField username;
-
-    Image profilePicImage;
-
-    LocalDate myDate;
-
-
-    @FXML
-    private Circle profilePic1;
-
-    @FXML
-    Label notification;
-    String question;
-    String answer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -108,6 +92,8 @@ public class SignupController implements Initializable {
 
     @FXML
     public void signup(ActionEvent event) throws IOException {
+        if (!Client.isServerUp())
+            Client.connectToServer();
         String name = this.name.getText();
         String lastName = this.lastName.getText();
         String username = this.username.getText();
@@ -194,18 +180,38 @@ public class SignupController implements Initializable {
 
 
     private void loadMainPageIfValid(ActionEvent event, String name, String lastName, String username, String phoneNumber, String password, String fakePass, String email, SecurityQuestion securityQuestion, byte[] userImage) throws IOException {
-        String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
+        String FormattedDate;
+        if (myDate != null) {
+            FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
+        } else {
+            warningLabel.setText("please choose your birth date");
+            return;
+        }
         User newUser =
                 getUser(name, lastName, username, phoneNumber, password, fakePass, email, securityQuestion, userImage, FormattedDate);
         thisUser.setUser(newUser);
+        if (file != null)
+            thisUser.getUser().setProfilePicAddress(file.toString());
         CommandSender commandSender = new CommandSender(CommandType.SIGNUP, newUser);
-        Client.getObjectOutputStream().writeObject(commandSender);
-        Client.getObjectOutputStream().flush();
-        System.out.println("new User sent");
-        Main.loadAPage(event
-                , "../FXMLs/MainPage.fxml"
-                , "SBUgram - Home page"
-        );
+        ApprovedType isAllowed = ApprovedType.NOT_APPROVED;
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(commandSender);
+            Client.getObjectOutputStream().flush();
+            isAllowed = (ApprovedType) Client.getObjectInputStream().readObject();
+        } catch (IOException | ClassNotFoundException ioException) {
+            ioException.printStackTrace();
+        }
+        if (isAllowed == ApprovedType.APPROVED)
+            Main.loadAPage(event
+                    , "../FXMLs/MainPage.fxml"
+                    , "SBUgram - Home page"
+            );
+        else {
+            warningLabel.setText(
+                    "Username Already in use.Please choose a different username"
+            );
+        }
     }
 
     @FXML
@@ -231,15 +237,16 @@ public class SignupController implements Initializable {
 
     @FXML
     public void pickADate() {
-        myDate = myDatePicker.getValue();
-        String FormattedDate = myDate.format(DateTimeFormatter.ofPattern("MMM-dd-yyyy"));
-        System.out.println(FormattedDate);
+        if (myDatePicker != null)
+            myDate = myDatePicker.getValue();
     }
+
+    private File file;
 
     public void setProfilePic() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Upload your profile picture");
-        File file = chooser.showOpenDialog(null);
+        file = chooser.showOpenDialog(null);
         if (file != null) {
             System.out.println(file.toString());
             profilePicImage = new Image(file.toURI().toString());

@@ -30,12 +30,14 @@ public class NewPostPageController extends mainPage {
 
     public void post(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
         Post post;
-        if (postPic != null)
+        if (postPic != null) {
             post = new Post(thisUser.getUser().getUsername(), title.getText()
-                    , description.getText(),new Date(), thisUser.getUser().getProfileImage(), postPic);
-        else {
+                    , description.getText(), new Date(), thisUser.getUser().getProfileImage(), postPic);
+            post.setPostPicAddress(file.toString());
+        } else {
             post = new Post(thisUser.getUser().getUsername(), title.getText()
-                    , description.getText(),new Date(), thisUser.getUser().getProfileImage());
+                    , description.getText(), new Date(), thisUser.getUser().getProfileImage());
+            post.setPostPicAddress("No postPic");
         }
 
         post.setOwner(thisUser.getUser());
@@ -46,19 +48,20 @@ public class NewPostPageController extends mainPage {
         Client.getObjectOutputStream().writeObject(commandSender);
 
 
-
         Main.loadAPage(actionEvent
                 , "../FXMLs/MainPage.fxml"
                 , "SBUgram - Home page"
         );
     }
 
+    private File file;
+
     public void addPicture(ActionEvent event) {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Upload your pic for this post");
-        File file = chooser.showOpenDialog(null);
+        file = chooser.showOpenDialog(null);
         if (file != null) {
-            System.out.println(file.toString());
+
             Image profilePicImage = new Image(file.toURI().toString());
             try {
                 this.postPic = new FileInputStream(file).readAllBytes();

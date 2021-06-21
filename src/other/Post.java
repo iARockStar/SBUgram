@@ -10,14 +10,15 @@ import java.util.Vector;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Post implements Serializable,Comparable {
+public class Post implements Serializable, Comparable {
 
     private String writer;
     private String title;
     private String description;
     private User owner;
-    private transient byte[] profilePic;
-    private transient byte[] postPic;
+    private byte[] profilePic;
+    private byte[] postPic;
+    private String postPicAddress;
     private Date dateTime;
     private Vector<Comment> comments = new Vector<>();
     private AtomicInteger numOfLikes = new AtomicInteger(0);
@@ -28,7 +29,7 @@ public class Post implements Serializable,Comparable {
     private static int idCounter = 0;
     private Post referencePost;
 
-    public Post(String writer, String title, String description,Date date, byte[] profilePic, byte[] postPic) {
+    public Post(String writer, String title, String description, Date date, byte[] profilePic, byte[] postPic) {
         this.writer = writer;
         this.title = title;
         this.description = description;
@@ -39,7 +40,7 @@ public class Post implements Serializable,Comparable {
         this.referencePost = this;
     }
 
-    public Post(String writer, String title, String description,Date date, byte[] profilePic) {
+    public Post(String writer, String title, String description, Date date, byte[] profilePic) {
         this.writer = writer;
         this.title = title;
         this.description = description;
@@ -53,11 +54,11 @@ public class Post implements Serializable,Comparable {
         this.postId = idCounter++;
     }
 
-    public void addToLikers(User user){
+    public void addToLikers(User user) {
         likers.add(user);
     }
 
-    public void removeFromLikers(User user){
+    public void removeFromLikers(User user) {
         likers.remove(user);
     }
 
@@ -69,7 +70,7 @@ public class Post implements Serializable,Comparable {
         this.likers = likers;
     }
 
-    public void rePost(Post post){
+    public void rePost(Post post) {
         this.referencePost = post;
     }
 
@@ -167,7 +168,7 @@ public class Post implements Serializable,Comparable {
 
     @Override
     public int compareTo(Object o) {
-        return ((Post)o).getDateTime().compareTo(this.getDateTime());
+        return ((Post) o).getDateTime().compareTo(this.getDateTime());
     }
 
     public AtomicInteger getNumOfLikes() {
@@ -194,11 +195,19 @@ public class Post implements Serializable,Comparable {
         this.reposters = reposters;
     }
 
-    public void addToRepsters(User user){
+    public void addToRepsters(User user) {
         reposters.add(user);
     }
 
-    public void removeFromReposters(User user){
+    public void removeFromReposters(User user) {
         reposters.remove(user);
+    }
+
+    public String getPostPicAddress() {
+        return postPicAddress;
+    }
+
+    public void setPostPicAddress(String postPicAddress) {
+        this.postPicAddress = postPicAddress;
     }
 }

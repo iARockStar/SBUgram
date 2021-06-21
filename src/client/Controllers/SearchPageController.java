@@ -25,7 +25,7 @@ public class SearchPageController extends mainPage {
     public void searchUser(ActionEvent event) throws IOException {
         CommandType searchUserCommand = CommandType.SEARCHUSER;
         CommandSender searchTheServer =
-                new CommandSender(searchUserCommand, username.getText());
+                new CommandSender(searchUserCommand, username.getText(),thisUser.getUser());
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(searchTheServer);

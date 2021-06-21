@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javafx.geometry.Pos;
 import other.*;
 
 public class ClientHandler extends Thread {
@@ -34,26 +33,27 @@ public class ClientHandler extends Thread {
                         break;
                     case LOGIN:
                         User user = (User) commandSender.getUser();
-                        commandSender.setUser(null);
                         username = user.getUsername();
                         String password = user.getPassword();
                         login(username, password);
+                        Log.login(username);
                         break;
                     case SIGNUP:
                         user = (User) commandSender.getUser();
-                        commandSender.setUser(null);
                         signup(user);
-                        System.out.println("user signed up successfully");
+                        Log.signup(user);
+
                         break;
                     case NEWPOST:
                         Post post = (Post) commandSender.getUser();
                         User user1 = post.getOwner();
                         updatePost(post, user1);
+                        Log.newPost(post,user1);
                         break;
                     case LOADAPOST:
                         user = (User) commandSender.getUser();
                         loadPost(user);
-                        System.out.println("done");
+                        Log.getMyPosts(user);
                         break;
                     case RETRIEVEPASS:
                         user = (User) commandSender.getUser();
@@ -66,12 +66,15 @@ public class ClientHandler extends Thread {
                         System.out.println("done part 2");
                         break;
                     case SEARCHUSER:
-                        username = (String) commandSender.getUser();
-                        search(username);
+                        String searched = (String) commandSender.getUser();
+                        User searcher = commandSender.getSearcher();
+                        User searchedUser = search(searched);
+                        Log.search(searchedUser,searcher);
                         break;
                     case LOGOUT:
                         isClientOnline = false;
-                        System.out.println("client disconnected.");
+                        User loggedOut = (User) commandSender.getUser();
+                        Log.logout( loggedOut);
                         break;
                     case LOADCOMMENTS:
                         post = (Post) commandSender.getPostToComment();
@@ -84,25 +87,30 @@ public class ClientHandler extends Thread {
                         User commenter = commandSender.getUserWhoWantsToPost();
                         post = commandSender.getPostToComment();
                         addAndSendComment(user, post, comment);
+                        Log.comment(commenter, post);
                         break;
                     case FOLLOW:
                         User follower = commandSender.getUserToFollow();
                         User following = commandSender.getFollower();
                         follow(following, follower);
+                        Log.follow(following , follower);
                         break;
                     case UNFOLLOW:
                         follower = commandSender.getUserToFollow();
                         following = commandSender.getFollower();
                         unfollow(following, follower);
+                        Log.unfollow(following , follower);
                         break;
                     case LOADFOLLOWINGPOSTS:
                         user = (User) commandSender.getUser();
                         loadFollowingsPosts(user);
+                        Log.getMyPosts(user);
                         break;
                     case LIKE:
                         post = commandSender.getPostToLike();
                         user = commandSender.getUserWhoLiked();
                         like(user, post);
+                        Log.like(user,post);
                         break;
                     case DISLIKE:
                         post = commandSender.getPostToLike();
@@ -111,29 +119,32 @@ public class ClientHandler extends Thread {
                         break;
                     case REPOST:
                         user = commandSender.getReposter();
-                        user1 = commandSender.getUserOfTheRepostedPost();
                         post = commandSender.getRepostedPost();
                         repost(user, post);
-                        System.out.println("repost done");
+                        Log.rePost(user, post);
                         break;
                     case SETTING:
                         Holder holder = (Holder) commandSender.getUser();
                         User updatedUser = holder.getUser();
                         settingUpdate(updatedUser);
+                        Log.setting(updatedUser);
                         break;
                     case DELETEACCOUNT:
                         User deletedUser = (User) commandSender.getUser();
                         deleteAccount(deletedUser);
+                        Log.deleteAcc(deletedUser);
                         break;
                     case MUTE:
                         User muter = commandSender.getUserToFollow();
                         User muted = commandSender.getFollower();
                         mute(muter,muted);
+                        Log.mute(muter,muted);
                         break;
                     case UNMUTE:
                         User unMuter = commandSender.getUserToFollow();
                         User unMuted = commandSender.getFollower();
                         unMute(unMuter,unMuted);
+                        Log.unmute(unMuter,unMuted);
                         break;
 
                 }
@@ -258,7 +269,7 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void search(String username) {
+    private User search(String username) {
         User user = DataBase.search(username);
         if (user != null) {
             try {
@@ -275,6 +286,7 @@ public class ClientHandler extends Thread {
                 e.printStackTrace();
             }
         }
+        return user;
     }
 
 
@@ -305,8 +317,15 @@ public class ClientHandler extends Thread {
     }
 
     public synchronized void signup(User user) throws IOException, ClassNotFoundException {
-        DataBase.
+        ApprovedType isSignedUp = DataBase.
                 signupUpdate(user);
+        try{
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(isSignedUp);
+            objectOutputStream.flush();
+        }catch (IOException ioException){
+            ioException.printStackTrace();
+        }
     }
 
     public synchronized void updatePost(Post post, User user) {

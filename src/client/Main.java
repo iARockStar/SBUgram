@@ -36,6 +36,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Client.connectToServer();
+        Client.setServerUp(true);
         launch(args);
     }
 
@@ -122,13 +123,12 @@ public class Main extends Application {
     public void logout(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
-        alert.setHeaderText("you are about to logout");
-        alert.setContentText("do you want to save before exiting?: ");
+        alert.setHeaderText("you are about to close the app");
+        alert.setContentText("Are you sure? ");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            System.out.println("CK");
             stage.close();
             try {
-                Client.objectOutputStream.writeObject(new CommandSender(CommandType.LOGOUT, null));
+                Client.objectOutputStream.writeObject(new CommandSender(CommandType.LOGOUT, thisUser.getUser()));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

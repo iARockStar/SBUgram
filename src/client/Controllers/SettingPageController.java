@@ -156,7 +156,7 @@ public class SettingPageController extends mainPage implements Initializable {
         chooser.setTitle("Upload your profile picture");
         File file = chooser.showOpenDialog(null);
         if (file != null) {
-            System.out.println(file.toString());
+            thisUser.getUser().setProfilePicAddress(file.toString());
             profilePicImage = new Image(file.toURI().toString());
             try {
                 this.userImage = new FileInputStream(file).readAllBytes();

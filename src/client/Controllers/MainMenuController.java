@@ -22,6 +22,18 @@ public class MainMenuController extends mainPage {
     }
 
     public void logout(ActionEvent event) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("you are about to logout");
+        alert.setContentText("Are you sure? ");
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            try {
+                Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOGOUT, thisUser.getUser()));
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        Client.setServerUp(false);
         Main.loadAPage(event
                 ,"../FXMLs/sample.fxml"
                 , "SBUgram - Login menu"

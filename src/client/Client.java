@@ -20,6 +20,7 @@ public class Client {
     static ObjectInputStream objectInputStream ;
     static ConcurrentHashMap<CommandType,Object> commandSender
             = new ConcurrentHashMap<>();
+    private static boolean isServerUp = false;
 
     /**
      * connectToServer method is called at the beginning of the client side program.
@@ -50,5 +51,13 @@ public class Client {
 
     public static void setCommandSender(ConcurrentHashMap<CommandType, Object> commandSender) {
         Client.commandSender = commandSender;
+    }
+
+    public static boolean isServerUp() {
+        return isServerUp;
+    }
+
+    public static void setServerUp(boolean serverUp) {
+        isServerUp = serverUp;
     }
 }

@@ -1,6 +1,7 @@
 package other;
 
 import java.io.Serializable;
+
 import client.*;
 
 public class CommandSender implements Serializable {
@@ -10,7 +11,8 @@ public class CommandSender implements Serializable {
     private Post postToLike;
     private Post postToComment;
     private User userOfThePost;
-    private User userWhoWantsToPost;;
+    private User userWhoWantsToPost;
+    ;
     private Comment comment;
     private User userToFollowOrUnfollow;
     private User followerOrUnfollower;
@@ -18,6 +20,7 @@ public class CommandSender implements Serializable {
     private User reposter;
     private User userOfTheRepostedPost;
     private Post repostedPost;
+    private User searcher;
 
 
     public CommandSender(CommandType commandType, User reposter, User userOfTheRepostedPost, Post repostedPost) {
@@ -29,8 +32,15 @@ public class CommandSender implements Serializable {
 
     public CommandSender(CommandType commandType, Object object) {
         this.commandType = commandType;
-        this.object =object;
+        this.object = object;
     }
+
+    public CommandSender(CommandType commandType, Object object, User searcher) {
+        this.commandType = commandType;
+        this.object = object;
+        this.searcher = searcher;
+    }
+
 
     public CommandSender(CommandType commandType, Post postToComment, User userOfThePost, User userWhoWantsToPost, Comment comment) {
         this.commandType = commandType;
@@ -40,7 +50,7 @@ public class CommandSender implements Serializable {
         this.comment = comment;
     }
 
-    public CommandSender(CommandType commandType, Post postToLike,User userWhoLiked) {
+    public CommandSender(CommandType commandType, Post postToLike, User userWhoLiked) {
         this.commandType = commandType;
         this.postToLike = postToLike;
         this.userWhoLiked = userWhoLiked;
@@ -51,7 +61,6 @@ public class CommandSender implements Serializable {
         this.userToFollowOrUnfollow = userToFollow;
         this.followerOrUnfollower = follower;
     }
-
 
 
     public User getFollower() {
@@ -91,7 +100,7 @@ public class CommandSender implements Serializable {
         return object;
     }
 
-    public void setUser(Object object){
+    public void setUser(Object object) {
         this.object = object;
     }
 
@@ -125,5 +134,13 @@ public class CommandSender implements Serializable {
 
     public void setRepostedPost(Post repostedPost) {
         this.repostedPost = repostedPost;
+    }
+
+    public User getSearcher() {
+        return searcher;
+    }
+
+    public void setSearcher(User searcher) {
+        this.searcher = searcher;
     }
 }

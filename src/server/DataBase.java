@@ -83,18 +83,19 @@ public class DataBase {
     }
 
 
-    public synchronized static void signupUpdate(User user) {
-        listOfUsers.add(user);
-        updateUser();
+    public synchronized static ApprovedType signupUpdate(User user) {
+        if(!listOfUsers.contains(user)) {
+            listOfUsers.add(user);
+            updateUser();
+            return ApprovedType.APPROVED;
+        }
+        return ApprovedType.NOT_APPROVED;
+
     }
 
     private synchronized static void updateUser() {
         sortPosts();
         try {
-            File file = new File("C:\\Users\\USER\\IdeaProjects\\signUp.bin");
-            file.delete();
-            File file1 = new File("C:\\Users\\USER\\IdeaProjects\\signUp.bin");
-            file1.createNewFile();
             FileOutputStream fileOutputStream = new FileOutputStream(USERS_FILE, false);
             ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream);
             objectOutputStream1.writeObject(listOfUsers);

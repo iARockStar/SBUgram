@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String email;
     private Vector<Post> listOfPosts = new Vector<>();
     private byte[] profileImage;
+    private String profilePicAddress;
     private Post postToComment = new Post();
     private Comment newComment;
     private Vector<User> followers = new Vector<>();
@@ -28,6 +29,7 @@ public class User implements Serializable {
     private Vector<User> followings = new Vector<>();
     private Vector<Post> postsLiked = new Vector<>();
     private Vector<User> mutedList = new Vector<>();
+
 
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
@@ -263,5 +265,13 @@ public class User implements Serializable {
 
     public void setMutedList(Vector<User> mutedList) {
         this.mutedList = mutedList;
+    }
+
+    public String getProfilePicAddress() {
+        return profilePicAddress;
+    }
+
+    public void setProfilePicAddress(String profilePicAddress) {
+        this.profilePicAddress = profilePicAddress;
     }
 }

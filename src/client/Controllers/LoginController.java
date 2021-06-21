@@ -71,6 +71,8 @@ public class LoginController implements Initializable {
 
     @FXML
     private void login(ActionEvent actionEvent) throws IOException {
+        if(!Client.isServerUp())
+            Client.connectToServer();
         CommandSender commandSender = createCommandSender();
         ApprovedType approvedType = checkValidUserAndPass(commandSender);
         if (approvedType == ApprovedType.APPROVED) {
