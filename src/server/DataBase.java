@@ -179,7 +179,7 @@ public class DataBase {
         return null;
     }
 
-    public static CopyOnWriteArrayList<Comment> sendComments(User user, Post post) {
+    public synchronized static CopyOnWriteArrayList<Comment> sendComments(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -232,7 +232,7 @@ public class DataBase {
         return atomicInteger;
     }
 
-    public static CopyOnWriteArrayList<Post> loadFollowingPosts(User user) {
+    public synchronized static CopyOnWriteArrayList<Post> loadFollowingPosts(User user) {
         CopyOnWriteArrayList<Post> posts = new CopyOnWriteArrayList<>();
         User user2 = null;
         for (User listUser :
@@ -294,7 +294,7 @@ public class DataBase {
         updateUser();
     }
 
-    public static User updateUser(String username) {
+    public synchronized static User updateUser(String username) {
         for (User user :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(username))
@@ -306,14 +306,16 @@ public class DataBase {
     public synchronized static ApprovedType repost(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
-            if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) && !listUser.getListOfPosts().contains(post)) {
+            if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) &&
+                    !listUser.getListOfPosts().contains(post)) {
                 post.getNumOfReposts().addAndGet(1);
+                post.addToRepsters(user);
                 listUser.getListOfPosts().add(post);
                 for (int i = listOfUsers.size() - 1; i >= 0; i--) {
                     if(listOfUsers.get(i).getListOfPosts().contains(post)){
                         int indexOfPost =
                                 listOfUsers.get(i).getListOfPosts().indexOf(post);
-                        listOfUsers.get(i).getListOfPosts().set(indexOfPost,post);
+                        listOfUsers.get(i).getListOfPosts().set(indexOfPost, post);
                     }
                 }
                 updateUser();
@@ -335,19 +337,52 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * this method is for deleting accounts and consists of deleting
+     * different parts which are related to the deleted user.
+     * @param deletedUser is the user whom the user tends to delete.
+     */
     public synchronized static void deleteAccount(User deletedUser) {
-
+        deleteLikes(deletedUser);
+        deleteFollows(deletedUser);
+//        deleteReposts(deletedUser);
+        deleteAcc(deletedUser);
         for (User listUser :
                 listOfUsers) {
             for (Post post :
                     listUser.getListOfPosts()) {
-                if (post.getLikers().contains(deletedUser)) {
-                    post.removeFromLikers(deletedUser);
-                    post.getNumOfLikes().addAndGet(-1);
+                post.getComments().removeIf(
+                        comment -> comment.getOwner().equals(deletedUser)
+                );
+            }
+        }
+        updateUser();
+    }
+
+    private static void deleteReposts(User deletedUser) {
+        for (User listUser :
+                listOfUsers) {
+            for (Post post :
+                    listUser.getListOfPosts()) {
+                if (post.getReposters().contains(deletedUser)) {
+                    post.removeFromReposters(deletedUser);
+                    post.getNumOfReposts().addAndGet(-1);
                 }
             }
         }
+    }
 
+    private synchronized static void deleteAcc(User deletedUser) {
+        for (User listUser :
+                listOfUsers) {
+            if (deletedUser.getUsername().equalsIgnoreCase(listUser.getUsername())) {
+                listOfUsers.remove(listUser);
+                break;
+            }
+        }
+    }
+
+    private synchronized static void deleteFollows(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getFollowers().contains(deletedUser)) {
@@ -360,27 +395,19 @@ public class DataBase {
                 listUser.getNumOfFollowings().addAndGet(-1);
             }
         }
+    }
 
-        for (User listUser :
-                listOfUsers) {
-            if (deletedUser.getUsername().equalsIgnoreCase(listUser.getUsername())) {
-                listOfUsers.remove(listUser);
-                break;
-            }
-        }
-
+    private synchronized static void deleteLikes(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
             for (Post post :
                     listUser.getListOfPosts()) {
-                post.getComments().removeIf(
-                        comment -> comment.getOwner().equals(deletedUser)
-                );
+                if (post.getLikers().contains(deletedUser)) {
+                    post.removeFromLikers(deletedUser);
+                    post.getNumOfLikes().addAndGet(-1);
+                }
             }
         }
-
-
-        updateUser();
     }
 
     public synchronized static void mute(User muter, User muted) {
