@@ -59,13 +59,12 @@ public class ProfilePageController extends mainPage {
     public void initialize() {
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
-        thisUser.setIsAnotherUser(true);
         for (User listUser :
                 myUser.getFollowings()) {
             if (user.getUsername().equals(listUser.getUsername())) {
                 muteCheckBox.setVisible(true);
                 followCheckbox.setSelected(true);
-                if(myUser.getMutedList().contains(listUser))
+                if (myUser.getMutedList().contains(listUser))
                     muteCheckBox.setSelected(true);
                 break;
             }
@@ -89,15 +88,10 @@ public class ProfilePageController extends mainPage {
     }
 
 
-
     private void setProfileDetails() {
         Image image;
         byte[] pic;
-        if (thisUser.isAnotherUser()) {
-            pic = thisUser.getSearchedUser().getProfileImage();
-        } else {
-            pic = thisUser.getUser().getProfileImage();
-        }
+        pic = thisUser.getSearchedUser().getProfileImage();
         User user = thisUser.getSearchedUser();
         image = new Image(new ByteArrayInputStream(pic));
         profilePic.setFill(new ImagePattern(image));
@@ -166,7 +160,7 @@ public class ProfilePageController extends mainPage {
     public void mute(ActionEvent event) {
         if (muteCheckBox.isSelected()) {
             muteUser();
-        }else{
+        } else {
             unmuteUser();
         }
     }

@@ -12,8 +12,14 @@ import other.CommandType;
 
 import java.io.IOException;
 
+/**
+ * from the page of this controller the user can access almost everything.
+ */
 public class MainMenuController extends mainPage {
 
+    /**
+     * loads the newPostPageController
+     */
     public void newPost(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 ,"../FXMLs/NewPostPage.fxml"
@@ -21,6 +27,12 @@ public class MainMenuController extends mainPage {
         );
     }
 
+    /**
+     * if the user selects the logout button this method is called and
+     * the user logs out and disconnects from the server.
+     * also a popup is shown which asks the uses if he / she
+     * is sure to logout.
+     */
     public void logout(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
@@ -40,6 +52,11 @@ public class MainMenuController extends mainPage {
         );
     }
 
+    /**
+     * loads the SearchPageController.
+     * also a popup is shown which asks the uses if he / she
+     * is sure to delete account.
+     */
     public void search(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 ,"../FXMLs/SearchPage.fxml"
@@ -47,6 +64,11 @@ public class MainMenuController extends mainPage {
         );
     }
 
+    /**
+     * deletes the account of the user.
+     * also a popup is shown which asks the uses if he / she
+     * is sure to delete account.
+     */
     public void deleteAccount(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

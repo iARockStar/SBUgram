@@ -21,6 +21,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * this class is for the page which the user logs in from it.
+ * it has methods for loading the mainPage.
+ */
 public class LoginController implements Initializable {
     private Stage stage;
     private Scene scene;
@@ -41,12 +45,18 @@ public class LoginController implements Initializable {
     TextField fakePassfield;
 
 
+    /**
+     * sets the SBU label :) .
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sbuPic.setImage(new Image("images/Screenshot (122).png"));
     }
 
-
+    /**
+     * this method helps the user to load the signUp page if he/she doesn't have
+     * an account.
+     */
     public void loadSignup(ActionEvent actionEvent) throws IOException {
         Main.loadAPage(actionEvent
                 , "/FXMLs/signUp.fxml"
@@ -54,6 +64,9 @@ public class LoginController implements Initializable {
         );
     }
 
+    /**
+     * trick method for showing the password which the user entered.
+     */
     @FXML
     public void show() {
         if (!fakePassfield.isVisible()) {
@@ -69,6 +82,11 @@ public class LoginController implements Initializable {
     }
 
 
+    /**
+     * this method checks the validation
+     * of the username and the password which the user
+     * entered. if the info is valid then the mainPage is loaded.
+     */
     @FXML
     private void login(ActionEvent actionEvent) throws IOException {
         if(!Client.isServerUp())
@@ -85,6 +103,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * sends the username and the password to the server and if the
+     * info is valid then the server returns true(true approved type).
+     * @param commandSender object which i send to the server
+     * @return return type is whether true or false(approved or not approved).
+     */
     public ApprovedType checkValidUserAndPass(CommandSender commandSender) throws IOException {
         Client.getObjectOutputStream().writeObject(commandSender);
         Client.getObjectOutputStream().flush();
@@ -104,6 +128,10 @@ public class LoginController implements Initializable {
         return approvedType;
     }
 
+    /**
+     * creates the object which i tend to send to the server.
+     * @return a CommandSender which i send to the server.
+     */
     public CommandSender createCommandSender() {
         CommandSender commandSender;
         if (password.getText().length() == 0
@@ -121,6 +149,10 @@ public class LoginController implements Initializable {
         return commandSender;
     }
 
+    /**
+     * this method allows the user to load the retrievePass page
+     * if he/she forgot his/her password.
+     */
     @FXML
     public void retrievePass(ActionEvent event) throws IOException {
         Main.loadAPage(event

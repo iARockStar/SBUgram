@@ -107,7 +107,7 @@
          </DropShadow>
       </effect>
       <children>
-      <JFXListView fx:id="postList" layoutX="-1.0" layoutY="-1.0" onMouseClicked="#showPost" prefHeight="514.0" prefWidth="450.0" />
+      <JFXListView fx:id="postList" layoutX="-1.0" layoutY="-1.0"  prefHeight="514.0" prefWidth="450.0" />
       </children>
    </AnchorPane>
    <Label fx:id="shareLabel" layoutX="14.0" layoutY="62.0" text="Share what you got today :) ">

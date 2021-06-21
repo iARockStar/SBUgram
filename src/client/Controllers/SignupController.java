@@ -69,6 +69,10 @@ public class SignupController implements Initializable {
     private Image profilePicImage;
     private LocalDate myDate;
     private byte[] userImage;
+    /*
+     * choices are for the security question
+     * which the user must choose one.
+     */
     private final String[] choices = {"What is your mother's maiden name?"
             , "What is the name of your first pet?"
             , "What was your first car?"
@@ -76,6 +80,14 @@ public class SignupController implements Initializable {
             , "What is the name of the town where you were born?"};
     private String myQuestion;
 
+    /**
+     * this method is called before all of the other methods
+     * and sets the default profilePic for the user.
+     * it also prepares questions for the security question section.
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/default_contact.png");
@@ -90,6 +102,14 @@ public class SignupController implements Initializable {
         questions.setOnAction(this::getQuestion);
     }
 
+    /**
+     * most important method in this class which handles the user
+     * signing in when he/she selects the signUp button.
+     * it saves the information of the user and sends it to the server.
+     *
+     * @param event event which we tend to control.
+     * @throws IOException
+     */
     @FXML
     public void signup(ActionEvent event) throws IOException {
         if (!Client.isServerUp())
@@ -140,6 +160,14 @@ public class SignupController implements Initializable {
         }
     }
 
+    /**
+     * checks if the phoneNumber which the user entered has the correct pattern.
+     * for instance it doesn't allow characters or a String or generally
+     * anything except integers.
+     *
+     * @param phoneNumber the String which we check its validation.
+     * @return if the phoneNumber is valid it returns true.
+     */
     private boolean validPhoneNumber(String phoneNumber) {
         try {
             Long.parseLong(phoneNumber);
@@ -150,6 +178,21 @@ public class SignupController implements Initializable {
         return true;
     }
 
+    /**
+     * this method makes a new user and returns it for sending it to the server
+     *
+     * @param name             name of the user
+     * @param lastName         lastName of the user
+     * @param username         username of the user
+     * @param phoneNumber      phoneNumber of the user
+     * @param password         password of the user
+     * @param fakePass         just if the user enters the password in the shown passField
+     * @param email            email of the user which is optional
+     * @param securityQuestion this field is optional, too.
+     * @param userImage        profilePic for the user which has a default pic, too.
+     * @param FormattedDate    birthDate of the user.
+     * @return return type is a newUser which is ready to be sent to the server.
+     */
     private User getUser(String name, String lastName, String username, String phoneNumber, String password, String fakePass, String email, SecurityQuestion securityQuestion, byte[] userImage, String FormattedDate) {
         User newUser;
         if (password.length() != 0 && password.length() >= fakePass.length())
@@ -171,6 +214,13 @@ public class SignupController implements Initializable {
         return newUser;
     }
 
+    /**
+     * this method checks if the email entered has a valid pattern.
+     * its valid if its like this : something@something.thing
+     *
+     * @param email the String which it's validation is checked.
+     * @return return type declares if the email is valid or not.
+     */
     private Matcher checkValidEmail(String email) {
         Pattern VALID_EMAIL_ADDRESS_REGEX =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$"
@@ -178,7 +228,10 @@ public class SignupController implements Initializable {
         return VALID_EMAIL_ADDRESS_REGEX.matcher(email);
     }
 
-
+    /**
+     * in the end, if everything is correct and in it's place, this method is called
+     * and the main page loads.
+     */
     private void loadMainPageIfValid(ActionEvent event, String name, String lastName, String username, String phoneNumber, String password, String fakePass, String email, SecurityQuestion securityQuestion, byte[] userImage) throws IOException {
         String FormattedDate;
         if (myDate != null) {
@@ -214,6 +267,12 @@ public class SignupController implements Initializable {
         }
     }
 
+    /**
+     * this method is actually a trick for showing the password
+     * when the user clicks on the showPass check box.
+     * the normal textField is shown when the user chooses the
+     * checkbox.
+     */
     @FXML
     public void show() {
         if (!fakePassField.isVisible()) {
@@ -235,6 +294,9 @@ public class SignupController implements Initializable {
     }
 
 
+    /**
+     * sets a date when the datePicker is clicked.
+     */
     @FXML
     public void pickADate() {
         if (myDatePicker != null)
@@ -243,6 +305,10 @@ public class SignupController implements Initializable {
 
     private File file;
 
+    /**
+     * if the user tends to use a profile picture,
+     * this method is called and a pic is chosen from his,her computer files!
+     */
     public void setProfilePic() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Upload your profile picture");
@@ -260,10 +326,16 @@ public class SignupController implements Initializable {
         }
     }
 
+    /**
+     * security question is set when this method is called.
+     */
     private void getQuestion(ActionEvent actionEvent) {
         this.myQuestion = questions.getValue();
     }
 
+    /**
+     * there is a button in the app to return to main menu and here is it's method.
+     */
     public void returnToLoginMenu(ActionEvent actionEvent) throws IOException {
         Main.loadAPage(actionEvent
                 , "../FXMLs/sample.fxml"
@@ -271,9 +343,12 @@ public class SignupController implements Initializable {
         );
     }
 
+    /**
+     * choosing a security question is optional but when it is chosen ,
+     * this method saves the question and the answer of the user.
+     */
     @FXML
     public void saveAnswerAndQuestion() {
-
         answer = answerTextField.getText();
         question = myQuestion;
         if (answer != null && answer.length() != 0 && question.length() != 0) {

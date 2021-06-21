@@ -14,13 +14,27 @@ import other.*;
 import java.io.IOException;
 import java.util.Vector;
 
-
+/**
+ * this controller is for the page which shows the timeLine.
+ */
 public class MainPageController extends mainPage {
 
-    Post currentPost = new Post();
-    Vector<Post> posts = new Vector<>();
+    /**
+     * list of posts which are set to be shown.
+     */
+    private Vector<Post> posts = new Vector<>();
+
+    /**
+     * listView which it's graphic is set in another class(PostItem class).
+     */
+    @FXML
+    ListView<Post> postList;
 
 
+    /**
+     * this method is called before all other methods and loads
+     * the posts of the users which the main user followed.
+     */
     @FXML
     public void initialize() throws IOException, ClassNotFoundException {
         loadPosts(thisUser.getUser());
@@ -32,8 +46,11 @@ public class MainPageController extends mainPage {
         postList.setCellFactory(postList -> new PostItem());
     }
 
+    /**
+     * this method sends the user and sends it's followings' posts.
+     * @param user the mainUser.
+     */
     public void loadPosts(User user) throws IOException {
-        thisUser.setIsAnotherUser(true);
         Client.getObjectOutputStream().writeObject(
                 new CommandSender(CommandType.LOADFOLLOWINGPOSTS, user));
         try {
@@ -45,9 +62,9 @@ public class MainPageController extends mainPage {
     }
 
 
-    @FXML
-    ListView<Post> postList;
-
+    /**
+     * loads newPostPageController
+     */
     public void newPost(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 ,"../FXMLs/NewPostPage.fxml"
@@ -55,6 +72,10 @@ public class MainPageController extends mainPage {
         );
     }
 
+    /**
+     * it calls the init method so everything will be refreshed after
+     * calling this method.
+     */
     public void refresh(ActionEvent mouseEvent) {
         try {
             this.initialize();
@@ -63,6 +84,4 @@ public class MainPageController extends mainPage {
         }
     }
 
-    public void showPost(MouseEvent mouseEvent) {
-    }
 }

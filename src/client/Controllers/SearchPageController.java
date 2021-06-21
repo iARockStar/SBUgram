@@ -15,17 +15,26 @@ import other.User;
 import java.io.IOException;
 import java.lang.ref.Cleaner;
 
-
+/**
+ * <h1>SearchPageController</h1>
+ * i use this controller for the page which the user searches the profile which
+ * he or she wants.
+ */
 public class SearchPageController extends mainPage {
     @FXML
     private Label warningLabel;
     @FXML
     private JFXTextField username;
 
+    /**
+     * this method sends the username of the user which the mainUser wants to search
+     * and receives an updatedUser which he/she searched.
+     * searchedUser is saved for further uses.
+     */
     public void searchUser(ActionEvent event) throws IOException {
         CommandType searchUserCommand = CommandType.SEARCHUSER;
         CommandSender searchTheServer =
-                new CommandSender(searchUserCommand, username.getText(),thisUser.getUser());
+                new CommandSender(searchUserCommand, username.getText(), thisUser.getUser());
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(searchTheServer);
@@ -33,8 +42,8 @@ public class SearchPageController extends mainPage {
             User user;
             if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
                 user = (User) object;
-                boolean isEquals  = false;
-                if(thisUser.getSearchedUser() != null)
+                boolean isEquals = false;
+                if (thisUser.getSearchedUser() != null)
                     isEquals = user.getNumOfFollowers().equals(thisUser.getSearchedUser().getNumOfFollowers());
                 System.out.println(isEquals);
                 System.out.println(user.getNumOfFollowers());
@@ -60,9 +69,12 @@ public class SearchPageController extends mainPage {
             );
     }
 
+    /**
+     * a simple method which the user goes back to the main menu using it.
+     */
     public void returnToMainMenu(ActionEvent Event) throws IOException {
         Main.loadAPage(Event
-        ,"../FXMLs/MainMenu.fxml"
-        ,"SBUgram - Main menu");
+                , "../FXMLs/MainMenu.fxml"
+                , "SBUgram - Main menu");
     }
 }

@@ -27,8 +27,16 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-
-public class MyProfileController extends mainPage  {
+/**
+ * this class is for loading the page of the user itself
+ * this page shows the timeline of the posts of the user
+ * and shows users' personal info.
+ * it also allows user to update his/her profile.
+ */
+public class MyProfileController extends mainPage {
+    /**
+     * list of users' posts.
+     */
     @FXML
     ListView<Post> postList;
     Vector<Post> posts = new Vector<>();
@@ -48,10 +56,14 @@ public class MyProfileController extends mainPage  {
 
     private User user;
 
+    /**
+     * this method is called before any other method and
+     * sets everything refreshed for the user(posts and the number of followers
+     * and followings).
+     */
     @FXML
     public void initialize() {
         updateUser();
-        thisUser.setIsAnotherUser(false);
         try {
             loadPosts(user);
         } catch (IOException ioException) {
@@ -66,35 +78,37 @@ public class MyProfileController extends mainPage  {
         setProfileDetails();
     }
 
+    /**
+     * sets user's personal info.
+     */
     private void setProfileDetails() {
         Image image;
         byte[] pic;
-        if(thisUser.isAnotherUser()) {
-            pic = thisUser.getSearchedUser().getProfileImage();
-        }else{
-            pic = thisUser.getUser().getProfileImage();
-        }
+        pic = thisUser.getUser().getProfileImage();
         image = new Image(new ByteArrayInputStream(pic));
         profilePic.setFill(new ImagePattern(image));
-        profilePic.setEffect(new DropShadow(+25d, 0d,+2d, Color.DARKGREEN));
+        profilePic.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKGREEN));
         String username = thisUser.getUser().getUsername();
         String namePlusLastname = thisUser.getUser().getName()
-                +" "+thisUser.getUser().getLastName();
+                + " " + thisUser.getUser().getLastName();
         String dateOfBirth = thisUser.getUser().getDatePicker();
-        usernameLabel.setText("@"+username);
+        usernameLabel.setText("@" + username);
         namePlusLastnameLabel.setText(namePlusLastname);
-        birthDateLabel.setText("birthDate: "+dateOfBirth);
-        followerLabel.setText(user.getNumOfFollowers() +" Followers");
-        followingLabel.setText(user.getNumOfFollowings() +" Followings");
+        birthDateLabel.setText("birthDate: " + dateOfBirth);
+        followerLabel.setText(user.getNumOfFollowers() + " Followers");
+        followingLabel.setText(user.getNumOfFollowings() + " Followings");
     }
 
+    /**
+     * it is called in init method and updates user information.
+     */
     private void updateUser() {
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-            user =  (User) Client.getObjectInputStream().readObject();
+            user = (User) Client.getObjectInputStream().readObject();
             thisUser.setUser(user);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -102,23 +116,33 @@ public class MyProfileController extends mainPage  {
     }
 
 
+    /**
+     * it's called in init method and loads updated list of posts.
+     */
     public void loadPosts(User user) throws IOException {
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
         try {
             posts = (Vector<Post>) Client.getObjectInputStream().readObject();
-        }catch (Exception e){
+        } catch (Exception e) {
             posts = new Vector<>();
             e.printStackTrace();
         }
     }
 
+    /**
+     * loads SettingPageController
+     */
     public void setting(ActionEvent actionEvent) throws IOException {
         Main.loadAPage(actionEvent
-                ,"../FXMLs/settingPage.fxml"
+                , "../FXMLs/settingPage.fxml"
                 , "SBUgram - change your info"
         );
     }
 
+    /**
+     * it recalls the init method for refreshing the feed and user's
+     * personal info.
+     */
     public void refresh(MouseEvent mouseEvent) {
         this.initialize();
     }

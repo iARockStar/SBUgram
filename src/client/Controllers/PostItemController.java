@@ -28,7 +28,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import other.*;
 import client.PageLoader;
-
+/**
+ * this class sets the information for each cell of the posts' list.
+ */
 public class PostItemController implements ItemController {
 
     public AnchorPane root;
@@ -47,15 +49,21 @@ public class PostItemController implements ItemController {
     public Label likeLabel;
     public Label repostLabel;
 
-    //each list item will have its exclusive controller in runtime so we set the controller as we load the fxml
+
+    /**
+     * a constructor which loads the commentItem's FXMl.
+     * @param post param which is bout to be set
+     */
     public PostItemController(Post post) throws IOException {
         new PageLoader().load("postItem", this);
         this.post = post;
     }
 
+    /**
+     * this method sets the post's information
+     */
     @Override
     public AnchorPane init() {
-//        updateUser();
         username.setText("@" + post.getWriter());
         title.setText(post.getTitle());
         for (Post listPost :
@@ -87,56 +95,66 @@ public class PostItemController implements ItemController {
         repostLabel.setText("   " + post.getNumOfReposts() + "\n" + "Reposts");
         return root;
     }
-//
-//    private void updateUser() {
-//        try {
-//            Client.getObjectOutputStream().reset();
-//            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-//            User user = (User) Client.getObjectInputStream().readObject();
-//            thisUser.setUser(user);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 
+    /**
+     * when the user hits the like button this method is called and
+     * then if the like button was not selected then it is a like.
+     * otherwise the command sent to the server would be disliking this post.
+     */
     public void like(ActionEvent actionEvent) {
         if (!isLiked) {
-            likeButton.setImage(new Image("/images/heart_outline_480px.png"));
-            isLiked = true;
-            post.getNumOfLikes().addAndGet(1);
-            post.addToLikers(thisUser.getUser());
-
-            try {
-                Client.getObjectOutputStream().reset();
-                Client.getObjectOutputStream().writeObject(
-                        new CommandSender(CommandType.LIKE, post, thisUser.getUser()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
-            thisUser.getUser().addLikedPost(post);
+            likeThePost();
         } else {
-            likeButton.setImage(new Image("/images/heart_512px.png"));
-            isLiked = false;
-            post.getNumOfLikes().addAndGet(-1);
-            post.removeFromLikers(thisUser.getUser());
-            try {
-                Client.getObjectOutputStream().reset();
-                Client.getObjectOutputStream().writeObject(
-                        new CommandSender(CommandType.DISLIKE, post, thisUser.getUser()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
-
-            thisUser.getUser().removeLikedPost(post);
+            dislikeThePost();
         }
 
     }
 
+    /**
+     * this method sends a dislike command to the server.
+     */
+    private void dislikeThePost() {
+        likeButton.setImage(new Image("/images/heart_512px.png"));
+        isLiked = false;
+        post.getNumOfLikes().addAndGet(-1);
+        post.removeFromLikers(thisUser.getUser());
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(
+                    new CommandSender(CommandType.DISLIKE, post, thisUser.getUser()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
+
+        thisUser.getUser().removeLikedPost(post);
+    }
+
+
+    /**
+     * this method sends a like command to the server.
+     */
+    private void likeThePost() {
+        likeButton.setImage(new Image("/images/heart_outline_480px.png"));
+        isLiked = true;
+        post.getNumOfLikes().addAndGet(1);
+        post.addToLikers(thisUser.getUser());
+
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(
+                    new CommandSender(CommandType.LIKE, post, thisUser.getUser()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
+        thisUser.getUser().addLikedPost(post);
+    }
+
+    /**
+     * this method is used for loading the comment section
+     */
     public void comment(ActionEvent actionEvent) throws IOException {
         thisUser.getUser().setPostToComment(post);
         Main.loadAPage(actionEvent
@@ -145,6 +163,13 @@ public class PostItemController implements ItemController {
         );
     }
 
+    /**
+     * this method is used for reposting.
+     * <p>
+     * if the user has already reposted the post then it will be not possible to repost
+     * again; otherwise when the user hits the repost button one repost is added
+     * to his / her list of posts.
+     */
     public void rePost(ActionEvent actionEvent) {
         post.setReferencePost(post);
         CommandSender repostCommand = new CommandSender
@@ -163,12 +188,6 @@ public class PostItemController implements ItemController {
             e.printStackTrace();
         }
     }
-
-
 }
-    /*
-    you can also add on mouse click for like and repost image 
-     */
-
 
 

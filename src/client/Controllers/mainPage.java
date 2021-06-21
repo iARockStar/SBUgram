@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * the mother of all the pages which have the radioButtons at the bottom.
+ * each method of this class load a page and nothing more.
+ */
 public class mainPage {
      protected Stage stage;
      protected Scene scene;

@@ -75,7 +75,7 @@ public class Main extends Application {
      * this method helps the whole app to load pages.
      * it gives an event and loads the page related to the event.
      *
-     * @param event
+     * @param event event which we want to control its occurrence.
      * @param FXMLPath param which contains fxmlPath.
      * @param controllerName the name of the controller of the loading page.
      * @throws IOException
@@ -95,7 +95,7 @@ public class Main extends Application {
      * same method as the loadAPage method but has
      * the event as a mouse event.
      *
-     * @param event
+     * @param event event which we want to control its occurrence.
      * @param FXMLPath param which contains fxmlPath.
      * @param controllerName the name of the controller of the loading page.
      * @throws IOException
@@ -118,7 +118,7 @@ public class Main extends Application {
      * it alerts the user that the app is closing so that
      * the user decides whether he/she wants to exit.
      *
-     * @param stage
+     * @param stage closing this stage for closing the app.
      */
     public void logout(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

@@ -17,6 +17,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ * this controller is for the page which allows user to post it's new post.
+ */
 public class NewPostPageController extends mainPage {
 
     @FXML
@@ -28,6 +31,11 @@ public class NewPostPageController extends mainPage {
 
     private byte[] postPic;
 
+    /**
+     * this method creates a new post and sends it
+     * to the server in order to add it to
+     * user's list of posts.
+     */
     public void post(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
         Post post;
         if (postPic != null) {
@@ -56,7 +64,10 @@ public class NewPostPageController extends mainPage {
 
     private File file;
 
-    public void addPicture(ActionEvent event) {
+    /**
+     * adds a picture to the post if the user intends to.
+     */
+    public void addPicture() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Upload your pic for this post");
         file = chooser.showOpenDialog(null);

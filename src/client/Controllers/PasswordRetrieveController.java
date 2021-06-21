@@ -20,6 +20,10 @@ import java.util.regex.Pattern;
 
 import other.*;
 
+/**
+ * this class and its page allows user to
+ * retrieve his/her password using the security question.
+ */
 public class PasswordRetrieveController {
     @FXML
     Button submitButton;
@@ -39,6 +43,12 @@ public class PasswordRetrieveController {
     private Parent root;
     private User user;
 
+    /**
+     * first the user calls this method in order to find the question
+     * which the user answered when he / she signedUp.
+     * it sends a username and receives a security question which the
+     * user must remember the answer to it.
+     */
     public void find(ActionEvent event) {
         String username;
         if (usernameField.getText().length() != 0) {
@@ -68,6 +78,11 @@ public class PasswordRetrieveController {
     }
 
 
+    /**
+     * after the user entered the answer and the new password this method is called
+     * and if the answer is correct and the password is valid, then the newPass
+     * will be saved in the db.
+     */
     public void submit(ActionEvent actionEvent) {
         String answer;
         String newPass;
@@ -108,6 +123,9 @@ public class PasswordRetrieveController {
     }
 
 
+    /**
+     * returns to login menu
+     */
     public void goBack(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 , "../FXMLs/sample.fxml"

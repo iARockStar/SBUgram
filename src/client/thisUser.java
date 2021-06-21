@@ -1,20 +1,23 @@
 package client;
 import other.*;
 
+/**
+ * This class holds two static fields.
+ * the user which we are using and the user which we search and follow in
+ * the search section.
+ */
 public class thisUser {
+    /**
+     * the user whom he/she logged in.
+     */
     private static User user;
 
+    /**
+     * the user whom we searched in the search section.
+     */
     private static User searchedUser;
-    private static boolean isAnotherUser = false;
 
-    public static boolean isAnotherUser() {
-        return isAnotherUser;
-    }
-
-    public static void setIsAnotherUser(boolean isAnotherUser) {
-        thisUser.isAnotherUser = isAnotherUser;
-    }
-
+    //getters and setters
     public static User getUser() {
         return user;
     }

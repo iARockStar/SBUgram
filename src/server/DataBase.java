@@ -350,7 +350,7 @@ public class DataBase {
     public synchronized static void deleteAccount(User deletedUser) {
         deleteLikes(deletedUser);
         deleteFollows(deletedUser);
-//        deleteReposts(deletedUser);
+        deleteReposts(deletedUser);
         deleteAcc(deletedUser);
         for (User listUser :
                 listOfUsers) {
