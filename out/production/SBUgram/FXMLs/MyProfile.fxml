@@ -141,6 +141,9 @@
         <effect>
             <DropShadow blurType="GAUSSIAN" />
         </effect>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
     </ImageView>
 
 </AnchorPane>

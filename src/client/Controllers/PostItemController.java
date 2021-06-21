@@ -60,7 +60,7 @@ public class PostItemController implements ItemController {
         title.setText(post.getTitle());
         for (Post listPost :
                 thisUser.getUser().getPostsLiked()) {
-            if (listPost.equals(post.getReferencePost())) {
+            if (listPost.equals(post)) {
                 isLiked = true;
                 likeButton.setImage(new Image("/images/heart_outline_480px.png"));
                 break;
@@ -70,11 +70,7 @@ public class PostItemController implements ItemController {
         Image image;
         byte[] pic;
         thisUser.setSearchedUser(post.getOwner());
-        if (thisUser.isAnotherUser()) {
-            pic = thisUser.getSearchedUser().getProfileImage();
-        } else {
-            pic = thisUser.getUser().getProfileImage();
-        }
+        pic = post.getOwner().getProfileImage();
         image = new Image(new ByteArrayInputStream(pic));
         byte[] postPic = post.getPostPic();
         if (postPic != null) {
@@ -87,13 +83,14 @@ public class PostItemController implements ItemController {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dateAsString = dateFormat.format(dateTime);
         date.setText("Published on: " + dateAsString);
-        likeLabel.setText("   " + post.getReferencePost().getNumOfLikes() + "\n" + "likes");
-        repostLabel.setText("   " + post.getReferencePost().getNumOfReposts() + "\n" + "Reposts");
+        likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
+        repostLabel.setText("   " + post.getNumOfReposts() + "\n" + "Reposts");
         return root;
     }
 
     private void updateUser() {
         try {
+            Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
             User user = (User) Client.getObjectInputStream().readObject();
             thisUser.setUser(user);
@@ -109,29 +106,31 @@ public class PostItemController implements ItemController {
         if (!isLiked) {
             likeButton.setImage(new Image("/images/heart_outline_480px.png"));
             isLiked = true;
-            post.getReferencePost().getNumOfLikes().addAndGet(1);
-            post.getReferencePost().addToLikers(thisUser.getUser());
+            post.getNumOfLikes().addAndGet(1);
+            post.addToLikers(thisUser.getUser());
 
             try {
+                Client.getObjectOutputStream().reset();
                 Client.getObjectOutputStream().writeObject(
                         new CommandSender(CommandType.LIKE, post, thisUser.getUser()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            likeLabel.setText("   " + post.getReferencePost().getNumOfLikes() + "\n" + "likes");
+            likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
             thisUser.getUser().addLikedPost(post);
         } else {
             likeButton.setImage(new Image("/images/heart_512px.png"));
             isLiked = false;
-            post.getReferencePost().getNumOfLikes().addAndGet(-1);
-            post.getReferencePost().removeFromLikers(thisUser.getUser());
+            post.getNumOfLikes().addAndGet(-1);
+            post.removeFromLikers(thisUser.getUser());
             try {
+                Client.getObjectOutputStream().reset();
                 Client.getObjectOutputStream().writeObject(
                         new CommandSender(CommandType.DISLIKE, post, thisUser.getUser()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            likeLabel.setText("   " + post.getReferencePost().getNumOfLikes() + "\n" + "likes");
+            likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
 
             thisUser.getUser().removeLikedPost(post);
         }
@@ -147,17 +146,17 @@ public class PostItemController implements ItemController {
     }
 
     public void rePost(ActionEvent actionEvent) {
-        Post newPost = newPost(post);
-        newPost.setReferencePost(post);
+        post.setReferencePost(post);
         CommandSender repostCommand = new CommandSender
-                (CommandType.REPOST, thisUser.getUser(), post.getOwner(), newPost);
+                (CommandType.REPOST, thisUser.getUser(), post.getOwner(), post);
         try {
+            Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(repostCommand);
             ApprovedType approvedType = (ApprovedType) Client.getObjectInputStream().readObject();
             if (approvedType == ApprovedType.APPROVED) {
-                newPost.getReferencePost().getNumOfReposts().addAndGet(1);
+                post.getNumOfReposts().addAndGet(1);
             }
-            repostLabel.setText("   " + newPost.getReferencePost().getNumOfReposts() + "\n" + "Reposts");
+            repostLabel.setText("   " + post.getNumOfReposts() + "\n" + "Reposts");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -165,28 +164,7 @@ public class PostItemController implements ItemController {
         }
     }
 
-    private Post newPost(Post post) {
-        if (post.getPostPic() != null) {
-            Post newPost = new Post(post.getWriter()
-                    , post.getTitle()
-                    , post.getDescription()
-                    , post.getDateTime()
-                    , post.getProfilePic()
-                    , post.getPostPic()
-            );
-            newPost.setComments(post.getComments());
-            return newPost;
-        } else {
-            Post newPost = new Post(post.getWriter()
-                    , post.getTitle()
-                    , post.getDescription()
-                    , post.getDateTime()
-                    , post.getProfilePic()
-            );
-            newPost.setComments(post.getComments());
-            return newPost;
-        }
-    }
+
 }
     /*
     you can also add on mouse click for like and repost image 

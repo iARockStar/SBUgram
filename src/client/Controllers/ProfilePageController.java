@@ -56,7 +56,6 @@ public class ProfilePageController extends mainPage {
 
     @FXML
     public void initialize() {
-//        updateUser();
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
         thisUser.setIsAnotherUser(true);
@@ -88,20 +87,9 @@ public class ProfilePageController extends mainPage {
 
     }
 
-    private void updateUser() {
-        try {
-            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
-            User user = (User) Client.getObjectInputStream().readObject();
-            thisUser.setUser(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private void setProfileDetails() {
-//        updateUser();
         Image image;
         byte[] pic;
         if (thisUser.isAnotherUser()) {
@@ -125,6 +113,7 @@ public class ProfilePageController extends mainPage {
     }
 
     public void loadPosts(User user) throws IOException {
+        Client.getObjectOutputStream().reset();
         Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
         try {
             posts = (CopyOnWriteArrayList<Post>) Client.getObjectInputStream().readObject();

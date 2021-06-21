@@ -155,6 +155,7 @@ public class Post implements Serializable,Comparable {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(postId);
     }
 
@@ -182,5 +183,21 @@ public class Post implements Serializable,Comparable {
 
     public void setNumOfReposts(AtomicInteger numOfReposts) {
         this.numOfReposts = numOfReposts;
+    }
+
+    public CopyOnWriteArrayList<User> getReposters() {
+        return reposters;
+    }
+
+    public void setReposters(CopyOnWriteArrayList<User> reposters) {
+        this.reposters = reposters;
+    }
+
+    public void addToRepsters(User user){
+        reposters.add(user);
+    }
+
+    public void removeFromReposters(User user){
+        reposters.remove(user);
     }
 }

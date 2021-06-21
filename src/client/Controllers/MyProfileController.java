@@ -89,6 +89,7 @@ public class MyProfileController extends mainPage  {
 
     private void updateUser() {
         try {
+            Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getUser()));
             user =  (User) Client.getObjectInputStream().readObject();
             thisUser.setUser(user);

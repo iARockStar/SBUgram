@@ -95,6 +95,7 @@ public class DataBase {
             ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream);
             objectOutputStream1.writeObject(listOfUsers);
             objectOutputStream1.flush();
+            fileOutputStream.close();
         } catch (IOException ignored) {
 
         }
@@ -251,7 +252,6 @@ public class DataBase {
     }
 
     public synchronized static void like(User user, Post post) {
-        boolean isLiked = false;
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
@@ -263,11 +263,9 @@ public class DataBase {
                 listOfUsers) {
             for (Post listPost :
                     listUser.getListOfPosts()) {
-                if (listPost.equals(post)) {
-                    if (!isLiked) {
+                if (listPost.equals(post) && !listPost.getLikers().contains(user)) {
                         listPost.getNumOfLikes().addAndGet(1);
                         listPost.addToLikers(user);
-                    }
                 }
             }
         }
@@ -287,7 +285,7 @@ public class DataBase {
                 listOfUsers) {
             for (Post listPost :
                     listUser.getListOfPosts()) {
-                if (listPost.equals(post)) {
+                if (listPost.equals(post) && listPost.getLikers().contains(user)) {
                     listPost.getNumOfLikes().addAndGet(-1);
                     listPost.removeFromLikers(user);
                 }
@@ -308,9 +306,16 @@ public class DataBase {
     public synchronized static ApprovedType repost(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
-            if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) && !listUser.getListOfPosts().contains(post.getReferencePost())) {
-                post.getReferencePost().getNumOfReposts().addAndGet(1);
+            if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) && !listUser.getListOfPosts().contains(post)) {
+                post.getNumOfReposts().addAndGet(1);
                 listUser.getListOfPosts().add(post);
+                for (int i = listOfUsers.size() - 1; i >= 0; i--) {
+                    if(listOfUsers.get(i).getListOfPosts().contains(post)){
+                        int indexOfPost =
+                                listOfUsers.get(i).getListOfPosts().indexOf(post);
+                        listOfUsers.get(i).getListOfPosts().set(indexOfPost,post);
+                    }
+                }
                 updateUser();
                 return ApprovedType.APPROVED;
             }

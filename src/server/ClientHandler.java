@@ -134,6 +134,7 @@ public class ClientHandler extends Thread {
                         User unMuted = commandSender.getFollower();
                         unMute(unMuter,unMuted);
                         break;
+
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -168,6 +169,7 @@ public class ClientHandler extends Thread {
 
         ApprovedType approvedType = DataBase.repost(user, post);
         try{
+            objectOutputStream.reset();
             objectOutputStream.writeObject(approvedType);
         }catch (Exception e){
             e.printStackTrace();
@@ -227,6 +229,7 @@ public class ClientHandler extends Thread {
         CopyOnWriteArrayList<Comment> comments = DataBase.sendComments(user, post);
         try {
             if (comments != null) {
+                objectOutputStream.reset();
                 objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
                 objectOutputStream.flush();
             }
@@ -239,12 +242,14 @@ public class ClientHandler extends Thread {
         List<Comment> comments = DataBase.addAndSendComments(user, post, comment);
         if (comments != null) {
             try {
+                objectOutputStream.reset();
                 objectOutputStream.writeObject(new CopyOnWriteArrayList<>(comments));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
+                objectOutputStream.reset();
                 objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -256,12 +261,14 @@ public class ClientHandler extends Thread {
         User user = DataBase.search(username);
         if (user != null) {
             try {
+                objectOutputStream.reset();
                 objectOutputStream.writeObject(user);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
+                objectOutputStream.reset();
                 objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
             } catch (Exception e) {
                 e.printStackTrace();

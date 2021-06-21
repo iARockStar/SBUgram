@@ -13,6 +13,7 @@ import other.CommandSender;
 import other.User;
 
 import java.io.IOException;
+import java.lang.ref.Cleaner;
 
 
 public class SearchPageController extends mainPage {
@@ -26,6 +27,7 @@ public class SearchPageController extends mainPage {
         CommandSender searchTheServer =
                 new CommandSender(searchUserCommand, username.getText());
         try {
+            Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(searchTheServer);
             Object object;
             User user;
