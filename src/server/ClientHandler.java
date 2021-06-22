@@ -42,7 +42,6 @@ public class ClientHandler extends Thread {
                         user = (User) commandSender.getUser();
                         signup(user);
                         Log.signup(user);
-
                         break;
                     case NEWPOST:
                         Post post = (Post) commandSender.getUser();
@@ -51,9 +50,10 @@ public class ClientHandler extends Thread {
                         Log.newPost(post,user1);
                         break;
                     case LOADAPOST:
-                        user = (User) commandSender.getUser();
-                        loadPost(user);
-                        Log.getMyPosts(user);
+                        User requester = commandSender.getRequester();
+                        User requested = commandSender.getRequested();
+                        loadPost(requester,requested);
+                        Log.getMyPosts(requested);
                         break;
                     case RETRIEVEPASS:
                         user = (User) commandSender.getUser();
@@ -77,7 +77,7 @@ public class ClientHandler extends Thread {
                         Log.logout( loggedOut);
                         break;
                     case LOADCOMMENTS:
-                        post = (Post) commandSender.getPostToComment();
+                        post = commandSender.getPostToComment();
                         user = commandSender.getUserOfThePost();
                         sendComments(user, post);
                         break;
@@ -90,14 +90,14 @@ public class ClientHandler extends Thread {
                         Log.comment(commenter, post);
                         break;
                     case FOLLOW:
-                        User follower = commandSender.getUserToFollow();
-                        User following = commandSender.getFollower();
+                        User follower = commandSender.getRequester();
+                        User following = commandSender.getRequested();
                         follow(following, follower);
                         Log.follow(following , follower);
                         break;
                     case UNFOLLOW:
-                        follower = commandSender.getUserToFollow();
-                        following = commandSender.getFollower();
+                        follower = commandSender.getRequester();
+                        following = commandSender.getRequested();
                         unfollow(following, follower);
                         Log.unfollow(following , follower);
                         break;
@@ -135,18 +135,28 @@ public class ClientHandler extends Thread {
                         Log.deleteAcc(deletedUser);
                         break;
                     case MUTE:
-                        User muter = commandSender.getUserToFollow();
-                        User muted = commandSender.getFollower();
+                        User muter = commandSender.getRequester();
+                        User muted = commandSender.getRequested();
                         mute(muter,muted);
                         Log.mute(muter,muted);
                         break;
                     case UNMUTE:
-                        User unMuter = commandSender.getUserToFollow();
-                        User unMuted = commandSender.getFollower();
+                        User unMuter = commandSender.getRequester();
+                        User unMuted = commandSender.getRequested();
                         unMute(unMuter,unMuted);
                         Log.unmute(unMuter,unMuted);
                         break;
-
+                    case BLOCK:
+                        User blocker = commandSender.getRequester();
+                        User blocked = commandSender.getRequested();
+                        block(blocker,blocked);
+//                        Log.block(blocker,blocked);
+                        break;
+                    case UNBLOCK:
+                        User unBlocker = commandSender.getRequester();
+                        User unblocked = commandSender.getRequested();
+                        unblock(unBlocker,unblocked);
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -159,6 +169,14 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void unblock(User unBlocker, User unblocked) {
+        DataBase.unBlock(unBlocker,unblocked);
+    }
+
+    private void block(User blocker, User blocked) {
+        DataBase.block(blocker , blocked);
     }
 
     private void unMute(User unMuter, User unMuted) {
@@ -334,8 +352,8 @@ public class ClientHandler extends Thread {
 
     }
 
-    public synchronized void loadPost(User user) {
-        User user1 = DataBase.loadPost(user);
+    public synchronized void loadPost(User requester, User requested) {
+        User user1 = DataBase.loadPost(requester,requested);
         if (user1 != null)
             try {
                 objectOutputStream.writeObject(
@@ -343,5 +361,13 @@ public class ClientHandler extends Thread {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+        else{
+            try {
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
+            }catch (IOException ioException){
+                ioException.printStackTrace();
+            }
+        }
     }
 }

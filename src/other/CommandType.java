@@ -23,5 +23,8 @@ public enum CommandType {
     LOADFOLLOWINGPOSTS,
     DELETEACCOUNT,
     MUTE,
-    UNMUTE
+    UNMUTE,
+    BLOCK,
+    UNBLOCK,
+
 }

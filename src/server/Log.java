@@ -56,7 +56,7 @@ public class Log {
 
     public static void search(User searched, User searcher) {
         try {
-            System.out.println(searcher.getUsername() + " get info" + searched.getUsername());
+            System.out.println(searcher.getUsername() + " get info " + searched.getUsername());
             System.out.println("message: " +
                     searched.getUsername() + " " + searched.getProfilePicAddress());
             System.out.println(new Date());
@@ -89,7 +89,7 @@ public class Log {
 
     public static void like(User liker, Post post) {
         System.out.println(liker.getUsername() + " Like");
-        System.out.println(post.getOwner() + " " + post.getTitle());
+        System.out.println(post.getOwner().getUsername() + " " + post.getTitle());
         System.out.println(new Date());
         System.out.println();
 
@@ -97,7 +97,7 @@ public class Log {
 
     public static void rePost(User rePoster, Post post) {
         System.out.println(rePoster.getUsername() + " Repost");
-        System.out.println(post.getOwner() + " " + post.getTitle());
+        System.out.println(post.getOwner().getUsername() + " " + post.getTitle());
         System.out.println(new Date());
         System.out.println();
 

@@ -42,11 +42,6 @@ public class SearchPageController extends mainPage {
             User user;
             if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
                 user = (User) object;
-                boolean isEquals = false;
-                if (thisUser.getSearchedUser() != null)
-                    isEquals = user.getNumOfFollowers().equals(thisUser.getSearchedUser().getNumOfFollowers());
-                System.out.println(isEquals);
-                System.out.println(user.getNumOfFollowers());
                 thisUser.setSearchedUser(user);
             } else {
                 warningLabel.setText("Username not found!");

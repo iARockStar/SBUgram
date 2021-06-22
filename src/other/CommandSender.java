@@ -14,8 +14,8 @@ public class CommandSender implements Serializable {
     private User userWhoWantsToPost;
     ;
     private Comment comment;
-    private User userToFollowOrUnfollow;
-    private User followerOrUnfollower;
+    private User requested;
+    private User requester;
     private User userWhoLiked;
     private User reposter;
     private User userOfTheRepostedPost;
@@ -58,13 +58,17 @@ public class CommandSender implements Serializable {
 
     public CommandSender(CommandType commandType, User userToFollow, User follower) {
         this.commandType = commandType;
-        this.userToFollowOrUnfollow = userToFollow;
-        this.followerOrUnfollower = follower;
+        this.requested = userToFollow;
+        this.requester = follower;
     }
 
 
-    public User getFollower() {
-        return followerOrUnfollower;
+    public User getRequester() {
+        return requester;
+    }
+
+    public User getRequested() {
+        return requested;
     }
 
     public User getUserWhoWantsToPost() {
@@ -88,9 +92,7 @@ public class CommandSender implements Serializable {
         return comment;
     }
 
-    public User getUserToFollow() {
-        return userToFollowOrUnfollow;
-    }
+
 
     public CommandType getCommandType() {
         return commandType;

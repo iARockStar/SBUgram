@@ -171,4 +171,9 @@
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor></JFXCheckBox>
+   <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="247.0" prefHeight="18.0" prefWidth="450.0" textFill="#9a0c0c">
+      <font>
+         <Font name="Georgia Bold" size="14.0" />
+      </font>
+   </Label>
 </AnchorPane>

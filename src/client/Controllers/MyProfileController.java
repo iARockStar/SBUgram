@@ -120,9 +120,14 @@ public class MyProfileController extends mainPage {
      * it's called in init method and loads updated list of posts.
      */
     public void loadPosts(User user) throws IOException {
-        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user));
+        Client.getObjectOutputStream().reset();
+        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user, thisUser.getUser()));
+        Object object = null;
         try {
-            posts = (Vector<Post>) Client.getObjectInputStream().readObject();
+            if ((object = Client.getObjectInputStream().readObject()) instanceof Vector)
+                posts = (Vector<Post>) object;
+            else
+                posts = new Vector<>();
         } catch (Exception e) {
             posts = new Vector<>();
             e.printStackTrace();

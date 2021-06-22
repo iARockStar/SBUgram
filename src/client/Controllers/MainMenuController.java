@@ -44,12 +44,13 @@ public class MainMenuController extends mainPage {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+            Client.setServerUp(false);
+            Main.loadAPage(event
+                    ,"../FXMLs/sample.fxml"
+                    , "SBUgram - Login menu"
+            );
         }
-        Client.setServerUp(false);
-        Main.loadAPage(event
-                ,"../FXMLs/sample.fxml"
-                , "SBUgram - Login menu"
-        );
+
     }
 
     /**

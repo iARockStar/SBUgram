@@ -23,12 +23,13 @@ public class User implements Serializable {
     private String profilePicAddress;
     private Post postToComment = new Post();
     private Comment newComment;
-    private Vector<User> followers = new Vector<>();
+    private Vector<String> followers = new Vector<>();
     private AtomicInteger numOfFollowers = new AtomicInteger(0);
     private AtomicInteger numOfFollowings = new AtomicInteger(0);
-    private Vector<User> followings = new Vector<>();
+    private Vector<String> followings = new Vector<>();
     private Vector<Post> postsLiked = new Vector<>();
-    private Vector<User> mutedList = new Vector<>();
+    private Vector<String> mutedList = new Vector<>();
+    private Vector<String> blockedList = new Vector<>();
 
 
 
@@ -73,17 +74,17 @@ public class User implements Serializable {
 
 
 
-    public void addFollower(User follower){
+    public void addFollower(String follower){
         followers.add(follower);
         numOfFollowers.addAndGet(1);
     }
 
-    public void addFollowing(User following){
+    public void addFollowing(String following){
         followings.add(following);
         numOfFollowings.addAndGet(1);
     }
 
-    public void removeFollower(User follower){
+    public void removeFollower(String follower){
         followers.remove(follower);
         numOfFollowers.addAndGet(-1);
     }
@@ -97,25 +98,25 @@ public class User implements Serializable {
     }
 
 
-    public void removeFollowing(User following){
+    public void removeFollowing(String  following){
         followings.remove(following);
         numOfFollowings.addAndGet(-1);
     }
 
 
-    public void addMuted(User user){
-        mutedList.add(user);
+    public void addMuted(String username){
+        mutedList.add(username);
     }
 
     public void removeMuted(User user){
-        mutedList.remove(user);
+        mutedList.remove(user.getUsername());
     }
 
-    public Vector<User> getFollowers() {
+    public Vector<String> getFollowers() {
         return followers;
     }
 
-    public Vector<User> getFollowings() {
+    public Vector<String> getFollowings() {
         return followings;
     }
 
@@ -259,11 +260,11 @@ public class User implements Serializable {
         this.postsLiked = postsLiked;
     }
 
-    public Vector<User> getMutedList() {
+    public Vector<String> getMutedList() {
         return mutedList;
     }
 
-    public void setMutedList(Vector<User> mutedList) {
+    public void setMutedList(Vector<String> mutedList) {
         this.mutedList = mutedList;
     }
 
@@ -273,5 +274,20 @@ public class User implements Serializable {
 
     public void setProfilePicAddress(String profilePicAddress) {
         this.profilePicAddress = profilePicAddress;
+    }
+
+    public Vector<String> getBlockedList() {
+        return blockedList;
+    }
+
+    public void setBlockedList(Vector<String> blockedList) {
+        this.blockedList = blockedList;
+    }
+
+    public void addToBlockedList(String username){
+        blockedList.add(username);
+    }
+      public void removeFromBlockedList(String username){
+        blockedList.remove(username);
     }
 }

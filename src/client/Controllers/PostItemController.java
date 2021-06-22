@@ -77,7 +77,6 @@ public class PostItemController implements ItemController {
         descriptionLabel.setText(post.getDescription());
         Image image;
         byte[] pic;
-        thisUser.setSearchedUser(post.getOwner());
         pic = post.getOwner().getProfileImage();
         image = new Image(new ByteArrayInputStream(pic));
         byte[] postPic = post.getPostPic();
@@ -118,7 +117,7 @@ public class PostItemController implements ItemController {
         likeButton.setImage(new Image("/images/heart_512px.png"));
         isLiked = false;
         post.getNumOfLikes().addAndGet(-1);
-        post.removeFromLikers(thisUser.getUser());
+        post.removeFromLikers(thisUser.getUser().getUsername());
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(
@@ -139,7 +138,7 @@ public class PostItemController implements ItemController {
         likeButton.setImage(new Image("/images/heart_outline_480px.png"));
         isLiked = true;
         post.getNumOfLikes().addAndGet(1);
-        post.addToLikers(thisUser.getUser());
+        post.addToLikers(thisUser.getUser().getUsername());
 
         try {
             Client.getObjectOutputStream().reset();
@@ -171,7 +170,6 @@ public class PostItemController implements ItemController {
      * to his / her list of posts.
      */
     public void rePost(ActionEvent actionEvent) {
-        post.setReferencePost(post);
         CommandSender repostCommand = new CommandSender
                 (CommandType.REPOST, thisUser.getUser(), post.getOwner(), post);
         try {

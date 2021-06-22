@@ -116,6 +116,7 @@ public class DataBase {
     public synchronized static void updatePost(Post post, User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (user.getUsername().equals(listOfUsers.get(i).getUsername())) {
+                post.setPostId();
                 listOfUsers.get(i).addPost(post);
             }
         }
@@ -123,12 +124,14 @@ public class DataBase {
     }
 
 
-    public synchronized static User loadPost(User user) {
+    public synchronized static User loadPost(User requester, User requested) {
         User foundUser = null;
         for (User listUser :
                 listOfUsers) {
-            if (user.getUsername().equals(listUser.getUsername()))
-                foundUser = listUser;
+            if (requested.getUsername().equals(listUser.getUsername())) {
+                if (!requested.getBlockedList().contains(requester.getUsername()))
+                    foundUser = listUser;
+            }
         }
         return foundUser;
     }
@@ -201,15 +204,21 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (following.getUsername().equals(listUser.getUsername())) {
-                listUser.addFollower(follower);
-                atomicInteger = listUser.getNumOfFollowers();
+                if(!following.getBlockedList().contains(follower.getUsername())) {
+                    listUser.addFollower(follower.getUsername());
+                    atomicInteger = listUser.getNumOfFollowers();
+                }else{
+                    atomicInteger = new AtomicInteger(-1);
+                }
                 break;
             }
         }
-        for (User listUser :
-                listOfUsers) {
-            if (follower.getUsername().equals(listUser.getUsername())) {
-                listUser.addFollowing(following);
+        if(!atomicInteger.equals(new AtomicInteger(-1))) {
+            for (User listUser :
+                    listOfUsers) {
+                if (follower.getUsername().equals(listUser.getUsername())) {
+                    listUser.addFollowing(following.getUsername());
+                }
             }
         }
         updateUser();
@@ -221,7 +230,7 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (following.getUsername().equals(listUser.getUsername())) {
-                listUser.removeFollower(follower);
+                listUser.removeFollower(follower.getUsername());
                 atomicInteger = listUser.getNumOfFollowers();
                 break;
             }
@@ -229,7 +238,7 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (follower.getUsername().equals(listUser.getUsername())) {
-                listUser.removeFollowing(following);
+                listUser.removeFollowing(following.getUsername());
             }
         }
         updateUser();
@@ -247,8 +256,9 @@ public class DataBase {
             }
         }
         for (User listUser : listOfUsers) {
-            if (user2.getFollowings().contains(listUser))
-                if (!user2.getMutedList().contains(listUser))
+            if (user2.getFollowings().contains(listUser.getUsername()))
+                if (!user2.getMutedList().contains(listUser.getUsername())
+                && !user2.getBlockedList().contains(listUser.getUsername()))
                     posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
@@ -260,16 +270,16 @@ public class DataBase {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
                 listUser.addLikedPost(post);
-                post.addToLikers(listUser);
+                post.addToLikers(listUser.getUsername());
             }
         }
         for (User listUser :
                 listOfUsers) {
             for (Post listPost :
                     listUser.getListOfPosts()) {
-                if (listPost.equals(post) && !listPost.getLikers().contains(user)) {
+                if (listPost.equals(post) && !listPost.getLikers().contains(user.getUsername())) {
                     listPost.getNumOfLikes().addAndGet(1);
-                    listPost.addToLikers(user);
+                    listPost.addToLikers(user.getUsername());
                 }
             }
         }
@@ -277,21 +287,20 @@ public class DataBase {
     }
 
     public synchronized static void dislike(User user, Post post) {
-        boolean isDisLiked = false;
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
                 listUser.removeLikedPost(post);
-                post.removeFromLikers(listUser);
+                post.removeFromLikers(listUser.getUsername());
             }
         }
         for (User listUser :
                 listOfUsers) {
             for (Post listPost :
                     listUser.getListOfPosts()) {
-                if (listPost.equals(post) && listPost.getLikers().contains(user)) {
+                if (listPost.equals(post) && listPost.getLikers().contains(user.getUsername())) {
                     listPost.getNumOfLikes().addAndGet(-1);
-                    listPost.removeFromLikers(user);
+                    listPost.removeFromLikers(user.getUsername());
                 }
             }
         }
@@ -313,7 +322,7 @@ public class DataBase {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) &&
                     !listUser.getListOfPosts().contains(post)) {
                 post.getNumOfReposts().addAndGet(1);
-                post.addToRepsters(user);
+                post.addToRepsters(user.getUsername());
                 listUser.getListOfPosts().add(post);
                 for (int i = listOfUsers.size() - 1; i >= 0; i--) {
                     if (listOfUsers.get(i).getListOfPosts().contains(post)) {
@@ -369,7 +378,7 @@ public class DataBase {
                 listOfUsers) {
             for (Post post :
                     listUser.getListOfPosts()) {
-                if (post.getReposters().contains(deletedUser)) {
+                if (post.getReposters().contains(deletedUser.getUsername())) {
                     post.removeFromReposters(deletedUser);
                     post.getNumOfReposts().addAndGet(-1);
                 }
@@ -390,13 +399,13 @@ public class DataBase {
     private synchronized static void deleteFollows(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
-            if (listUser.getFollowers().contains(deletedUser)) {
-                listUser.getFollowers().remove(deletedUser);
+            if (listUser.getFollowers().contains(deletedUser.getUsername())) {
+                listUser.getFollowers().remove(deletedUser.getUsername());
                 listUser.getNumOfFollowers().addAndGet(-1);
             }
 
-            if (listUser.getFollowings().contains(deletedUser)) {
-                listUser.getFollowings().remove(deletedUser);
+            if (listUser.getFollowings().contains(deletedUser.getUsername())) {
+                listUser.getFollowings().remove(deletedUser.getUsername());
                 listUser.getNumOfFollowings().addAndGet(-1);
             }
         }
@@ -407,8 +416,8 @@ public class DataBase {
                 listOfUsers) {
             for (Post post :
                     listUser.getListOfPosts()) {
-                if (post.getLikers().contains(deletedUser)) {
-                    post.removeFromLikers(deletedUser);
+                if (post.getLikers().contains(deletedUser.getUsername())) {
+                    post.removeFromLikers(deletedUser.getUsername());
                     post.getNumOfLikes().addAndGet(-1);
                 }
             }
@@ -419,7 +428,7 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equals(muter.getUsername())) {
-                listUser.addMuted(muted);
+                listUser.addMuted(muted.getUsername());
                 break;
             }
         }
@@ -431,6 +440,37 @@ public class DataBase {
                 listOfUsers) {
             if (listUser.getUsername().equals(unMuter.getUsername())) {
                 listUser.removeMuted(unMuted);
+                break;
+            }
+        }
+        updateUser();
+    }
+
+    public synchronized static void block(User blocker, User blocked) {
+        for (User listUser:
+             listOfUsers) {
+            if(listUser.getUsername().equals(blocker.getUsername())){
+                if(listUser.getFollowings().contains(blocked.getUsername())){
+                    listUser.removeFollowing(blocked.getUsername());
+                    blocked.removeFollower(listUser.getUsername());
+
+                }
+                listUser.addToBlockedList(blocked.getUsername());
+                break;
+            }
+        }
+        updateUser();
+    }
+
+    public synchronized static void unBlock(User unBlocker, User unblocked) {
+        for (User listUser:
+             listOfUsers) {
+            if(listUser.getUsername().equals(unBlocker.getUsername())){
+                if(listUser.getFollowings().contains(unblocked.getUsername())){
+                    listUser.addFollowing(unblocked.getUsername());
+                    unblocked.addFollower(listUser.getUsername());
+                }
+                listUser.removeFromBlockedList(unblocked.getUsername());
                 break;
             }
         }
