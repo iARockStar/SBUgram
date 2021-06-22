@@ -180,11 +180,44 @@ public class PostItemController implements ItemController {
                 post.getNumOfReposts().addAndGet(1);
             }
             repostLabel.setText("   " + post.getNumOfReposts() + "\n" + "Reposts");
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * this method is called when the user hits the post's publisher
+     * it sends the username to the server and receives an updated user.
+     * then it loads the profile page of the received user.
+     */
+    public void loadUserPage(ActionEvent event) throws IOException {
+        String username = this.username.getText().replaceFirst("@","");
+        CommandType searchUserCommand = CommandType.SEARCHUSER;
+        CommandSender searchTheServer =
+                new CommandSender(searchUserCommand, username, thisUser.getUser());
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(searchTheServer);
+            Object object;
+            User user;
+            if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
+                user = (User) object;
+                thisUser.setSearchedUser(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (thisUser.getSearchedUser().getUsername()
+                .equalsIgnoreCase(thisUser.getUser().getUsername()))
+            Main.loadAPage(event
+                    , "../FXMLs/MyProfile.fxml"
+                    , "SBUgram - Your profile"
+            );
+        else
+            Main.loadAPage(event
+                    , "../FXMLs/ProfilePage.fxml"
+                    , "SBUgram - Profile page"
+            );
     }
 }
 

@@ -213,7 +213,7 @@ public class DataBase {
                 break;
             }
         }
-        if(!atomicInteger.equals(new AtomicInteger(-1))) {
+        if(atomicInteger.intValue() != -1) {
             for (User listUser :
                     listOfUsers) {
                 if (follower.getUsername().equals(listUser.getUsername())) {
@@ -258,7 +258,7 @@ public class DataBase {
         for (User listUser : listOfUsers) {
             if (user2.getFollowings().contains(listUser.getUsername()))
                 if (!user2.getMutedList().contains(listUser.getUsername())
-                && !user2.getBlockedList().contains(listUser.getUsername()))
+                && !listUser.getBlockedList().contains(user2.getUsername()))
                     posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
@@ -450,12 +450,17 @@ public class DataBase {
         for (User listUser:
              listOfUsers) {
             if(listUser.getUsername().equals(blocker.getUsername())){
-                if(listUser.getFollowings().contains(blocked.getUsername())){
-                    listUser.removeFollowing(blocked.getUsername());
-                    blocked.removeFollower(listUser.getUsername());
-
+                if(blocked.getFollowings().contains(listUser.getUsername())){
+                    listUser.removeFollower(blocked.getUsername());
                 }
                 listUser.addToBlockedList(blocked.getUsername());
+                break;
+            }
+        }
+        for (User listUser:
+             listOfUsers) {
+            if(blocked.getUsername().equalsIgnoreCase(listUser.getUsername())){
+                listUser.removeFollowing(blocker.getUsername());
                 break;
             }
         }
@@ -466,10 +471,6 @@ public class DataBase {
         for (User listUser:
              listOfUsers) {
             if(listUser.getUsername().equals(unBlocker.getUsername())){
-                if(listUser.getFollowings().contains(unblocked.getUsername())){
-                    listUser.addFollowing(unblocked.getUsername());
-                    unblocked.addFollower(listUser.getUsername());
-                }
                 listUser.removeFromBlockedList(unblocked.getUsername());
                 break;
             }

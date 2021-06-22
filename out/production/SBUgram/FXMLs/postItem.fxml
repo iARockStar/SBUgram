@@ -25,7 +25,15 @@
                      <font>
                         <Font name="Cooper Black" size="14.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Label>
+                  <Button layoutX="8.0" layoutY="98.0" mnemonicParsing="false" onAction="#loadUserPage" opacity="0.0" prefHeight="26.0" prefWidth="90.0" text="Button">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </AnchorPane>
             <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="437.0" text="post title" textFill="#161414">
