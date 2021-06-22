@@ -3,6 +3,9 @@ package other;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * this class is a holder for the question and the answer of a security question.
+ */
 public class SecurityQuestion implements Serializable {
     private String question;
     private String answer;

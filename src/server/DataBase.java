@@ -16,8 +16,14 @@ public class DataBase {
     private static final String USERS_FILE
             = "C:\\Users\\USER\\IdeaProjects\\signUp.bin";
 
+    private static final String POST_ID_FILE
+            = "C:\\Users\\USER\\IdeaProjects\\postId.bin";
+
     private static Vector<User> listOfUsers
             = new Vector<>();
+
+    private static AtomicInteger idCounter =
+            new AtomicInteger(0);
 
 
     public static void initializeServer() {
@@ -34,6 +40,28 @@ public class DataBase {
             FileInputStream fin = new FileInputStream(USERS_FILE);
             ObjectInputStream inFromFile = new ObjectInputStream(fin);
             listOfUsers = (Vector<User>) inFromFile.readObject();
+            inFromFile.close();
+            fin.close();
+        } catch (EOFException | StreamCorruptedException e) {
+            listOfUsers = new Vector<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        File file2;
+        file2 = new File(POST_ID_FILE);
+        if (!file2.exists()) {
+            try {
+                file2.createNewFile();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        try {
+            FileInputStream fin = new FileInputStream(POST_ID_FILE);
+            ObjectInputStream inFromFile = new ObjectInputStream(fin);
+            idCounter = (AtomicInteger) inFromFile.readObject();
+            Post.setIdCounter(idCounter);
             inFromFile.close();
             fin.close();
         } catch (EOFException | StreamCorruptedException e) {
@@ -97,10 +125,17 @@ public class DataBase {
         sortPosts();
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(USERS_FILE, false);
-            ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream1.writeObject(listOfUsers);
-            objectOutputStream1.flush();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(listOfUsers);
+            objectOutputStream.flush();
             fileOutputStream.close();
+
+
+            FileOutputStream fileOutputStream1 = new FileOutputStream(POST_ID_FILE, false);
+            ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(fileOutputStream1);
+            objectOutputStream1.writeObject(Post.getIdCounter());
+            objectOutputStream1.flush();
+            fileOutputStream1.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -258,7 +293,8 @@ public class DataBase {
         for (User listUser : listOfUsers) {
             if (user2.getFollowings().contains(listUser.getUsername()))
                 if (!user2.getMutedList().contains(listUser.getUsername())
-                && !listUser.getBlockedList().contains(user2.getUsername()))
+                && !listUser.getBlockedList().contains(user2.getUsername())
+                && !user2.getBlockedList().contains(listUser.getUsername()))
                     posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
@@ -460,6 +496,7 @@ public class DataBase {
         for (User listUser:
              listOfUsers) {
             if(blocked.getUsername().equalsIgnoreCase(listUser.getUsername())){
+                if(blocker.getFollowers().contains(listUser.getUsername()))
                 listUser.removeFollowing(blocker.getUsername());
                 break;
             }

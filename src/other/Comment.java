@@ -3,6 +3,9 @@ package other;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * this class is for comments and saving the information of one comment at a time.
+ */
 public class Comment implements Serializable {
     private User owner;
     private Post post;

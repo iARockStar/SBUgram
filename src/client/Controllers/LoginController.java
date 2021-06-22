@@ -30,19 +30,19 @@ public class LoginController implements Initializable {
     private Scene scene;
     private Parent root;
     @FXML
-    Label warningLabel;
+    private Label warningLabel;
     @FXML
-    TextField nameTextField;
+    private TextField nameTextField;
     @FXML
-    ImageView sbuPic = new ImageView(new Image("images/unnamed.png"));
+    private ImageView sbuPic = new ImageView(new Image("images/unnamed.png"));
     @FXML
-    CheckBox show;
+    private CheckBox show;
     @FXML
-    Button signupButton;
+    private Button signupButton;
     @FXML
-    PasswordField password;
+    private PasswordField password;
     @FXML
-    TextField fakePassfield;
+    private TextField fakePassfield;
 
 
     /**

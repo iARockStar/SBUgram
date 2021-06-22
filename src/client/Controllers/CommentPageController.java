@@ -1,9 +1,6 @@
 package client.Controllers;
 
-import client.Client;
-import client.CommentItem;
-import client.PostItem;
-import client.thisUser;
+import client.*;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -31,7 +28,7 @@ public class CommentPageController extends mainPage implements Initializable {
     private ListView<Comment> commentListView;
     @FXML
     private JFXTextArea commentText;
-    Vector<Comment> comments;
+    private Vector<Comment> comments;
 
 
     /**
@@ -103,4 +100,28 @@ public class CommentPageController extends mainPage implements Initializable {
     }
 
 
+    /**
+     * this method returns the user back to the previous page.
+     */
+    public void goBack(ActionEvent event) throws IOException {
+        if(thisUser.getSearchedUser() == null){
+            Main.loadAPage(event
+                    ,"../FXMLs/MainPage.fxml"
+                    , "SBUgram - Main page"
+            );
+        }
+        else{
+            if (thisUser.getSearchedUser().getUsername()
+                    .equalsIgnoreCase(thisUser.getUser().getUsername()))
+                Main.loadAPage(event
+                        , "../FXMLs/MyProfile.fxml"
+                        , "SBUgram - Your profile"
+                );
+            else
+                Main.loadAPage(event
+                        , "../FXMLs/ProfilePage.fxml"
+                        , "SBUgram - Profile page"
+                );
+        }
+    }
 }

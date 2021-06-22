@@ -80,6 +80,11 @@
                <DropShadow blurType="GAUSSIAN" />
             </effect>
          </ImageView>
+         <Button layoutX="7.0" layoutY="13.0" mnemonicParsing="false" onAction="#goBack" opacity="0.0" prefHeight="26.0" prefWidth="41.0" text="Button">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </Button>
         </children>
         <effect>
             <DropShadow>

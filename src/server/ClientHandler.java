@@ -124,8 +124,7 @@ public class ClientHandler extends Thread {
                         Log.rePost(user, post);
                         break;
                     case SETTING:
-                        Holder holder = (Holder) commandSender.getUser();
-                        User updatedUser = holder.getUser();
+                        User updatedUser = (User) commandSender.getUser();
                         settingUpdate(updatedUser);
                         Log.setting(updatedUser);
                         break;

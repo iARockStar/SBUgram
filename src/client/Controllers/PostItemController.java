@@ -4,6 +4,7 @@ import client.Client;
 import client.Main;
 import client.thisUser;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -33,21 +34,33 @@ import client.PageLoader;
  */
 public class PostItemController implements ItemController {
 
-    public AnchorPane root;
-    public ImageView profileImage;
-    public Label username;
+    @FXML
+    private AnchorPane root;
+    @FXML
+    private ImageView profileImage;
+    @FXML
+    private Label username;
 
-    public Text description;
-    public Label title;
-    public Circle proPic;
-    public ImageView postImageView;
-    public Label date;
-    Post post;
-    public Label descriptionLabel;
-    public ImageView likeButton;
-    public boolean isLiked = false;
-    public Label likeLabel;
-    public Label repostLabel;
+    @FXML
+    private Text description;
+    @FXML
+    private Label title;
+    @FXML
+    private Circle proPic;
+    @FXML
+    private ImageView postImageView;
+    @FXML
+    private Label date;
+    private Post post;
+    @FXML
+    private Label descriptionLabel;
+    @FXML
+    private ImageView likeButton;
+    private boolean isLiked = false;
+    @FXML
+    private Label likeLabel;
+    @FXML
+    private Label repostLabel;
 
 
     /**

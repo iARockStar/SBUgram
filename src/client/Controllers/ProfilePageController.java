@@ -43,23 +43,23 @@ public class ProfilePageController extends mainPage {
      * list of posts of the searched user.
      */
     @FXML
-    ListView<Post> postList;
-    Vector<Post> posts = new Vector<>();
+    private ListView<Post> postList;
+    private Vector<Post> posts = new Vector<>();
 
     @FXML
-    Circle profilePic;
+    private Circle profilePic;
     @FXML
-    Label usernameLabel;
+    private Label usernameLabel;
     @FXML
-    Label namePlusLastnameLabel;
+    private Label namePlusLastnameLabel;
     @FXML
-    Label birthDateLabel;
+    private Label birthDateLabel;
     @FXML
-    JFXCheckBox followCheckbox;
+    private JFXCheckBox followCheckbox;
     @FXML
-    Label followingLabel;
+    private Label followingLabel;
     @FXML
-    Label followerLabel;
+    private Label followerLabel;
     @FXML
     private JFXCheckBox muteCheckBox;
     @FXML
@@ -78,10 +78,8 @@ public class ProfilePageController extends mainPage {
         updateMyUser(thisUser.getUser());
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
-        System.out.println(myUser.getBlockedList());
-        boolean b = myUser.getBlockedList().contains(thisUser.getSearchedUser().getUsername());
-        System.out.println(b);
-        if (b)
+        boolean isBlocked = myUser.getBlockedList().contains(thisUser.getSearchedUser().getUsername());
+        if (isBlocked)
             blockCheckbox.setSelected(true);
         for (String listUser :
                 myUser.getFollowings()) {

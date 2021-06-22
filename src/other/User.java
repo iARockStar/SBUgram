@@ -9,6 +9,10 @@ import java.util.Vector;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * this class holds everything needed for a new profile.
+ * it includes the list of followers and blocked and followed and muted people.
+ */
 public class User implements Serializable {
     private String name;
     private String lastName;

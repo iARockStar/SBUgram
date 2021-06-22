@@ -4,6 +4,12 @@ import java.io.Serializable;
 
 import client.*;
 
+/**
+ * this class acts like a holder for the information needed to be sent
+ * to the server and to be received from it.
+ * it has different constructors with different params which
+ * hold the information needed.
+ */
 public class CommandSender implements Serializable {
 
     private CommandType commandType;
@@ -63,6 +69,7 @@ public class CommandSender implements Serializable {
     }
 
 
+    // getters and setters
     public User getRequester() {
         return requester;
     }

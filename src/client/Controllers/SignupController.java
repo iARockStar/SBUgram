@@ -84,9 +84,6 @@ public class SignupController implements Initializable {
      * this method is called before all of the other methods
      * and sets the default profilePic for the user.
      * it also prepares questions for the security question section.
-     *
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -164,7 +161,6 @@ public class SignupController implements Initializable {
      * checks if the phoneNumber which the user entered has the correct pattern.
      * for instance it doesn't allow characters or a String or generally
      * anything except integers.
-     *
      * @param phoneNumber the String which we check its validation.
      * @return if the phoneNumber is valid it returns true.
      */

@@ -1,6 +1,7 @@
 package client.Controllers;
 
 import client.Main;
+import client.thisUser;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ public class mainPage {
                 ,"../FXMLs/MainPage.fxml"
                 , "SBUgram - Main page"
         );
+        thisUser.setSearchedUser(null);
     }
 
 
@@ -29,6 +31,8 @@ public class mainPage {
                 ,"../FXMLs/MainMenu.fxml"
                 , "SBUgram - Main menu"
         );
+        thisUser.setSearchedUser(null);
+
     }
 
 
@@ -44,6 +48,7 @@ public class mainPage {
                 ,"../FXMLs/MyProfile.fxml"
                 , "SBUgram - Your Profile"
         );
+        thisUser.setSearchedUser(thisUser.getUser());
     }
 
 }

@@ -38,21 +38,21 @@ public class MyProfileController extends mainPage {
      * list of users' posts.
      */
     @FXML
-    ListView<Post> postList;
-    Vector<Post> posts = new Vector<>();
+    private ListView<Post> postList;
+    private Vector<Post> posts = new Vector<>();
 
     @FXML
-    Label usernameLabel;
+    private Label usernameLabel;
     @FXML
-    Label namePlusLastnameLabel;
+    private Label namePlusLastnameLabel;
     @FXML
-    Label birthDateLabel;
+    private Label birthDateLabel;
     @FXML
-    Circle profilePic;
+    private Circle profilePic;
     @FXML
-    Label followerLabel;
+    private Label followerLabel;
     @FXML
-    Label followingLabel;
+    private Label followingLabel;
 
     private User user;
 

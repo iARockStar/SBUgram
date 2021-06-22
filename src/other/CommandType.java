@@ -1,7 +1,10 @@
 package other;
 
 
-
+/**
+ * this enum class helps the server recognize the sent order so that it can
+ * behave correctly.
+ */
 public enum CommandType {
     UPDATEUSER,
     LOGIN,

@@ -106,6 +106,9 @@
          <effect>
             <DropShadow />
          </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <Label layoutX="56.0" layoutY="395.0" text="Forgot password?">
          <font>

@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,17 +27,17 @@ import other.*;
  */
 public class PasswordRetrieveController {
     @FXML
-    Button submitButton;
+    private Button submitButton;
     @FXML
-    JFXTextField usernameField;
+    private JFXTextField usernameField;
     @FXML
-    JFXTextField myAnswerField;
+    private JFXTextField myAnswerField;
     @FXML
-    JFXPasswordField newPassField;
+    private JFXPasswordField newPassField;
     @FXML
-    Label questionLabel;
+    private Label questionLabel;
     @FXML
-    Label infoLabel;
+    private Label infoLabel;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -50,6 +51,8 @@ public class PasswordRetrieveController {
      * user must remember the answer to it.
      */
     public void find(ActionEvent event) {
+        if(!Client.isServerUp())
+            Client.connectToServer();
         String username;
         if (usernameField.getText().length() != 0) {
             username = usernameField.getText();
@@ -58,9 +61,13 @@ public class PasswordRetrieveController {
             try {
                 Client.getObjectOutputStream().writeObject(commandSender);
                 Object object;
+                String question;
                 if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
                     user = (User) object;
-                    questionLabel.setText(user.getSecurityQuestion().getQuestion());
+                    question = user.getSecurityQuestion().getQuestion();
+                    questionLabel.setText(Objects.requireNonNullElse(
+                            question,
+                            "No question was asked during the signUp"));
                     infoLabel.setText("");
                 } else {
                     infoLabel.setText("Username not found!");

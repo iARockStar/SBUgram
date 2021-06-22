@@ -5,6 +5,10 @@ import other.User;
 
 import java.util.Date;
 
+/**
+ * this class is just for printing the events which happen during the server
+ * runtime.
+ */
 public class Log {
 
     public static void login(String username) {

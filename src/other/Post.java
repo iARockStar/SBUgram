@@ -9,7 +9,9 @@ import java.util.Objects;
 import java.util.Vector;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**
+ * this class is for posts and saving the information of one post at a time.
+ */
 public class Post implements Serializable, Comparable {
 
     private String writer;
@@ -25,8 +27,22 @@ public class Post implements Serializable, Comparable {
     private Vector<String> likers = new Vector<>();
     private Vector<String> reposters = new Vector<>();
     private AtomicInteger numOfReposts = new AtomicInteger(0);
+    //id which helps the post to be unique.
     private  int postId;
+    /**
+     * idCounter is a static field which increases ny each instantiation.
+     * so it helps the posts to be unique nhy assigning
+     * a unique id to each post.
+     */
     private static AtomicInteger idCounter = new AtomicInteger(0);
+
+    public static void setIdCounter(AtomicInteger idCounter) {
+        Post.idCounter = idCounter;
+    }
+
+    public static AtomicInteger getIdCounter() {
+        return idCounter;
+    }
 
     public Post(String writer, String title, String description, Date date, byte[] profilePic, byte[] postPic) {
         this.writer = writer;
@@ -49,6 +65,7 @@ public class Post implements Serializable, Comparable {
         this.postId = idCounter.getAndAdd(+1);
     }
 
+    //getters and setters
     public int getPostId() {
         return postId;
     }
