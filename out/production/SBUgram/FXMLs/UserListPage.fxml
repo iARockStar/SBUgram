@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="646.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.UserListPageController">
+    <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="450.0" style="-fx-background-color: #778899;">
+        <children>
+            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" text="Time line" textFill="WHITE">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <toggleGroup>
+                    <ToggleGroup fx:id="selectionBar" />
+                </toggleGroup>
+                <font>
+                    <Font name="Georgia Italic" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="mainMenuButton" layoutX="124.0" layoutY="10.0" onAction="#loadMainMenu" text="Main Menu" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font></JFXRadioButton>
+            <JFXRadioButton fx:id="myProfileButton" layoutX="253.0" layoutY="10.0" onAction="#loadMyProfile" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="directButton" layoutX="370.0" layoutY="9.0" onAction="#loadDirect" selected="true" text="Direct" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </JFXRadioButton>
+        </children>
+        <effect>
+            <DropShadow blurType="GAUSSIAN">
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+    <AnchorPane prefHeight="50.0" prefWidth="438.0" style="-fx-background-color: #778899;">
+        <children>
+            <Label alignment="CENTER" layoutY="1.0" prefHeight="48.0" prefWidth="450.0" style="-fx-background-color: #778899;" text="SBUgram" textFill="LIMEGREEN">
+                <font>
+                    <Font name="Brush Script MT Italic" size="36.0" />
+                </font>
+                <effect>
+                    <DropShadow blurType="GAUSSIAN">
+                        <color>
+                            <Color red="1.0" green="1.0" blue="1.0" />
+                        </color>
+                    </DropShadow>
+                </effect>
+            </Label>
+         <ImageView fitHeight="38.0" fitWidth="48.0" layoutY="6.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/search_480px.png" />
+            </image>
+            <effect>
+               <DropShadow blurType="GAUSSIAN" />
+            </effect>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </ImageView>
+        </children>
+        <effect>
+            <DropShadow>
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+    <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="406.0" layoutY="6.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+        
+        <effect>
+            <DropShadow blurType="GAUSSIAN" />
+        </effect>
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+      <image>
+         <Image url="@../images/reset_500px.png" />
+      </image>
+    </ImageView>
+    <JFXListView fx:id="items" layoutX="-1.0" layoutY="51.0" prefHeight="555.0" prefWidth="450.0" />
+</AnchorPane>

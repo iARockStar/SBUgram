@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<HBox fx:id="root" nodeOrientation="RIGHT_TO_LEFT" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+         <children>
+            <Circle fx:id="img_profile" fill="DODGERBLUE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <ImageView onMouseClicked="#delete_click" fitHeight="22.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/trash_24px.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="edit_tick" onMouseClicked="#edit_click" fitHeight="22.0" fitWidth="23.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/pencil_24px.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <AnchorPane prefWidth="250.0" style="-fx-background-color: #2b5378; -fx-background-radius: 10;">
+         <children>
+            <JFXTextArea fx:id="editBox" focusColor="#a8404000" layoutY="25.0" prefHeight="50.0" prefWidth="267.0" style="-fx-text-inner-color: WHITE;" text="sdfsdfds" unFocusColor="#4f000000" visible="false" wrapText="true" />
+            <VBox layoutX="14.0" layoutY="5.0" nodeOrientation="RIGHT_TO_LEFT">
+               <children>
+                  <Label fx:id="lbl_date" text="12:12" textFill="#d5d5d5" />
+                  <Label fx:id="lbl_message" alignment="TOP_LEFT" contentDisplay="RIGHT" prefWidth="240.0" text="Hi This is a test message like lorem but better than it" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets right="2.0" />
+               </padding>
+            </VBox>
+         </children>
+         <HBox.margin>
+            <Insets bottom="2.0" right="2.0" top="2.0" />
+         </HBox.margin>
+      </AnchorPane>
+   </children>
+</HBox>

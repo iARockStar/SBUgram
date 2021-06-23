@@ -39,7 +39,10 @@ public class mainPage {
 
 
     public void loadDirect(ActionEvent event)throws IOException{
-
+        Main.loadAPage(event
+                ,"../FXMLs/UserListPage.fxml"
+                , "SBUgram - Direct"
+        );
     }
 
 

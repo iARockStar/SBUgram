@@ -172,6 +172,7 @@ public class Post implements Serializable, Comparable {
 
     @Override
     public int compareTo(Object o) {
+
         return ((Post) o).getDateTime().compareTo(this.getDateTime());
     }
 

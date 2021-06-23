@@ -29,5 +29,13 @@ public enum CommandType {
     UNMUTE,
     BLOCK,
     UNBLOCK,
+    /*
+     * this part is only for the chat part of the project
+     */
+    CREATECHATITEM,
+    GETUSERS,
+    GETCHATS
+
+
 
 }

@@ -16,6 +16,7 @@ public class thisUser {
      * the user whom we searched in the search section.
      */
     private static User searchedUser;
+    private static String searchedUserName;
 
     //getters and setters
     public static User getUser() {
@@ -33,6 +34,14 @@ public class thisUser {
     public static void setSearchedUser(User searchedUser) {
 
         thisUser.searchedUser = searchedUser;
+    }
+
+    public static String getSearchedUserName() {
+        return searchedUserName;
+    }
+
+    public static void setSearchedUserName(String searchedUserName) {
+        thisUser.searchedUserName = searchedUserName;
     }
 }
 

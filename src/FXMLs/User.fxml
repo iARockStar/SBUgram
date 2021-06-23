@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root" prefHeight="171.0" prefWidth="450.0" style="-fx-background-color: #778899;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<JFXButton buttonType="RAISED" layoutX="167.0" layoutY="69.0" onAction="#enterChat" style="-fx-background-color: #32dc32;" text="Enter chat">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+      <font>
+         <Font name="Georgia Bold" size="18.0" />
+      </font>
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect></JFXButton>
+   <Label fx:id="dateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="137.0" prefHeight="20.0" prefWidth="443.0" text="Label">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="13.0" prefHeight="35.0" prefWidth="443.0" text="\@AbasseBooazar">
+      <font>
+         <Font name="System Bold Italic" size="24.0" />
+      </font>
+      <cursor>
+         <Cursor fx:constant="DEFAULT" />
+      </cursor>
+      <effect>
+         <DropShadow blurType="GAUSSIAN">
+            <color>
+               <Color red="0.19607843458652496" green="0.8627451062202454" blue="0.19607843458652496" />
+            </color>
+         </DropShadow>
+      </effect></Label>
+   <Button layoutX="132.0" layoutY="17.0" mnemonicParsing="false" onAction="#loadProfile" opacity="0.0" prefHeight="26.0" prefWidth="191.0" text="Button">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
+</AnchorPane>

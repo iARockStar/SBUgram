@@ -7,6 +7,7 @@ import java.io.*;
 import other.*;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -305,7 +306,7 @@ public class DataBase {
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
-                listUser.addLikedPost(post);
+                listUser.addLikedPost(post.getPostId());
                 post.addToLikers(listUser.getUsername());
             }
         }
@@ -326,7 +327,7 @@ public class DataBase {
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
-                listUser.removeLikedPost(post);
+                listUser.removeLikedPost(post.getPostId());
                 post.removeFromLikers(listUser.getUsername());
             }
         }
@@ -380,9 +381,15 @@ public class DataBase {
                 listOfUsers.remove(i);
                 listOfUsers.add(i, user);
                 listOfUsers.get(i).setPassword(user.getPassword());
+                for (Post post : listOfUsers.get(i).getListOfPosts()) {
+                    if(post.getOwner().getUsername()
+                            .equalsIgnoreCase(listOfUsers.get(i).getUsername()))
+                    post.setOwner(user);
+                }
                 break;
             }
         }
+
         updateUser();
     }
 
@@ -513,5 +520,33 @@ public class DataBase {
             }
         }
         updateUser();
+    }
+
+    /**
+     * this method is for creating an item which allows the user to
+     * chat with the searchedUser.
+     * this item which is created here will be available in the direct
+     * section.
+     * @param chatSender the user who wants to chat with another user
+     * @param chatReceiver the addressed user.
+     */
+    public synchronized static void createChatItem(User chatSender, User chatReceiver) {
+        UserList newUserListForSender = new UserList(
+                chatSender.getUsername(),chatReceiver.getUsername(),new Date()
+        );
+
+        UserList newUserListForReceiver = new UserList(
+                chatReceiver.getUsername(),chatSender.getUsername(),new Date()
+        );
+        int indexOfSender = listOfUsers.indexOf(chatSender);
+        int indexOfReceiver = listOfUsers.indexOf(chatReceiver);
+        listOfUsers.get(indexOfSender).getUsers().add(newUserListForSender);
+        listOfUsers.get(indexOfReceiver).getUsers().add(newUserListForReceiver);
+        updateUser();
+    }
+
+    public static Vector<UserList> getUsers(User myUser) {
+        int indexOfUser = listOfUsers.indexOf(myUser);
+        return listOfUsers.get(indexOfUser).getUsers();
     }
 }

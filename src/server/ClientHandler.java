@@ -149,12 +149,22 @@ public class ClientHandler extends Thread {
                         User blocker = commandSender.getRequester();
                         User blocked = commandSender.getRequested();
                         block(blocker,blocked);
-//                        Log.block(blocker,blocked);
+                        Log.block(blocker,blocked);
                         break;
                     case UNBLOCK:
                         User unBlocker = commandSender.getRequester();
                         User unblocked = commandSender.getRequested();
                         unblock(unBlocker,unblocked);
+                        Log.unBlock(unBlocker,unblocked);
+                        break;
+                    case CREATECHATITEM:
+                        User chatSender = commandSender.getRequester();
+                        User chatReceiver = commandSender.getRequested();
+                        createChatItem(chatSender,chatReceiver);
+                        break;
+                    case GETUSERS:
+                        User myUser = (User) commandSender.getUser();
+                        getUsers(myUser);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -168,6 +178,27 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * this method gets the list of users whom myUser chatted with
+     * @param myUser hte user we tend to get its list of users
+     */
+    private void getUsers(User myUser) {
+        Vector<UserList> users;
+        try{
+            users = DataBase.getUsers(myUser);
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(users);
+            objectOutputStream.flush();
+        }catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
+    private void createChatItem(User chatSender, User chatReceiver) {
+        DataBase.createChatItem(chatSender,chatReceiver);
+
     }
 
     private void unblock(User unBlocker, User unblocked) {

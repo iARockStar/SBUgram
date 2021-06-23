@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="646.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controllers.ChatPageController">
+<JFXTextArea focusColor="WHITE" layoutY="500.0" prefHeight="106.0" prefWidth="399.0" promptText="message..." style="-fx-background-color: #ffffff;">
+      <font>
+         <Font name="Georgia" size="14.0" />
+      </font>
+      <effect>
+         <DropShadow />
+      </effect></JFXTextArea>
+    <AnchorPane prefHeight="50.0" prefWidth="438.0" style="-fx-background-color: #778899;">
+        <children>
+            <Label alignment="CENTER" layoutY="1.0" prefHeight="48.0" prefWidth="450.0" style="-fx-background-color: #778899;" text="SBUgram" textFill="LIMEGREEN">
+                <font>
+                    <Font name="Brush Script MT Italic" size="36.0" />
+                </font>
+                <effect>
+                    <DropShadow blurType="GAUSSIAN">
+                        <color>
+                            <Color red="1.0" green="1.0" blue="1.0" />
+                        </color>
+                    </DropShadow>
+                </effect>
+            </Label>
+        </children>
+        <effect>
+            <DropShadow>
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+    <AnchorPane layoutY="607.0" prefHeight="38.0" prefWidth="450.0" style="-fx-background-color: #778899;">
+        <children>
+            <JFXRadioButton fx:id="timeLineButton" layoutX="14.0" layoutY="10.0" onAction="#loadTimeLine" selected="true" text="Time line" textFill="WHITE">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <toggleGroup>
+                    <ToggleGroup fx:id="selectionBar" />
+                </toggleGroup>
+                <font>
+                    <Font name="Georgia Italic" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="mainMenuButton" layoutX="124.0" layoutY="10.0" onAction="#loadMainMenu" selected="true" text="Main Menu" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font></JFXRadioButton>
+            <JFXRadioButton fx:id="myProfileButton" layoutX="253.0" layoutY="10.0" onAction="#loadMyProfile" text="myProfile" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font name="Georgia" size="14.0" />
+                </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="directButton" layoutX="370.0" layoutY="9.0" onAction="#loadDirect" text="Direct" textFill="WHITE" toggleGroup="$selectionBar">
+                <selectedColor>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </selectedColor>
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </JFXRadioButton>
+        </children>
+        <effect>
+            <DropShadow blurType="GAUSSIAN">
+                <color>
+                    <Color red="0.19607843458652496" green="0.8039215803146362" blue="0.19607843458652496" />
+                </color>
+            </DropShadow>
+        </effect>
+    </AnchorPane>
+   <ImageView fitHeight="48.0" fitWidth="54.0" layoutX="402.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/paper_plane_208px.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="50.0" fitWidth="48.0" layoutX="402.0" layoutY="553.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/attach_500px.png" />
+      </image>
+   </ImageView>
+   <Button layoutX="398.0" layoutY="500.0" mnemonicParsing="false" onAction="#send" opacity="0.0" prefHeight="48.0" prefWidth="52.0" text="Button">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
+   <Button layoutX="400.0" layoutY="553.0" mnemonicParsing="false" onAction="#attach" opacity="0.0" prefHeight="48.0" prefWidth="52.0" text="Button">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
+    <JFXListView fx:id="chatListView" layoutY="84.0" prefHeight="418.0" prefWidth="452.0" />
+    <ImageView fitHeight="34.0" fitWidth="54.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/left_arrow_500px.png" />
+        </image>
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <effect>
+            <DropShadow blurType="GAUSSIAN" />
+        </effect>
+    </ImageView>
+    <Button layoutX="7.0" layoutY="13.0" mnemonicParsing="false" onAction="#goBack" opacity="0.0" prefHeight="26.0" prefWidth="41.0" text="Button">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+    </Button>
+   <Label fx:id="usernameLabel" alignment="CENTER" layoutY="50.0" prefHeight="38.0" prefWidth="450.0" text="Chat with @iARockstar">
+      <font>
+         <Font name="Georgia Bold Italic" size="24.0" />
+      </font>
+   </Label>
+</AnchorPane>

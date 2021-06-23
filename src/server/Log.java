@@ -141,4 +141,18 @@ public class Log {
             System.out.println();
         }
     }
+
+    public static void block(User blocker, User blocked) {
+        System.out.println(blocker.getUsername() + " Mute");
+        System.out.println("message: " + blocked.getUsername());
+        System.out.println(new Date());
+        System.out.println();
+    }
+
+    public static void unBlock(User unBlocker, User unblocked) {
+        System.out.println(unBlocker.getUsername() + " Mute");
+        System.out.println("message: " + unblocked.getUsername());
+        System.out.println(new Date());
+        System.out.println();
+    }
 }

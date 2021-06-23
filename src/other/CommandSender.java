@@ -27,6 +27,8 @@ public class CommandSender implements Serializable {
     private User userOfTheRepostedPost;
     private Post repostedPost;
     private User searcher;
+    private String me;
+    private String theOtherOne;
 
 
     public CommandSender(CommandType commandType, User reposter, User userOfTheRepostedPost, Post repostedPost) {
@@ -66,6 +68,12 @@ public class CommandSender implements Serializable {
         this.commandType = commandType;
         this.requested = userToFollow;
         this.requester = follower;
+    }
+
+    public CommandSender(CommandType commandType, String myUser, String theOtherUser) {
+        this.commandType = commandType;
+        this.me = myUser;
+        this.theOtherOne = theOtherUser;
     }
 
 

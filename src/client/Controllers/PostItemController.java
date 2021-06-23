@@ -79,9 +79,9 @@ public class PostItemController implements ItemController {
     public AnchorPane init() {
         username.setText("@" + post.getWriter());
         title.setText(post.getTitle());
-        for (Post listPost :
+        for (Integer listPost :
                 thisUser.getUser().getPostsLiked()) {
-            if (listPost.equals(post)) {
+            if (listPost.equals(post.getPostId())) {
                 isLiked = true;
                 likeButton.setImage(new Image("/images/heart_outline_480px.png"));
                 break;
@@ -140,7 +140,7 @@ public class PostItemController implements ItemController {
         }
         likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
 
-        thisUser.getUser().removeLikedPost(post);
+        thisUser.getUser().removeLikedPost(post.getPostId());
     }
 
 
@@ -161,7 +161,7 @@ public class PostItemController implements ItemController {
             e.printStackTrace();
         }
         likeLabel.setText("   " + post.getNumOfLikes() + "\n" + "likes");
-        thisUser.getUser().addLikedPost(post);
+        thisUser.getUser().addLikedPost(post.getPostId());
     }
 
     /**

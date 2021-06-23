@@ -1,12 +1,11 @@
 package other;
 
-import javafx.geometry.Pos;
-
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -31,10 +30,12 @@ public class User implements Serializable {
     private AtomicInteger numOfFollowers = new AtomicInteger(0);
     private AtomicInteger numOfFollowings = new AtomicInteger(0);
     private Vector<String> followings = new Vector<>();
-    private Vector<Post> postsLiked = new Vector<>();
+    private Vector<Integer> postsLiked = new Vector<>();
     private Vector<String> mutedList = new Vector<>();
     private Vector<String> blockedList = new Vector<>();
-
+    private Map<String, Vector<Message>> sent = new ConcurrentHashMap<>();
+    private Map<String, Vector<Message>> received = new ConcurrentHashMap<>();
+    private Vector<UserList> users = new Vector<>();
 
 
     public User(String name, String lastName, String username, String password, String phoneNumber, SecurityQuestion securityQuestion, String datePicker, String email) {
@@ -77,42 +78,41 @@ public class User implements Serializable {
     }
 
 
-
-    public void addFollower(String follower){
+    public void addFollower(String follower) {
         followers.add(follower);
         numOfFollowers.addAndGet(1);
     }
 
-    public void addFollowing(String following){
+    public void addFollowing(String following) {
         followings.add(following);
         numOfFollowings.addAndGet(1);
     }
 
-    public void removeFollower(String follower){
+    public void removeFollower(String follower) {
         followers.remove(follower);
         numOfFollowers.addAndGet(-1);
     }
 
-    public void addLikedPost(Post post){
-        postsLiked.add(post);
+    public void addLikedPost(Integer postId) {
+        postsLiked.add(postId);
     }
 
-    public void removeLikedPost(Post post){
-        postsLiked.remove(post);
+    public void removeLikedPost(Integer postId) {
+        postsLiked.remove(postId);
     }
 
 
-    public void removeFollowing(String  following){
+    public void removeFollowing(String following) {
         followings.remove(following);
         numOfFollowings.addAndGet(-1);
     }
 
 
-    public void addMuted(String username){
+    public void addMuted(String username) {
         mutedList.add(username);
     }
 
-    public void removeMuted(User user){
+    public void removeMuted(User user) {
         mutedList.remove(user.getUsername());
     }
 
@@ -241,7 +241,6 @@ public class User implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -256,11 +255,11 @@ public class User implements Serializable {
     }
 
 
-    public Vector<Post> getPostsLiked() {
+    public Vector<Integer> getPostsLiked() {
         return postsLiked;
     }
 
-    public void setPostsLiked(Vector<Post> postsLiked) {
+    public void setPostsLiked(Vector<Integer> postsLiked) {
         this.postsLiked = postsLiked;
     }
 
@@ -288,10 +287,35 @@ public class User implements Serializable {
         this.blockedList = blockedList;
     }
 
-    public void addToBlockedList(String username){
+    public void addToBlockedList(String username) {
         blockedList.add(username);
     }
-      public void removeFromBlockedList(String username){
+
+    public void removeFromBlockedList(String username) {
         blockedList.remove(username);
+    }
+
+    public void addToSent(String username,Message message){
+        Vector<Message> listOfMessages = this.sent.get(username);
+        listOfMessages.add(message);
+        this.sent.put(username,listOfMessages);
+    }
+
+    public void addToReceived(String username,Message message){
+        Vector<Message> listOfMessages = this.received.get(username);
+        listOfMessages.add(message);
+        this.received.put(username,listOfMessages);
+    }
+
+    public Vector<UserList> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Vector<UserList> users) {
+        this.users = users;
+    }
+
+    public void addToUsers(UserList userList){
+        users.add(userList);
     }
 }
