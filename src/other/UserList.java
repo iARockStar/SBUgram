@@ -2,12 +2,14 @@ package other;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-public class UserList implements Serializable {
+public class UserList implements Serializable,Comparable {
     private String myUser;
     private String addressed;
     private Date date;
     private int numOfChats = 0;
+    private int numOfUnSeen = 0;
 
     public UserList(String myUser, String addressed, Date date) {
         this.myUser = myUser;
@@ -50,4 +52,35 @@ public class UserList implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserList userList = (UserList) o;
+        return Objects.equals(myUser, userList.myUser) && Objects.equals(addressed, userList.addressed) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(myUser, addressed);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return ((UserList) o).getDate().compareTo(this.getDate());
+    }
+
+    public void restartNumOfUnSeen() {
+        this.numOfUnSeen = 0;
+    }
+
+    public void addNumOfUnSeen() {
+        this.numOfUnSeen = ++numOfUnSeen;
+    }
+
+    public int getNumOfUnSeen() {
+        return numOfUnSeen;
+    }
+
 }

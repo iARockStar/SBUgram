@@ -34,7 +34,8 @@ public enum CommandType {
      */
     CREATECHATITEM,
     GETUSERS,
-    GETCHATS
+    GETCHATS,
+    SENDMESSAGE
 
 
 

@@ -23,9 +23,9 @@
             </color>
          </DropShadow>
       </effect></JFXButton>
-   <Label fx:id="dateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="137.0" prefHeight="20.0" prefWidth="443.0" text="Label">
+   <Label fx:id="dateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="147.0" prefHeight="20.0" prefWidth="443.0" text="Label">
       <font>
-         <Font size="14.0" />
+         <Font name="System Bold Italic" size="12.0" />
       </font>
    </Label>
    <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="13.0" prefHeight="35.0" prefWidth="443.0" text="\@AbasseBooazar">
@@ -47,4 +47,14 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
+   <Label layoutX="13.0" layoutY="69.0" text="unread messages :">
+      <font>
+         <Font name="Georgia Bold" size="14.0" />
+      </font>
+   </Label>
+   <Label fx:id="unSeenLabel" layoutX="62.0" layoutY="95.0" text="Label" textFill="#9c1827">
+      <font>
+         <Font name="Georgia Bold Italic" size="12.0" />
+      </font>
+   </Label>
 </AnchorPane>

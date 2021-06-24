@@ -113,7 +113,7 @@ public class DataBase {
 
 
     public synchronized static ApprovedType signupUpdate(User user) {
-        if(!listOfUsers.contains(user)) {
+        if (!listOfUsers.contains(user)) {
             listOfUsers.add(user);
             updateUser();
             return ApprovedType.APPROVED;
@@ -240,16 +240,16 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (following.getUsername().equals(listUser.getUsername())) {
-                if(!following.getBlockedList().contains(follower.getUsername())) {
+                if (!following.getBlockedList().contains(follower.getUsername())) {
                     listUser.addFollower(follower.getUsername());
                     atomicInteger = listUser.getNumOfFollowers();
-                }else{
+                } else {
                     atomicInteger = new AtomicInteger(-1);
                 }
                 break;
             }
         }
-        if(atomicInteger.intValue() != -1) {
+        if (atomicInteger.intValue() != -1) {
             for (User listUser :
                     listOfUsers) {
                 if (follower.getUsername().equals(listUser.getUsername())) {
@@ -294,8 +294,8 @@ public class DataBase {
         for (User listUser : listOfUsers) {
             if (user2.getFollowings().contains(listUser.getUsername()))
                 if (!user2.getMutedList().contains(listUser.getUsername())
-                && !listUser.getBlockedList().contains(user2.getUsername())
-                && !user2.getBlockedList().contains(listUser.getUsername()))
+                        && !listUser.getBlockedList().contains(user2.getUsername())
+                        && !user2.getBlockedList().contains(listUser.getUsername()))
                     posts.addAll(listUser.getListOfPosts());
         }
         Collections.sort(posts);
@@ -382,9 +382,9 @@ public class DataBase {
                 listOfUsers.add(i, user);
                 listOfUsers.get(i).setPassword(user.getPassword());
                 for (Post post : listOfUsers.get(i).getListOfPosts()) {
-                    if(post.getOwner().getUsername()
+                    if (post.getOwner().getUsername()
                             .equalsIgnoreCase(listOfUsers.get(i).getUsername()))
-                    post.setOwner(user);
+                        post.setOwner(user);
                 }
                 break;
             }
@@ -490,21 +490,21 @@ public class DataBase {
     }
 
     public synchronized static void block(User blocker, User blocked) {
-        for (User listUser:
-             listOfUsers) {
-            if(listUser.getUsername().equals(blocker.getUsername())){
-                if(blocked.getFollowings().contains(listUser.getUsername())){
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getUsername().equals(blocker.getUsername())) {
+                if (blocked.getFollowings().contains(listUser.getUsername())) {
                     listUser.removeFollower(blocked.getUsername());
                 }
                 listUser.addToBlockedList(blocked.getUsername());
                 break;
             }
         }
-        for (User listUser:
-             listOfUsers) {
-            if(blocked.getUsername().equalsIgnoreCase(listUser.getUsername())){
-                if(blocker.getFollowers().contains(listUser.getUsername()))
-                listUser.removeFollowing(blocker.getUsername());
+        for (User listUser :
+                listOfUsers) {
+            if (blocked.getUsername().equalsIgnoreCase(listUser.getUsername())) {
+                if (blocker.getFollowers().contains(listUser.getUsername()))
+                    listUser.removeFollowing(blocker.getUsername());
                 break;
             }
         }
@@ -512,9 +512,9 @@ public class DataBase {
     }
 
     public synchronized static void unBlock(User unBlocker, User unblocked) {
-        for (User listUser:
-             listOfUsers) {
-            if(listUser.getUsername().equals(unBlocker.getUsername())){
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getUsername().equals(unBlocker.getUsername())) {
                 listUser.removeFromBlockedList(unblocked.getUsername());
                 break;
             }
@@ -527,26 +527,139 @@ public class DataBase {
      * chat with the searchedUser.
      * this item which is created here will be available in the direct
      * section.
-     * @param chatSender the user who wants to chat with another user
+     *
+     * @param chatSender   the user who wants to chat with another user
      * @param chatReceiver the addressed user.
      */
     public synchronized static void createChatItem(User chatSender, User chatReceiver) {
         UserList newUserListForSender = new UserList(
-                chatSender.getUsername(),chatReceiver.getUsername(),new Date()
+                chatSender.getUsername(), chatReceiver.getUsername(), new Date()
         );
-
         UserList newUserListForReceiver = new UserList(
-                chatReceiver.getUsername(),chatSender.getUsername(),new Date()
+                chatReceiver.getUsername(), chatSender.getUsername(), new Date()
         );
         int indexOfSender = listOfUsers.indexOf(chatSender);
         int indexOfReceiver = listOfUsers.indexOf(chatReceiver);
-        listOfUsers.get(indexOfSender).getUsers().add(newUserListForSender);
-        listOfUsers.get(indexOfReceiver).getUsers().add(newUserListForReceiver);
+        if (!listOfUsers.get(indexOfSender).getUsers().contains(newUserListForSender)) {
+            listOfUsers.get(indexOfSender).getUsers().add(newUserListForSender);
+            listOfUsers.get(indexOfReceiver).getUsers().add(newUserListForReceiver);
+        }
         updateUser();
     }
 
+    /**
+     * this method is for finding the list of users our main user has chatted with.
+     *
+     * @param myUser the user who is controlling the app
+     * @return the list of users which we want.
+     */
     public static Vector<UserList> getUsers(User myUser) {
         int indexOfUser = listOfUsers.indexOf(myUser);
         return listOfUsers.get(indexOfUser).getUsers();
+    }
+
+    /**
+     * this method is for loading messages of a chat.
+     *
+     * @param myUsername       the user who is controlling the app.
+     * @param theOtherUsername the user we are chatting with.
+     * @return a list of all messages sent and received
+     */
+    public synchronized static Vector<Message> loadMessages(String myUsername, String theOtherUsername) {
+        User myUser = null;
+        for (User user : listOfUsers) {
+            if (user.getUsername().equalsIgnoreCase(myUsername))
+                myUser = user;
+        }
+        Vector<Message> sent = new Vector<>();
+        if (myUser.getSent().containsKey(theOtherUsername))
+            sent = myUser.getSent().get(theOtherUsername);
+        Vector<Message> received = new Vector<>();
+        if (myUser.getReceived().containsKey(theOtherUsername))
+            received = myUser.getReceived().get(theOtherUsername);
+        Vector<Message> all = new Vector<>();
+        all.addAll(sent);
+        all.addAll(received);
+
+        for (UserList list:
+                myUser.getUsers()) {
+            if(list.getAddressed().equalsIgnoreCase(theOtherUsername)){
+                list.restartNumOfUnSeen();
+                break;
+            }
+        }
+        Collections.sort(all);
+        return all;
+    }
+
+    /**
+     * this method adds a message to the database of a chat between
+     * two users and then returns a newList consisting of all the
+     * chats.
+     * @param message newMessage which is bout to be added.
+     * @return the return value is a list of chats.
+     */
+    public synchronized static Vector<Message> sendMessage(Message message) {
+        String sender = message.getSender();
+        String receiver = message.getReceiver();
+        ReversedMessage reversedMessage = new ReversedMessage(
+                message.getDateOfPublish(),
+                sender,
+                receiver,
+                message.getText()
+        );
+        User myUser = null;
+        User theOtherUser = null;
+        for (User user :
+                listOfUsers) {
+            if (sender.equalsIgnoreCase(user.getUsername())) {
+                user.getSent().computeIfAbsent(receiver, k -> new Vector<>());
+                user.getSent().get(receiver).add(message);
+                myUser = user;
+
+            }
+        }
+        for (User user :
+                listOfUsers) {
+            if (receiver.equalsIgnoreCase(user.getUsername())) {
+                user.getReceived().computeIfAbsent(sender, k -> new Vector<>());
+                user.getReceived().get(sender).add(reversedMessage);
+                theOtherUser = user;
+                for (UserList list:
+                        user.getUsers()) {
+                    if(list.getAddressed().equalsIgnoreCase(myUser.getUsername())){
+                        list.addNumOfUnSeen();
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        Vector<Message> all = findMessages(message, receiver, myUser, theOtherUser);
+        updateUser();
+        return all;
+    }
+
+    /**
+     * this method finds the messages between two users
+     */
+    private static Vector<Message> findMessages(Message message, String receiver,
+                                                User myUser, User theOtherUser) {
+        for (UserList userList :
+                myUser.getUsers()) {
+            if (userList.getAddressed().equalsIgnoreCase(theOtherUser.getUsername())) {
+                userList.setDate(message.getDateOfPublish());
+                break;
+            }
+        }
+        Vector<Message> sent = myUser.getSent().get(receiver);
+        Vector<Message> received = myUser.getReceived().get(receiver);
+        Vector<Message> all = new Vector<>();
+        if (sent != null)
+            all.addAll(sent);
+        if (received != null)
+            all.addAll(received);
+        return all;
     }
 }

@@ -166,6 +166,15 @@ public class ClientHandler extends Thread {
                         User myUser = (User) commandSender.getUser();
                         getUsers(myUser);
                         break;
+                    case GETCHATS:
+                        String myUsername = commandSender.getMe();
+                        String theOtherUsername = commandSender.getTheOtherOne();
+                        loadMessages(myUsername,theOtherUsername);
+                        break;
+                    case SENDMESSAGE:
+                        Message message = commandSender.getSentMessage();
+                        sendMessage(message);
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -178,6 +187,32 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendMessage(Message message) {
+        Vector<Message> all =  DataBase.sendMessage(message);
+        try{
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(all);
+        }catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
+    /**
+     * this method returns a list of chats which has been done between
+     * two users.
+     * @param myUsername username which the user controls
+     * @param theOtherUsername username which the user chats with
+     */
+    private void loadMessages(String myUsername, String theOtherUsername) {
+       Vector<Message> all =  DataBase.loadMessages(myUsername,theOtherUsername);
+       try{
+           objectOutputStream.reset();
+           objectOutputStream.writeObject(all);
+       }catch (IOException ioException){
+           ioException.printStackTrace();
+       }
     }
 
     /**

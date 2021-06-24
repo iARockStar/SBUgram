@@ -2,6 +2,10 @@ package other;
 
 import java.util.Vector;
 
+/**
+ * this class holds two lists for every chat:
+ *  one for the sent messages and one for received messages
+ */
 public class ChatHolder {
     Vector<Message> sentMessages;
     Vector<Message> received;

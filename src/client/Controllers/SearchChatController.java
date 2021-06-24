@@ -37,6 +37,7 @@ public class SearchChatController extends mainPage {
             if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
                 user = (User) object;
                 thisUser.setSearchedUser(user);
+                thisUser.setSearchedUserName(user.getUsername());
             } else {
                 warningLabel.setText("Username not found!");
                 warningLabel.setTextFill(Color.RED);
@@ -57,7 +58,7 @@ public class SearchChatController extends mainPage {
         }
             Main.loadAPage(event
                     , "../FXMLs/ChatPage.fxml"
-                    , "SBUgram - Your profile"
+                    , "SBUgram - PV"
             );
 
     }

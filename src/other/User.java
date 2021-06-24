@@ -34,6 +34,7 @@ public class User implements Serializable {
     private Vector<String> mutedList = new Vector<>();
     private Vector<String> blockedList = new Vector<>();
     private Map<String, Vector<Message>> sent = new ConcurrentHashMap<>();
+
     private Map<String, Vector<Message>> received = new ConcurrentHashMap<>();
     private Vector<UserList> users = new Vector<>();
 
@@ -317,5 +318,21 @@ public class User implements Serializable {
 
     public void addToUsers(UserList userList){
         users.add(userList);
+    }
+
+    public Map<String, Vector<Message>> getSent() {
+        return sent;
+    }
+
+    public Map<String, Vector<Message>> getReceived() {
+        return received;
+    }
+
+    public void setReceived(Map<String, Vector<Message>> received) {
+        this.received = received;
+    }
+
+    public void setSent(Map<String, Vector<Message>> sent) {
+        this.sent = sent;
     }
 }

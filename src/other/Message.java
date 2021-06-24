@@ -2,14 +2,16 @@ package other;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class Message implements Serializable,Comparable {
     private Date dateOfPublish;
-    private User sender;
-    private User receiver;
+    private String sender;
+    private String receiver;
     private String text;
+    private boolean hasBeenSeen = false;
 
-    public Message(Date dateOfPublish, User sender, User receiver, String text) {
+    public Message(Date dateOfPublish, String sender, String receiver, String text) {
         this.dateOfPublish = dateOfPublish;
         this.sender = sender;
         this.receiver = receiver;
@@ -24,19 +26,19 @@ public class Message implements Serializable,Comparable {
         this.dateOfPublish = dateOfPublish;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public User getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
@@ -50,6 +52,27 @@ public class Message implements Serializable,Comparable {
 
     @Override
     public int compareTo(Object o) {
-        return ((Message) o).getDateOfPublish().compareTo(this.getDateOfPublish());
+        return -1 * ((Message) o).getDateOfPublish().compareTo(this.getDateOfPublish());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(dateOfPublish, message.dateOfPublish) && Objects.equals(sender, message.sender) && Objects.equals(receiver, message.receiver) && Objects.equals(text, message.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateOfPublish, sender, receiver, text);
+    }
+
+    public boolean HasBeenSeen() {
+        return hasBeenSeen;
+    }
+
+    public void setHasBeenSeen(boolean hasBeenSeen) {
+        this.hasBeenSeen = hasBeenSeen;
     }
 }

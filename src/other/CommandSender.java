@@ -29,7 +29,12 @@ public class CommandSender implements Serializable {
     private User searcher;
     private String me;
     private String theOtherOne;
+    private Message sentMessage;
 
+    public CommandSender(CommandType commandType, Message sentMessage) {
+        this.commandType = commandType;
+        this.sentMessage = sentMessage;
+    }
 
     public CommandSender(CommandType commandType, User reposter, User userOfTheRepostedPost, Post repostedPost) {
         this.commandType = commandType;
@@ -159,5 +164,29 @@ public class CommandSender implements Serializable {
 
     public void setSearcher(User searcher) {
         this.searcher = searcher;
+    }
+
+    public String getMe() {
+        return me;
+    }
+
+    public void setMe(String me) {
+        this.me = me;
+    }
+
+    public String getTheOtherOne() {
+        return theOtherOne;
+    }
+
+    public void setTheOtherOne(String theOtherOne) {
+        this.theOtherOne = theOtherOne;
+    }
+
+    public Message getSentMessage() {
+        return sentMessage;
+    }
+
+    public void setSentMessage(Message sentMessage) {
+        this.sentMessage = sentMessage;
     }
 }

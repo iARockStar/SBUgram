@@ -1,5 +1,6 @@
 package client.Controllers;
 
+import client.Client;
 import client.Main;
 import client.PageLoader;
 import client.thisUser;
@@ -8,6 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import other.CommandSender;
+import other.CommandType;
+import other.User;
 import other.UserList;
 
 import java.io.IOException;
@@ -20,6 +25,8 @@ public class UserListItemController implements ItemController {
     private Label dateLabel;
     @FXML
     private Label usernameLabel;
+    @FXML
+    private Label unSeenLabel;
 
     public UserListItemController(UserList userList) throws IOException {
         new PageLoader().load("User", this);
@@ -29,15 +36,33 @@ public class UserListItemController implements ItemController {
     @Override
     public AnchorPane init() {
         usernameLabel.setText(userList.getAddressed());
-        dateLabel.setText(userList.getDate().toString());
+        dateLabel.setText("Latest message published on: " + userList.getDate().toString());
+        unSeenLabel.setText(String.valueOf(userList.getNumOfUnSeen()));
         return root;
     }
 
 
     public void enterChat(ActionEvent event) throws IOException {
         thisUser.setSearchedUserName(userList.getAddressed());
+        CommandType searchUserCommand = CommandType.SEARCHUSER;
+        CommandSender searchTheServer =
+                new CommandSender(searchUserCommand,
+                        userList.getAddressed() , thisUser.getUser());
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(searchTheServer);
+            Object object;
+            User user;
+            if ((object = Client.getObjectInputStream().readObject()) instanceof User) {
+                user = (User) object;
+                thisUser.setSearchedUser(user);
+                thisUser.setSearchedUserName(user.getUsername());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Main.loadAPage(event
-                ,"../FXMLs/ChatPage.fxml"
+                , "../FXMLs/ChatPage.fxml"
                 , "SBUgram - PV"
         );
     }

@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import other.*;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Vector;
 
 
@@ -32,6 +33,7 @@ public class UserListPageController extends mainPage{
     public void initialize() throws IOException, ClassNotFoundException {
         loadUsers(thisUser.getUser());
 
+        Collections.sort(users);
         //show the post array in list view
         items.setItems(FXCollections.observableArrayList(users));
 
@@ -72,7 +74,11 @@ public class UserListPageController extends mainPage{
         }
     }
     public void refresh(MouseEvent mouseEvent) {
-
+        try {
+            this.initialize();
+        } catch (IOException | ClassNotFoundException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     public void search(MouseEvent mouseEvent) throws IOException {

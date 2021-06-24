@@ -5,16 +5,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="125.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label layoutX="14.0" layoutY="5.0" text="username">
+        <Label fx:id="usernameLabel" layoutX="14.0" layoutY="5.0" text="username">
             <font>
                 <Font name="Georgia Bold Italic" size="18.0" />
             </font>
         </Label>
-        <VBox layoutY="41.0" prefHeight="83.0" prefWidth="362.0">
+        <VBox layoutX="14.0" layoutY="27.0" prefWidth="362.0">
             <children>
-                <Label alignment="TOP_LEFT" prefHeight="77.0" prefWidth="362.0" style="-fx-background-color: #F8F8FF;" text="message">
+                <Label fx:id="textLabel" alignment="TOP_LEFT"  prefWidth="362.0" style="-fx-background-color: #F8F8FF;" text="message">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
@@ -23,6 +23,6 @@
                     </effect>
                 </Label>
             </children></VBox>
-        <Label layoutX="354.0" layoutY="7.0" text="Date and Time" />
+        <Label fx:id="dateLabel" layoutX="354.0" layoutY="7.0" text="Date and Time" />
     </children>
 </AnchorPane>
