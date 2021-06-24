@@ -1,6 +1,5 @@
 package server;
 
-import javafx.scene.shape.Ellipse;
 import other.User;
 
 import java.io.*;
@@ -14,21 +13,50 @@ import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * this is the class where everything is saved and sent to the client side
+ * in order to synchronize the client with the server.
+ * some methods are only updates and some are for returning a value
+ * which is likely to be a list.
+ * all of the methods in this class are defined synchronized
+ * so that no problems would occur due to the multithreading.
+ * (the lists and the variables are also thread - safe).
+ */
 public class DataBase {
 
+    /**
+     * the file which every user is saved using a vector.
+     */
     private static final String USERS_FILE
             = "C:\\Users\\USER\\IdeaProjects\\signUp.bin";
 
+    /**
+     * posts didn't have anything unique so i made a file where
+     * the number of posts created are saved as an id so the next time
+     * the server is up it reads the latest not uses id from this file.
+     */
     private static final String POST_ID_FILE
             = "C:\\Users\\USER\\IdeaProjects\\postId.bin";
 
+    /**
+     * ds which i used for saving the info of the users
+     */
     private static Vector<User> listOfUsers
             = new Vector<>();
 
+    /**
+     * the idCounter for posts are saved as an atomic integer for
+     * multithreading problems
+     */
     private static AtomicInteger idCounter =
             new AtomicInteger(0);
 
 
+    /**
+     * this method reads the db from the file and creates the db
+     * file if it's not created.
+     * it also reads the id of the posts from the file.
+     */
     public static void initializeServer() {
         File file;
         file = new File(USERS_FILE);
@@ -76,6 +104,15 @@ public class DataBase {
 
     }
 
+    /**
+     * this method searches the list of users in order to check
+     * if the username and password entered for logging in is valid.
+     * if the info is not valid then it sends notApproved message to the client.
+     * it it is then it sends the user who wants to sign in with to the client
+     * @param objectOutputStream the stream needed to write objects
+     * @param username username of the user
+     * @param password password of the user.
+     */
     public synchronized static void login(ObjectOutputStream objectOutputStream
             , String username, String password) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream1 = null;
@@ -114,6 +151,14 @@ public class DataBase {
     }
 
 
+    /**
+     * this method signs up a new user and saves it into the db
+     * the only thing which is not checked in the client is that if the
+     * username is already used or not which is checked here
+     * @param user the new user which we are trying to save in the db.
+     * @return the return type declares if the signUp process was successful
+     * or not.
+     */
     public synchronized static ApprovedType signupUpdate(User user) {
         if (!listOfUsers.contains(user)) {
             listOfUsers.add(user);
@@ -124,6 +169,11 @@ public class DataBase {
 
     }
 
+    /**
+     * this method is called whenever the db update is needed.
+     * it writes the new list to the file.
+     * it also sorts the posts in the db by their date.
+     */
     private synchronized static void updateUser() {
         sortPosts();
         try {
@@ -144,6 +194,9 @@ public class DataBase {
         }
     }
 
+    /**
+     * method for sorting the posts
+     */
     private synchronized static void sortPosts() {
         for (User user :
                 listOfUsers) {
@@ -151,6 +204,11 @@ public class DataBase {
         }
     }
 
+    /**
+     * this method adds a new post to the list of the posts of a user.
+     * @param post the new post added to the list
+     * @param user owner of the post
+     */
     public synchronized static void updatePost(Post post, User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (user.getUsername().equals(listOfUsers.get(i).getUsername())) {
@@ -162,6 +220,13 @@ public class DataBase {
     }
 
 
+    /**
+     * this method loads the posts need for each page therefore
+     * it fins the owner of the posts and returns it to the client.
+     * @param requester this param is needed for checking if the user is blocked or not
+     * @param requested the user whom se want to load his / her posts.
+     * @return the value is a list of posts of the user.
+     */
     public synchronized static User loadPost(User requester, User requested) {
         User foundUser = null;
         for (User listUser :
@@ -174,6 +239,9 @@ public class DataBase {
         return foundUser;
     }
 
+    /**
+     * method for retrieving the password of a user
+     */
     public synchronized static User retrievePass(User user) {
         for (User listUser :
                 listOfUsers) {
@@ -183,6 +251,14 @@ public class DataBase {
         return null;
     }
 
+    /**
+     * this method checks if the answer to the security question was
+     * valid or not. if yes then the new pass is saved.
+     * otherwise nothing happens.
+     * @param user the user who is searching for his / her password.
+     * @return its false or true according to the answer of the
+     * user to the security question.
+     */
     public synchronized static boolean saveNewPass(User user) {
         for (User listUser :
                 listOfUsers) {
@@ -197,6 +273,13 @@ public class DataBase {
         return false;
     }
 
+    /**
+     * this method is for the search page controller which gives a username
+     * and sends the user of it to the client.
+     * @param username the name of the searched user.
+     * @return return value is null if the user is not found in the list
+     * and a user if the username is found.
+     */
     public synchronized static User search(String username) {
         for (User listUser :
                 listOfUsers) {
@@ -385,10 +468,29 @@ public class DataBase {
                 listOfUsers.get(i).setPassword(user.getPassword());
                 for (Post post : listOfUsers.get(i).getListOfPosts()) {
                     if (post.getOwner().getUsername()
-                            .equalsIgnoreCase(listOfUsers.get(i).getUsername()))
+                            .equalsIgnoreCase(listOfUsers.get(i).getUsername())) {
+                        for (Comment comment :
+                                post.getComments()) {
+                            if (comment.getOwner()
+                                    .equalsIgnoreCase(listOfUsers.get(i).getUsername())) {
+                                comment.setOwner(user.getUsername());
+                                comment.setProPic(user.getProfileImage());
+                            }
+                        }
                         post.setOwner(user);
+                    }
                 }
-                break;
+            } else {
+                for (Post post : listOfUsers.get(i).getListOfPosts()) {
+                    for (Comment comment :
+                            post.getComments()) {
+                        if (comment.getOwner()
+                                .equalsIgnoreCase(user.getUsername())) {
+                            comment.setOwner(user.getUsername());
+                            comment.setProPic(user.getProfileImage());
+                        }
+                    }
+                }
             }
         }
 
@@ -405,6 +507,7 @@ public class DataBase {
         deleteLikes(deletedUser);
         deleteFollows(deletedUser);
         deleteReposts(deletedUser);
+        deleteChats(deletedUser);
         deleteAcc(deletedUser);
         for (User listUser :
                 listOfUsers) {
@@ -416,6 +519,18 @@ public class DataBase {
             }
         }
         updateUser();
+    }
+
+    private static void deleteChats(User deletedUser) {
+        for (User listUser :
+                listOfUsers) {
+            listUser.getUsers()
+                    .removeIf(userList -> userList.getAddressed()
+                            .equalsIgnoreCase(deletedUser.getUsername()));
+            listUser.getUsers()
+                    .removeIf(userList -> userList.getMyUser()
+                    .equalsIgnoreCase(deletedUser.getUsername()));
+        }
     }
 
     private static void deleteReposts(User deletedUser) {
@@ -532,6 +647,7 @@ public class DataBase {
      *
      * @param chatSender   the user who wants to chat with another user
      * @param chatReceiver the addressed user.
+     * @return
      */
     public synchronized static void createChatItem(User chatSender, User chatReceiver) {
         UserList newUserListForSender = new UserList(
@@ -543,8 +659,11 @@ public class DataBase {
         int indexOfSender = listOfUsers.indexOf(chatSender);
         int indexOfReceiver = listOfUsers.indexOf(chatReceiver);
         if (!listOfUsers.get(indexOfSender).getUsers().contains(newUserListForSender)) {
-            listOfUsers.get(indexOfSender).getUsers().add(newUserListForSender);
-            listOfUsers.get(indexOfReceiver).getUsers().add(newUserListForReceiver);
+            if (!listOfUsers.get(indexOfSender).getBlockedList().contains(chatReceiver.getUsername())
+                    && !listOfUsers.get(indexOfReceiver).getBlockedList().contains(chatSender.getUsername())) {
+                listOfUsers.get(indexOfSender).getUsers().add(newUserListForSender);
+                listOfUsers.get(indexOfReceiver).getUsers().add(newUserListForReceiver);
+            }
         }
         updateUser();
     }
@@ -699,12 +818,15 @@ public class DataBase {
     /**
      * this method is for deleting a message from the
      * database of the messages between two users.
-     *
+     * but it seems that there is a bug in java FX listView so change of plans!
+     * the message isn't actually deleted but its boolean is set to true
+     * so the graphic changes when it is deleted.
      * @param deletedMessage the message which is bout to be deleted.
      */
     public synchronized static void deleteMessage(Message deletedMessage) {
         String sender = deletedMessage.getSender();
         String receiver = deletedMessage.getReceiver();
+
         ReversedMessage reversedMessage = new ReversedMessage(
                 deletedMessage.getDateOfPublish(),
                 sender,
@@ -716,15 +838,17 @@ public class DataBase {
                 listOfUsers) {
             if (sender.equalsIgnoreCase(user.getUsername())) {
                 user.getSent().get(receiver).remove(deletedMessage);
+                deletedMessage.setDeleted(true);
+                user.getSent().get(receiver).add(deletedMessage);
                 myUser = user;
             }
         }
-        User theOtherUser = null;
         for (User user :
                 listOfUsers) {
             if (receiver.equalsIgnoreCase(user.getUsername())) {
                 user.getReceived().get(sender).remove(reversedMessage);
-                theOtherUser = user;
+                reversedMessage.setDeleted(true);
+                user.getReceived().get(sender).add(reversedMessage);
                 for (UserList list :
                         user.getUsers()) {
                     if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
@@ -734,7 +858,50 @@ public class DataBase {
                 }
             }
         }
-
         updateUser();
+    }
+
+    public synchronized static void editMessage
+            (Message editedMessage, String editedText) {
+        String sender = editedMessage.getSender();
+        String receiver = editedMessage.getReceiver();
+        User myUser = null;
+        ReversedMessage reversedMessage = new ReversedMessage(
+                editedMessage.getDateOfPublish(),
+                sender,
+                receiver,
+                editedMessage.getText()
+        );
+        for (User user :
+                listOfUsers) {
+            if (sender.equalsIgnoreCase(user.getUsername())) {
+                user.getSent().get(receiver).remove(editedMessage);
+                editedMessage.setText(editedText);
+                user.getSent().get(receiver).add(editedMessage);
+                myUser = user;
+                break;
+            }
+        }
+
+        for (User user :
+                listOfUsers) {
+            if (receiver.equalsIgnoreCase(user.getUsername())) {
+                user.getReceived().get(sender).remove(reversedMessage);
+                reversedMessage.setText(editedText);
+                user.getReceived().get(sender).add(reversedMessage);
+                break;
+            }
+        }
+        updateUser();
+    }
+
+    public synchronized static User searchChat(User searcher1, String username) {
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getUsername().equalsIgnoreCase(username)
+                    && !listUser.getBlockedList().contains(searcher1.getUsername()))
+                return listUser;
+        }
+        return null;
     }
 }

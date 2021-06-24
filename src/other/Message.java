@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+
+/**
+ * the item for every chat with another user
+ */
 public class Message implements Serializable,Comparable {
     private Date dateOfPublish;
     private String sender;
     private String receiver;
     private String text;
-    private boolean hasBeenSeen = false;
+    private boolean deleted = false;
 
     public Message(Date dateOfPublish, String sender, String receiver, String text) {
         this.dateOfPublish = dateOfPublish;
@@ -68,11 +72,12 @@ public class Message implements Serializable,Comparable {
         return Objects.hash(dateOfPublish, sender, receiver, text);
     }
 
-    public boolean HasBeenSeen() {
-        return hasBeenSeen;
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setHasBeenSeen(boolean hasBeenSeen) {
-        this.hasBeenSeen = hasBeenSeen;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

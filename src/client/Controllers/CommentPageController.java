@@ -49,7 +49,11 @@ public class CommentPageController extends mainPage implements Initializable {
      */
     public void comment() {
         Post post = thisUser.getUser().getPostToComment();
-        Comment comment = new Comment(thisUser.getUser(), post, commentText.getText());
+        Comment comment =
+                new Comment(thisUser.getUser().getUsername()
+                        , post
+                        , commentText.getText()
+                        ,thisUser.getUser().getProfileImage());
         addComment(post, comment);
     }
 

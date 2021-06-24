@@ -17,6 +17,9 @@ import other.UserList;
 
 import java.io.IOException;
 
+/**
+ * this class helps to control the items of users available for chatting
+ */
 public class UserListItemController implements ItemController {
     private UserList userList;
     @FXML
@@ -42,6 +45,11 @@ public class UserListItemController implements ItemController {
     }
 
 
+    /**
+     * this method sends the user to the chatpage with the user he / she wants
+     * it loads the previous pages and sets the addressed user by a request
+     * to the server.
+     */
     public void enterChat(ActionEvent event) throws IOException {
         thisUser.setSearchedUserName(userList.getAddressed());
         CommandType searchUserCommand = CommandType.SEARCHUSER;

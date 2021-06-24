@@ -52,6 +52,7 @@ public class ChatPageController extends mainPage {
         System.out.println(allMessages.size());
         //show the post array in list view
         chatListView.setItems(FXCollections.observableArrayList(allMessages));
+        loadMessages(thisUser.getUser().getUsername(), thisUser.getSearchedUserName());
 
         //customize each cell of postList with new graphic object PostItem
         chatListView.setCellFactory(chatListView -> new TextItem());
@@ -121,6 +122,9 @@ public class ChatPageController extends mainPage {
 
     }
 
+    /**
+     * this method returns the user to the direct menu
+     */
     public void goBack(ActionEvent event) throws IOException {
         Main.loadAPage(event
                 , "../FXMLs/UserListPage.fxml"
@@ -128,6 +132,9 @@ public class ChatPageController extends mainPage {
         );
     }
 
+    /**
+     * this method refreshes the chat page so that the new chats can be seen.
+     */
     public void refresh(MouseEvent mouseEvent) {
         try {
             this.initialize();

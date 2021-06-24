@@ -11,17 +11,40 @@ import other.*;
 
 import javax.xml.crypto.Data;
 
+/**
+ * this class is a thread and its run method is started each time a user
+ * connects to the server and input and output streams are set in order
+ * to send and receive data.
+ */
 public class ClientHandler extends Thread {
+    /**
+     * the streams needed for reading and writing objects.
+     */
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
     private boolean isClientOnline = true;
 
+    /**
+     * constructor which sets the streams
+     *
+     * @param objectInputStream  stream for reading the objects
+     * @param objectOutputStream stream for writing the objects.
+     */
     public ClientHandler(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
     }
 
+    /**
+     * this method is called for each thread and all the requests to the
+     * server are handles here.
+     * the objectInputStream receives an object which is always
+     * an instance of the CommandSender class.
+     * it receives this instance and according to the CommandType,
+     * does some actions related to the command and then if needed it sends
+     * some objects using other methods.
+     */
     @Override
     public void run() {
         while (isClientOnline) {
@@ -49,12 +72,12 @@ public class ClientHandler extends Thread {
                         Post post = (Post) commandSender.getUser();
                         User user1 = post.getOwner();
                         updatePost(post, user1);
-                        Log.newPost(post,user1);
+                        Log.newPost(post, user1);
                         break;
                     case LOADAPOST:
                         User requester = commandSender.getRequester();
                         User requested = commandSender.getRequested();
-                        loadPost(requester,requested);
+                        loadPost(requester, requested);
                         Log.getMyPosts(requested);
                         break;
                     case RETRIEVEPASS:
@@ -71,12 +94,12 @@ public class ClientHandler extends Thread {
                         String searched = (String) commandSender.getUser();
                         User searcher = commandSender.getSearcher();
                         User searchedUser = search(searched);
-                        Log.search(searchedUser,searcher);
+                        Log.search(searchedUser, searcher);
                         break;
                     case LOGOUT:
                         isClientOnline = false;
                         User loggedOut = (User) commandSender.getUser();
-                        Log.logout( loggedOut);
+                        Log.logout(loggedOut);
                         break;
                     case LOADCOMMENTS:
                         post = commandSender.getPostToComment();
@@ -95,13 +118,13 @@ public class ClientHandler extends Thread {
                         User follower = commandSender.getRequester();
                         User following = commandSender.getRequested();
                         follow(following, follower);
-                        Log.follow(following , follower);
+                        Log.follow(following, follower);
                         break;
                     case UNFOLLOW:
                         follower = commandSender.getRequester();
                         following = commandSender.getRequested();
                         unfollow(following, follower);
-                        Log.unfollow(following , follower);
+                        Log.unfollow(following, follower);
                         break;
                     case LOADFOLLOWINGPOSTS:
                         user = (User) commandSender.getUser();
@@ -112,7 +135,7 @@ public class ClientHandler extends Thread {
                         post = commandSender.getPostToLike();
                         user = commandSender.getUserWhoLiked();
                         like(user, post);
-                        Log.like(user,post);
+                        Log.like(user, post);
                         break;
                     case DISLIKE:
                         post = commandSender.getPostToLike();
@@ -138,35 +161,40 @@ public class ClientHandler extends Thread {
                     case MUTE:
                         User muter = commandSender.getRequester();
                         User muted = commandSender.getRequested();
-                        mute(muter,muted);
-                        Log.mute(muter,muted);
+                        mute(muter, muted);
+                        Log.mute(muter, muted);
                         break;
                     case UNMUTE:
                         User unMuter = commandSender.getRequester();
                         User unMuted = commandSender.getRequested();
-                        unMute(unMuter,unMuted);
-                        Log.unmute(unMuter,unMuted);
+                        unMute(unMuter, unMuted);
+                        Log.unmute(unMuter, unMuted);
                         break;
                     case BLOCK:
                         User blocker = commandSender.getRequester();
                         User blocked = commandSender.getRequested();
-                        block(blocker,blocked);
-                        Log.block(blocker,blocked);
+                        block(blocker, blocked);
+                        Log.block(blocker, blocked);
                         break;
                     case UNBLOCK:
                         User unBlocker = commandSender.getRequester();
                         User unblocked = commandSender.getRequested();
-                        unblock(unBlocker,unblocked);
-                        Log.unBlock(unBlocker,unblocked);
+                        unblock(unBlocker, unblocked);
+                        Log.unBlock(unBlocker, unblocked);
                         break;
-                        /*
-                        * this part is for the chat
-                        * and its abilities.
-                        */
+                    /*
+                     * this part is for the chat
+                     * and its abilities.
+                     */
+                    case SEARCHCHAT:
+                        String searched1 = (String) commandSender.getUser();
+                        User searcher1 = commandSender.getSearcher();
+                        User searchedUser1 = searchChat(searcher1, searched1);
+                        break;
                     case CREATECHATITEM:
                         User chatSender = commandSender.getRequester();
                         User chatReceiver = commandSender.getRequested();
-                        createChatItem(chatSender,chatReceiver);
+                        createChatItem(chatSender, chatReceiver);
                         break;
                     case GETUSERS:
                         User myUser = (User) commandSender.getUser();
@@ -175,7 +203,7 @@ public class ClientHandler extends Thread {
                     case GETCHATS:
                         String myUsername = commandSender.getMe();
                         String theOtherUsername = commandSender.getTheOtherOne();
-                        loadMessages(myUsername,theOtherUsername);
+                        loadMessages(myUsername, theOtherUsername);
                         break;
                     case SENDMESSAGE:
                         Message message = commandSender.getSentMessage();
@@ -185,12 +213,20 @@ public class ClientHandler extends Thread {
                         Message deletedMessage = commandSender.getSentMessage();
                         deleteMessage(deletedMessage);
                         break;
+                    case EDITMESSAGE:
+                        Message editedMessage = commandSender.getEditedMessage();
+                        String editedText = commandSender.getEditedText();
+                        editMessage(editedMessage, editedText);
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
             }
         }
-
+        /*
+         * the while loop breaks if the
+         * user logs out from the app
+         */
         try {
             objectOutputStream.close();
             objectInputStream.close();
@@ -199,16 +235,43 @@ public class ClientHandler extends Thread {
         }
     }
 
+    /*
+    * here are the methods which call the more important methods in the DB.
+    */
+    private User searchChat(User searcher1, String searched1) {
+        User user = DataBase.searchChat(searcher1, searched1);
+        if (user != null) {
+            try {
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
+    private void editMessage(Message editedMessage, String editedText) {
+        DataBase.editMessage(editedMessage, editedText);
+    }
+
     private void deleteMessage(Message deletedMessage) {
         DataBase.deleteMessage(deletedMessage);
     }
 
     private void sendMessage(Message message) {
-        Vector<Message> all =  DataBase.sendMessage(message);
-        try{
+        Vector<Message> all = DataBase.sendMessage(message);
+        try {
             objectOutputStream.reset();
             objectOutputStream.writeObject(new Vector<>(all));
-        }catch (IOException ioException){
+        } catch (IOException ioException) {
             ioException.printStackTrace();
         }
     }
@@ -216,54 +279,55 @@ public class ClientHandler extends Thread {
     /**
      * this method returns a list of chats which has been done between
      * two users.
-     * @param myUsername username which the user controls
+     * @param myUsername       username which the user controls
      * @param theOtherUsername username which the user chats with
      */
     private void loadMessages(String myUsername, String theOtherUsername) {
-       Vector<Message> all =  DataBase.loadMessages(myUsername,theOtherUsername);
-       try{
-           objectOutputStream.reset();
-           objectOutputStream.writeObject(new Vector<>(all));
-       }catch (IOException ioException){
-           ioException.printStackTrace();
-       }
+        Vector<Message> all = DataBase.loadMessages(myUsername, theOtherUsername);
+        try {
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(new Vector<>(all));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     /**
      * this method gets the list of users whom myUser chatted with
+     *
      * @param myUser hte user we tend to get its list of users
      */
     private void getUsers(User myUser) {
         Vector<UserList> users;
-        try{
+        try {
             users = DataBase.getUsers(myUser);
             objectOutputStream.reset();
             objectOutputStream.writeObject(users);
             objectOutputStream.flush();
-        }catch (IOException ioException){
+        } catch (IOException ioException) {
             ioException.printStackTrace();
         }
     }
 
     private void createChatItem(User chatSender, User chatReceiver) {
-        DataBase.createChatItem(chatSender,chatReceiver);
+        DataBase.createChatItem(chatSender, chatReceiver);
 
     }
 
     private void unblock(User unBlocker, User unblocked) {
-        DataBase.unBlock(unBlocker,unblocked);
+        DataBase.unBlock(unBlocker, unblocked);
     }
 
     private void block(User blocker, User blocked) {
-        DataBase.block(blocker , blocked);
+        DataBase.block(blocker, blocked);
     }
 
     private void unMute(User unMuter, User unMuted) {
-        DataBase.unMute(unMuter,unMuted);
+        DataBase.unMute(unMuter, unMuted);
     }
 
     private void mute(User muter, User muted) {
-        DataBase.mute(muter,muted);
+        DataBase.mute(muter, muted);
     }
 
     private void deleteAccount(User deletedUser) {
@@ -277,10 +341,10 @@ public class ClientHandler extends Thread {
     private void repost(User user, Post post) {
 
         ApprovedType approvedType = DataBase.repost(user, post);
-        try{
+        try {
             objectOutputStream.reset();
             objectOutputStream.writeObject(approvedType);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -416,11 +480,11 @@ public class ClientHandler extends Thread {
     public synchronized void signup(User user) throws IOException, ClassNotFoundException {
         ApprovedType isSignedUp = DataBase.
                 signupUpdate(user);
-        try{
+        try {
             objectOutputStream.reset();
             objectOutputStream.writeObject(isSignedUp);
             objectOutputStream.flush();
-        }catch (IOException ioException){
+        } catch (IOException ioException) {
             ioException.printStackTrace();
         }
     }
@@ -432,7 +496,7 @@ public class ClientHandler extends Thread {
     }
 
     public synchronized void loadPost(User requester, User requested) {
-        User user1 = DataBase.loadPost(requester,requested);
+        User user1 = DataBase.loadPost(requester, requested);
         if (user1 != null)
             try {
                 objectOutputStream.writeObject(
@@ -440,11 +504,11 @@ public class ClientHandler extends Thread {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-        else{
+        else {
             try {
                 objectOutputStream.reset();
                 objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
-            }catch (IOException ioException){
+            } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         }

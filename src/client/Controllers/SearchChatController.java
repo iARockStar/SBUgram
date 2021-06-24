@@ -14,6 +14,11 @@ import other.User;
 
 import java.io.IOException;
 
+/**
+ * this class is similar to the SearchPageController
+ * but it checks if the searched user for chatting is available or not due to the
+ * blocking.
+ */
 public class SearchChatController extends mainPage {
     @FXML
     private Label warningLabel;
@@ -26,7 +31,7 @@ public class SearchChatController extends mainPage {
      * searchedUser is saved for further uses.
      */
     public void searchUser(ActionEvent event) throws IOException {
-        CommandType searchUserCommand = CommandType.SEARCHUSER;
+        CommandType searchUserCommand = CommandType.SEARCHCHAT;
         CommandSender searchTheServer =
                 new CommandSender(searchUserCommand, username.getText(), thisUser.getUser());
         try {
@@ -39,7 +44,7 @@ public class SearchChatController extends mainPage {
                 thisUser.setSearchedUser(user);
                 thisUser.setSearchedUserName(user.getUsername());
             } else {
-                warningLabel.setText("Username not found!");
+                warningLabel.setText("Username either not found or you are blocked!");
                 warningLabel.setTextFill(Color.RED);
                 return;
             }

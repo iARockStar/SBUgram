@@ -81,6 +81,9 @@ public class UserListPageController extends mainPage{
         }
     }
 
+    /**
+     * this method sends the user to the searchPage.
+     */
     public void search(MouseEvent mouseEvent) throws IOException {
         Main.loadAPageMouse(mouseEvent
                 , "../FXMLs/SearchChat.fxml"

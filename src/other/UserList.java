@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * a class for giving graphic to the list of users whom the main user has chatted with.
+ */
 public class UserList implements Serializable,Comparable {
     private String myUser;
     private String addressed;

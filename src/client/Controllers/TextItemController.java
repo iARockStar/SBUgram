@@ -3,11 +3,16 @@ package client.Controllers;
 import client.Client;
 import client.Main;
 import client.PageLoader;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import other.CommandSender;
 import other.CommandType;
 import other.Message;
@@ -17,6 +22,9 @@ import other.ReversedMessage;
 import java.io.IOException;
 import java.util.Vector;
 
+/**
+ * this class is for controlling the items of chats.
+ */
 public class TextItemController implements ItemController {
 
     @FXML
@@ -29,7 +37,16 @@ public class TextItemController implements ItemController {
     private Label dateLabel;
     @FXML
     private Label textLabel;
-
+    @FXML
+    private JFXTextArea editField;
+    @FXML
+    private JFXButton editButton;
+    @FXML
+    private ImageView deletedImage;
+    @FXML
+    private ImageView editImage;
+    @FXML
+    private Button editButton2;
 
     public TextItemController(Message message) throws IOException {
         if (message instanceof ReversedMessage) {
@@ -40,8 +57,29 @@ public class TextItemController implements ItemController {
         this.message = message;
     }
 
+    /**
+     * so it seems like there is something wrong with
+     * the listView of the java FX when i delete a chat
+     * so the initialize method acts like whats app and
+     * shows that this message is deleted and doesn't actually
+     * delete it :))
+     *
+     * @return the return value is the message item.
+     */
     @Override
     public Node init() {
+        if (message.isDeleted()) {
+            deletedImage.setVisible(true);
+            usernameLabel.setVisible(false);
+            dateLabel.setVisible(false);
+            if (!(message instanceof ReversedMessage)) {
+                editButton2.setVisible(false);
+                editImage.setVisible(false);
+            }
+            textLabel.setText("This Message was deleted");
+            textLabel.setTextFill(Color.MAROON);
+            return root;
+        }
         usernameLabel.setText(message.getSender());
         dateLabel.setText(message.getDateOfPublish().toString());
         textLabel.setText(message.getText());
@@ -49,8 +87,12 @@ public class TextItemController implements ItemController {
     }
 
 
+    /**
+     * this method deletes one item of a chat.
+     * it sends the message which is about to be deleted and loads the page again.
+     */
     public void deleteMessage(ActionEvent event) {
-        CommandSender sendMessageCommand = new CommandSender(CommandType.DELETEMESSAGE,message);
+        CommandSender sendMessageCommand = new CommandSender(CommandType.DELETEMESSAGE, message);
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(sendMessageCommand);
@@ -58,11 +100,41 @@ public class TextItemController implements ItemController {
                     , "../FXMLs/ChatPage.fxml"
                     , "SBUgram - PV"
             );
-        }catch (IOException ioException){
+        } catch (IOException ioException) {
             ioException.printStackTrace();
         }
     }
 
+    /**
+     * this method makes the text area and button for editing a message visible
+     */
     public void editMessage(ActionEvent mouseEvent) {
+        editButton.setVisible(true);
+        editField.setVisible(true);
+        textLabel.setVisible(false);
+    }
+
+    /**
+     * this method is for editing the message.
+     * when the user writes the new message it sends the message and
+     * the new text to server and saves the changes.
+     */
+    public void edit(ActionEvent actionEvent) {
+        String newMessage = editField.getText();
+        CommandSender editCommand =
+                new CommandSender(CommandType.EDITMESSAGE, message, newMessage);
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(editCommand);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+
+        textLabel.setText(newMessage);
+        message.setText(newMessage);
+        editButton.setVisible(false);
+        editField.setVisible(false);
+        textLabel.setVisible(true);
+
     }
 }

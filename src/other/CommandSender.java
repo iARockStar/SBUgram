@@ -30,6 +30,14 @@ public class CommandSender implements Serializable {
     private String me;
     private String theOtherOne;
     private Message sentMessage;
+    private Message editedMessage;
+    private String editedText;
+
+    public CommandSender(CommandType commandType, Message editedMessage, String editedText) {
+        this.commandType = commandType;
+        this.editedMessage = editedMessage;
+        this.editedText = editedText;
+    }
 
     public CommandSender(CommandType commandType, Message sentMessage) {
         this.commandType = commandType;
@@ -188,5 +196,21 @@ public class CommandSender implements Serializable {
 
     public void setSentMessage(Message sentMessage) {
         this.sentMessage = sentMessage;
+    }
+
+    public Message getEditedMessage() {
+        return editedMessage;
+    }
+
+    public void setEditedMessage(Message editedMessage) {
+        this.editedMessage = editedMessage;
+    }
+
+    public String getEditedText() {
+        return editedText;
+    }
+
+    public void setEditedText(String editedText) {
+        this.editedText = editedText;
     }
 }

@@ -50,11 +50,11 @@ public class CommentItemController implements ItemController {
     public AnchorPane init() {
         Image image;
         byte[] pic;
-        pic = thisComment.getOwner().getProfileImage();
+        pic = thisComment.getProPic();
         image = new Image(new ByteArrayInputStream(pic));
         profilePic.setFill(new ImagePattern(image));
         profilePic.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKGREEN));
-        usernameLabel.setText("@" + thisComment.getOwner().getUsername());
+        usernameLabel.setText("@" + thisComment.getOwner());
         commentLabel.setText(thisComment.getDescription());
         return root;
     }
