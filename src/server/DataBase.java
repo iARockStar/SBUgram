@@ -109,9 +109,10 @@ public class DataBase {
      * if the username and password entered for logging in is valid.
      * if the info is not valid then it sends notApproved message to the client.
      * it it is then it sends the user who wants to sign in with to the client
+     *
      * @param objectOutputStream the stream needed to write objects
-     * @param username username of the user
-     * @param password password of the user.
+     * @param username           username of the user
+     * @param password           password of the user.
      */
     public synchronized static void login(ObjectOutputStream objectOutputStream
             , String username, String password) throws IOException, ClassNotFoundException {
@@ -155,6 +156,7 @@ public class DataBase {
      * this method signs up a new user and saves it into the db
      * the only thing which is not checked in the client is that if the
      * username is already used or not which is checked here
+     *
      * @param user the new user which we are trying to save in the db.
      * @return the return type declares if the signUp process was successful
      * or not.
@@ -206,6 +208,7 @@ public class DataBase {
 
     /**
      * this method adds a new post to the list of the posts of a user.
+     *
      * @param post the new post added to the list
      * @param user owner of the post
      */
@@ -223,6 +226,7 @@ public class DataBase {
     /**
      * this method loads the posts need for each page therefore
      * it fins the owner of the posts and returns it to the client.
+     *
      * @param requester this param is needed for checking if the user is blocked or not
      * @param requested the user whom se want to load his / her posts.
      * @return the value is a list of posts of the user.
@@ -255,6 +259,7 @@ public class DataBase {
      * this method checks if the answer to the security question was
      * valid or not. if yes then the new pass is saved.
      * otherwise nothing happens.
+     *
      * @param user the user who is searching for his / her password.
      * @return its false or true according to the answer of the
      * user to the security question.
@@ -276,6 +281,7 @@ public class DataBase {
     /**
      * this method is for the search page controller which gives a username
      * and sends the user of it to the client.
+     *
      * @param username the name of the searched user.
      * @return return value is null if the user is not found in the list
      * and a user if the username is found.
@@ -289,6 +295,15 @@ public class DataBase {
         return null;
     }
 
+    /**
+     * this method adds a comment to the list of comments and then
+     * sends the list of the comments back to the client
+     *
+     * @param user    the user whom posted the comment.
+     * @param post    the post the user is commenting on
+     * @param comment the comment the user committed
+     * @return a list which contains the comments of the post.
+     */
     public synchronized static Vector<Comment> addAndSendComments(User user, Post post, Comment comment) {
         List<Comment> commentList = new Vector<>();
         for (User listUser :
@@ -307,6 +322,13 @@ public class DataBase {
         return null;
     }
 
+    /**
+     * this method sends the list of comments of a post
+     *
+     * @param user the owner of the post which has the list of comments
+     * @param post the post which we want its comments
+     * @return the list of comments
+     */
     public synchronized static Vector<Comment> sendComments(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
@@ -320,6 +342,16 @@ public class DataBase {
         return null;
     }
 
+    /**
+     * this method adds the new follower by adding the username of the follower
+     * to list of the following's followers and adding the username of the
+     * following to the list of the follower's followings.
+     *
+     * @param following the user who is being followed
+     * @param follower  the follower
+     * @return return value is the num of the followers of the followed user.
+     * the return value is -1 if the follower is blocked by the following.
+     */
     public synchronized static AtomicInteger follow(User following, User follower) {
         AtomicInteger atomicInteger = new AtomicInteger(0);
         for (User listUser :
@@ -346,26 +378,40 @@ public class DataBase {
         return atomicInteger;
     }
 
-    public synchronized static AtomicInteger unfollow(User following, User follower) {
+    /**
+     * the same method as the follow method but reversed.
+     *
+     * @param unFollowing the user who is being unfollowed
+     * @param unFollower  the unFollower.
+     * @return return value is the new num of followers
+     */
+    public synchronized static AtomicInteger unfollow(User unFollowing, User unFollower) {
         AtomicInteger atomicInteger = new AtomicInteger(0);
         for (User listUser :
                 listOfUsers) {
-            if (following.getUsername().equals(listUser.getUsername())) {
-                listUser.removeFollower(follower.getUsername());
+            if (unFollowing.getUsername().equals(listUser.getUsername())) {
+                listUser.removeFollower(unFollower.getUsername());
                 atomicInteger = listUser.getNumOfFollowers();
                 break;
             }
         }
         for (User listUser :
                 listOfUsers) {
-            if (follower.getUsername().equals(listUser.getUsername())) {
-                listUser.removeFollowing(following.getUsername());
+            if (unFollower.getUsername().equals(listUser.getUsername())) {
+                listUser.removeFollowing(unFollowing.getUsername());
             }
         }
         updateUser();
         return atomicInteger;
     }
 
+    /**
+     * this method is exclusively for the timeline feed and returns the posts
+     * of the users whom the user followed
+     *
+     * @param user the user who wants his / her list of followings' posts.
+     * @return a list which contains the list of the followings' post.
+     */
     public synchronized static Vector<Post> loadFollowingPosts(User user) {
         Vector<Post> posts = new Vector<>();
         User user2 = null;
@@ -387,6 +433,14 @@ public class DataBase {
         return posts;
     }
 
+    /**
+     * this method is user for adding the number of likes to a post
+     * but the problem is the reposted posts which their like numbers
+     * should be added so we find those in a loop,too.
+     *
+     * @param user the user who wants to like the post
+     * @param post the post which is being liked.
+     */
     public synchronized static void like(User user, Post post) {
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
@@ -408,6 +462,12 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * same as the like method but reversed
+     *
+     * @param user the user who wants to take back his like
+     * @param post the target post which its likes is bout to be reduced.
+     */
     public synchronized static void dislike(User user, Post post) {
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
@@ -429,6 +489,9 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * don't remember what the hell this is :|.
+     */
     public synchronized static User updateUser(String username) {
         for (User user :
                 listOfUsers) {
@@ -438,6 +501,22 @@ public class DataBase {
         return null;
     }
 
+    /**
+     * this method is the worst method of my project but at least im proud i did it^_^.
+     * well it receives the user who wants to repost and the target post.
+     * now the num of reposts of the post is added and
+     * the user is added to the reposters of the post.
+     * so the next time the user wants to repost the
+     * post the db checks if the user has already reposted
+     * the post or not. it also checks if the user doesn't want to
+     * repost his / her own post.
+     * in the end it searches the likes of the post in other places and
+     * replaces the new repost(with more num of reposts) in the whole db.
+     * @param user the user who wants to repost
+     * @param post the target post to repost.
+     * @return return value is like a true or
+     * false which shows the success in the process.
+     */
     public synchronized static ApprovedType repost(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
@@ -460,6 +539,11 @@ public class DataBase {
         return ApprovedType.NOT_APPROVED;
     }
 
+    /**
+     * this method receives a user and updates its information in the whole
+     * db.(comments,posts,...).
+     * @param user the user who is updated.
+     */
     public synchronized static void settingUpdate(User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (listOfUsers.get(i).getUsername().equalsIgnoreCase(user.getUsername())) {
@@ -500,7 +584,6 @@ public class DataBase {
     /**
      * this method is for deleting accounts and consists of deleting
      * different parts which are related to the deleted user.
-     *
      * @param deletedUser is the user whom the user tends to delete.
      */
     public synchronized static void deleteAccount(User deletedUser) {
@@ -521,6 +604,10 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * method for deleting the chats the deletedUser did
+     * @param deletedUser the user who is out of the db.
+     */
     private static void deleteChats(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
@@ -529,10 +616,14 @@ public class DataBase {
                             .equalsIgnoreCase(deletedUser.getUsername()));
             listUser.getUsers()
                     .removeIf(userList -> userList.getMyUser()
-                    .equalsIgnoreCase(deletedUser.getUsername()));
+                            .equalsIgnoreCase(deletedUser.getUsername()));
         }
     }
 
+    /**
+     * method for deleting the reposts the deletedUser did
+     * @param deletedUser the user who is out of the db.
+     */
     private static void deleteReposts(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
@@ -546,6 +637,10 @@ public class DataBase {
         }
     }
 
+    /**
+     * in this method the deleted user is out of the main list of users.
+     * @param deletedUser the user who is out of the db.
+     */
     private synchronized static void deleteAcc(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
@@ -556,6 +651,11 @@ public class DataBase {
         }
     }
 
+
+    /**
+     * method for deleting the follows the deletedUser did
+     * @param deletedUser the user who is out of the db.
+     */
     private synchronized static void deleteFollows(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
@@ -571,6 +671,10 @@ public class DataBase {
         }
     }
 
+    /**
+     * method for deleting the likes the deletedUser did
+     * @param deletedUser the user who is out of the db.
+     */
     private synchronized static void deleteLikes(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
@@ -584,6 +688,9 @@ public class DataBase {
         }
     }
 
+    /**
+     * the method for muting a user
+     */
     public synchronized static void mute(User muter, User muted) {
         for (User listUser :
                 listOfUsers) {
@@ -595,6 +702,9 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * the method for unMuting a user
+     */
     public synchronized static void unMute(User unMuter, User unMuted) {
         for (User listUser :
                 listOfUsers) {
@@ -606,6 +716,11 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * the method for blocking a user.
+     * if you block a user then you are no longer his / her follower
+     * so the num of the followers of the blocked user reduces.
+     */
     public synchronized static void block(User blocker, User blocked) {
         for (User listUser :
                 listOfUsers) {
@@ -628,6 +743,9 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * the method for blocking a user.
+     */
     public synchronized static void unBlock(User unBlocker, User unblocked) {
         for (User listUser :
                 listOfUsers) {
@@ -644,10 +762,8 @@ public class DataBase {
      * chat with the searchedUser.
      * this item which is created here will be available in the direct
      * section.
-     *
      * @param chatSender   the user who wants to chat with another user
      * @param chatReceiver the addressed user.
-     * @return
      */
     public synchronized static void createChatItem(User chatSender, User chatReceiver) {
         UserList newUserListForSender = new UserList(
@@ -670,7 +786,6 @@ public class DataBase {
 
     /**
      * this method is for finding the list of users our main user has chatted with.
-     *
      * @param myUser the user who is controlling the app
      * @return the list of users which we want.
      */
@@ -714,6 +829,7 @@ public class DataBase {
                 break;
             }
         }
+        updateUser();
         Collections.sort(all);
         return all;
     }
@@ -743,6 +859,10 @@ public class DataBase {
         return all;
     }
 
+    /**
+     * this method is for adding to the numOf chats of a userList item so
+     * that the chat is created if the num of chats is more than 1.
+     */
     private static void addNumOfChats(String sender, User theOtherUser) {
         for (User user :
                 listOfUsers) {
@@ -758,6 +878,11 @@ public class DataBase {
         }
     }
 
+    /**
+     *this method is for adding to the number of unSeen chats for the user
+     * so when the other user(the addressed one) checks his list in direct
+     * sees that he / she has unseen messages.
+     */
     private static User findTheOtherUser(String sender, String receiver, ReversedMessage reversedMessage, User myUser) {
         User theOtherUser = null;
         for (User user :
@@ -779,6 +904,9 @@ public class DataBase {
         return theOtherUser;
     }
 
+    /*
+    * don't know what the hell happened here so no javadoc :(
+     */
     private static User findMyUser(Message message, String sender, String receiver) {
         User myUser = null;
 
@@ -838,8 +966,6 @@ public class DataBase {
                 listOfUsers) {
             if (sender.equalsIgnoreCase(user.getUsername())) {
                 user.getSent().get(receiver).remove(deletedMessage);
-                deletedMessage.setDeleted(true);
-                user.getSent().get(receiver).add(deletedMessage);
                 myUser = user;
             }
         }
@@ -847,8 +973,6 @@ public class DataBase {
                 listOfUsers) {
             if (receiver.equalsIgnoreCase(user.getUsername())) {
                 user.getReceived().get(sender).remove(reversedMessage);
-                reversedMessage.setDeleted(true);
-                user.getReceived().get(sender).add(reversedMessage);
                 for (UserList list :
                         user.getUsers()) {
                     if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
@@ -861,11 +985,17 @@ public class DataBase {
         updateUser();
     }
 
+    /**
+     * this method is for editing an existing message.
+     * the old message message and the new text is sent and is replaced with
+     * the old one.
+     * @param editedMessage the message we tend to edit
+     * @param editedText the new text of the message.
+     */
     public synchronized static void editMessage
             (Message editedMessage, String editedText) {
         String sender = editedMessage.getSender();
         String receiver = editedMessage.getReceiver();
-        User myUser = null;
         ReversedMessage reversedMessage = new ReversedMessage(
                 editedMessage.getDateOfPublish(),
                 sender,
@@ -878,11 +1008,9 @@ public class DataBase {
                 user.getSent().get(receiver).remove(editedMessage);
                 editedMessage.setText(editedText);
                 user.getSent().get(receiver).add(editedMessage);
-                myUser = user;
                 break;
             }
         }
-
         for (User user :
                 listOfUsers) {
             if (receiver.equalsIgnoreCase(user.getUsername())) {
@@ -895,11 +1023,14 @@ public class DataBase {
         updateUser();
     }
 
-    public synchronized static User searchChat(User searcher1, String username) {
+    /**
+     * this method is for searching the user whom we want to chat with.
+     */
+    public synchronized static User searchChat(User searcher, String username) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equalsIgnoreCase(username)
-                    && !listUser.getBlockedList().contains(searcher1.getUsername()))
+                    && !listUser.getBlockedList().contains(searcher.getUsername()))
                 return listUser;
         }
         return null;

@@ -68,18 +68,6 @@ public class TextItemController implements ItemController {
      */
     @Override
     public Node init() {
-        if (message.isDeleted()) {
-            deletedImage.setVisible(true);
-            usernameLabel.setVisible(false);
-            dateLabel.setVisible(false);
-            if (!(message instanceof ReversedMessage)) {
-                editButton2.setVisible(false);
-                editImage.setVisible(false);
-            }
-            textLabel.setText("This Message was deleted");
-            textLabel.setTextFill(Color.MAROON);
-            return root;
-        }
         usernameLabel.setText(message.getSender());
         dateLabel.setText(message.getDateOfPublish().toString());
         textLabel.setText(message.getText());

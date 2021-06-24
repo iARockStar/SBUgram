@@ -89,14 +89,16 @@ public class LoginController implements Initializable {
      */
     @FXML
     private void login(ActionEvent actionEvent) throws IOException {
-        if(!Client.isServerUp())
+        if(!Client.isServerUp()) {
             Client.connectToServer();
+            Client.setServerUp(true);
+        }
         CommandSender commandSender = createCommandSender();
         ApprovedType approvedType = checkValidUserAndPass(commandSender);
         if (approvedType == ApprovedType.APPROVED) {
             Main.loadAPage(actionEvent
-                    , "../FXMLs/MainPage.fxml"
-                    , "SBUgram - Home page"
+                    , "../FXMLs/MainMenu.fxml"
+                    , "SBUgram - Main menu"
             );
         } else {
             warningLabel.setText("wrong username or password!");

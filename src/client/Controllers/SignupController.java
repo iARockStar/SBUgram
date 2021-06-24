@@ -109,8 +109,10 @@ public class SignupController implements Initializable {
      */
     @FXML
     public void signup(ActionEvent event) throws IOException {
-        if (!Client.isServerUp())
+        if (!Client.isServerUp()) {
             Client.connectToServer();
+            Client.setServerUp(true);
+        }
         String name = this.name.getText();
         String lastName = this.lastName.getText();
         String username = this.username.getText();

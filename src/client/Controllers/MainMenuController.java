@@ -40,6 +40,8 @@ public class MainMenuController extends mainPage {
         alert.setContentText("Are you sure? ");
         if (alert.showAndWait().get() == ButtonType.OK) {
             try {
+                Client.setServerUp(false);
+                Client.getObjectOutputStream().reset();
                 Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOGOUT, thisUser.getUser()));
             } catch (IOException ioException) {
                 ioException.printStackTrace();

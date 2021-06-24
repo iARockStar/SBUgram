@@ -86,22 +86,22 @@
             </DropShadow>
         </effect>
     </AnchorPane>
-   <ImageView fitHeight="48.0" fitWidth="54.0" layoutX="402.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="48.0" fitWidth="54.0" layoutX="402.0" layoutY="511.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/paper_plane_208px.png" />
       </image>
    </ImageView>
-   <ImageView fitHeight="50.0" fitWidth="48.0" layoutX="402.0" layoutY="553.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="50.0" fitWidth="48.0" layoutX="402.0" layoutY="559.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/attach_500px.png" />
       </image>
    </ImageView>
-   <Button layoutX="398.0" layoutY="500.0" mnemonicParsing="false" onAction="#send" opacity="0.0" prefHeight="48.0" prefWidth="52.0" text="Button">
+   <Button layoutX="398.0" layoutY="511.0" mnemonicParsing="false" onAction="#send" opacity="0.0" prefHeight="48.0" prefWidth="52.0" text="Button">
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
-   <Button layoutX="400.0" layoutY="553.0" mnemonicParsing="false" onAction="#attach" opacity="0.0" prefHeight="48.0" prefWidth="52.0" text="Button">
+   <Button layoutX="400.0" layoutY="559.0" mnemonicParsing="false" onAction="#attach" opacity="0.0" prefHeight="48.0" prefWidth="52.0" text="Button">
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor>
@@ -123,7 +123,7 @@
             <Cursor fx:constant="HAND" />
         </cursor>
     </Button>
-   <Label fx:id="usernameLabel" alignment="CENTER" layoutX="179.0" layoutY="117.0" prefHeight="38.0" prefWidth="179.0" text="\@iARockstar">
+   <Label fx:id="usernameLabel" alignment="CENTER" layoutX="148.0" layoutY="117.0" prefHeight="38.0" prefWidth="179.0" text="\@iARockstar">
       <font>
          <Font name="Georgia Bold Italic" size="24.0" />
       </font>

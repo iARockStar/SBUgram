@@ -126,6 +126,7 @@ public class Main extends Application {
         alert.setHeaderText("you are about to close the app");
         alert.setContentText("Are you sure? ");
         if (alert.showAndWait().get() == ButtonType.OK) {
+            Client.setServerUp(false);
             stage.close();
             try {
                 Client.objectOutputStream.writeObject(new CommandSender(CommandType.LOGOUT, thisUser.getUser()));

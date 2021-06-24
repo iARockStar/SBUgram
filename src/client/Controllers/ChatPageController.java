@@ -49,7 +49,6 @@ public class ChatPageController extends mainPage {
         updateUser();
         setUserInfo();
         loadMessages(thisUser.getUser().getUsername(), thisUser.getSearchedUserName());
-        System.out.println(allMessages.size());
         //show the post array in list view
         chatListView.setItems(FXCollections.observableArrayList(allMessages));
         loadMessages(thisUser.getUser().getUsername(), thisUser.getSearchedUserName());
@@ -135,12 +134,11 @@ public class ChatPageController extends mainPage {
     /**
      * this method refreshes the chat page so that the new chats can be seen.
      */
-    public void refresh(MouseEvent mouseEvent) {
-        try {
-            this.initialize();
-        } catch (IOException | ClassNotFoundException ioException) {
-            ioException.printStackTrace();
-        }
+    public void refresh(MouseEvent mouseEvent) throws IOException {
+        Main.loadAPageMouse(mouseEvent
+                , "../FXMLs/ChatPage.fxml"
+                , "SBUgram - PV"
+        );
     }
 
     /**

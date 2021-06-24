@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="92.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" prefWidth="462.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="3.0" text="username">
          <font>
@@ -16,7 +16,7 @@
          </font>
       </Label>
       <Label fx:id="dateLabel" layoutX="14.0" layoutY="5.0" text="Date and Time" />
-      <ImageView fitHeight="22.0" fitWidth="36.0" layoutX="397.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="22.0" fitWidth="36.0" layoutX="31.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/waste_512px.png" />
          </image>
@@ -27,7 +27,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="editImage" fitHeight="18.0" fitWidth="22.0" layoutX="372.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="editImage" fitHeight="18.0" fitWidth="22.0" layoutX="5.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/edit_480px.png" />
          </image>
@@ -38,17 +38,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Button layoutX="396.0" layoutY="65.0" mnemonicParsing="false" onAction="#deleteMessage" opacity="0.0" prefHeight="18.0" prefWidth="6.0" text="Button">
+      <Button layoutX="30.0" layoutY="65.0" mnemonicParsing="false" onAction="#deleteMessage" opacity="0.0" prefWidth="6.0" text="Button">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="editButton2" layoutX="369.0" layoutY="65.0" mnemonicParsing="false" onAction="#editMessage" opacity="0.0" prefHeight="18.0" prefWidth="5.0" text="Button">
+      <Button fx:id="editButton2" layoutX="2.0" layoutY="64.0" mnemonicParsing="false" onAction="#editMessage" opacity="0.0" prefHeight="26.0" prefWidth="9.0" text="Button">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <AnchorPane layoutX="55.0" layoutY="20.0" prefHeight="36.0" prefWidth="376.0">
+      <AnchorPane layoutX="55.0" layoutY="20.0" prefWidth="376.0">
          <children>
             <VBox layoutX="7.0" layoutY="12.0" prefWidth="362.0">
                <children>
@@ -65,15 +65,10 @@
             <JFXTextArea fx:id="editField" focusColor="#32dc32" layoutX="-1.0" layoutY="4.0" prefHeight="36.0" prefWidth="376.0" promptText="editYourText" visible="false" />
          </children>
       </AnchorPane>
-      <JFXButton fx:id="editButton" buttonType="RAISED" layoutY="33.0" onAction="#edit" prefHeight="22.0" prefWidth="42.0" style="-fx-background-color: #32dc32;" text="edit" visible="false">
+      <JFXButton fx:id="editButton" buttonType="RAISED" layoutY="33.0" onAction="#edit" prefWidth="42.0" style="-fx-background-color: #32dc32;" text="edit" visible="false">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></JFXButton>
-      <ImageView fx:id="deletedImage" fitHeight="26.0" fitWidth="30.0" layoutX="6.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../images/Delete%20Chat_480px.png" />
-         </image>
-      </ImageView>
    </children>
 
 </AnchorPane>
