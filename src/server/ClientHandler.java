@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import other.*;
 
+import javax.xml.crypto.Data;
+
 public class ClientHandler extends Thread {
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
@@ -157,6 +159,10 @@ public class ClientHandler extends Thread {
                         unblock(unBlocker,unblocked);
                         Log.unBlock(unBlocker,unblocked);
                         break;
+                        /*
+                        * this part is for the chat
+                        * and its abilities.
+                        */
                     case CREATECHATITEM:
                         User chatSender = commandSender.getRequester();
                         User chatReceiver = commandSender.getRequested();
@@ -175,6 +181,10 @@ public class ClientHandler extends Thread {
                         Message message = commandSender.getSentMessage();
                         sendMessage(message);
                         break;
+                    case DELETEMESSAGE:
+                        Message deletedMessage = commandSender.getSentMessage();
+                        deleteMessage(deletedMessage);
+                        break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
                 ioException.printStackTrace();
@@ -189,11 +199,15 @@ public class ClientHandler extends Thread {
         }
     }
 
+    private void deleteMessage(Message deletedMessage) {
+        DataBase.deleteMessage(deletedMessage);
+    }
+
     private void sendMessage(Message message) {
         Vector<Message> all =  DataBase.sendMessage(message);
         try{
             objectOutputStream.reset();
-            objectOutputStream.writeObject(all);
+            objectOutputStream.writeObject(new Vector<>(all));
         }catch (IOException ioException){
             ioException.printStackTrace();
         }
@@ -209,7 +223,7 @@ public class ClientHandler extends Thread {
        Vector<Message> all =  DataBase.loadMessages(myUsername,theOtherUsername);
        try{
            objectOutputStream.reset();
-           objectOutputStream.writeObject(all);
+           objectOutputStream.writeObject(new Vector<>(all));
        }catch (IOException ioException){
            ioException.printStackTrace();
        }

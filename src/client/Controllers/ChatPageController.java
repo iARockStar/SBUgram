@@ -46,8 +46,10 @@ public class ChatPageController extends mainPage {
      */
     @FXML
     public void initialize() throws IOException, ClassNotFoundException {
+        updateUser();
         setUserInfo();
         loadMessages(thisUser.getUser().getUsername(), thisUser.getSearchedUserName());
+        System.out.println(allMessages.size());
         //show the post array in list view
         chatListView.setItems(FXCollections.observableArrayList(allMessages));
 
@@ -82,7 +84,6 @@ public class ChatPageController extends mainPage {
         CommandSender commandSender = new CommandSender(
                 CommandType.GETCHATS, myUser, theOtherUser
         );
-        ChatHolder holder;
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(commandSender);
@@ -132,6 +133,22 @@ public class ChatPageController extends mainPage {
             this.initialize();
         } catch (IOException | ClassNotFoundException ioException) {
             ioException.printStackTrace();
+        }
+    }
+
+    /**
+     * it is called in init method and updates user information.
+     */
+    private void updateUser() {
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getSearchedUser()));
+            User newUser = (User) Client.getObjectInputStream().readObject();
+            thisUser.setSearchedUser(newUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

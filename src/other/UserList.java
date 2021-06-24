@@ -29,6 +29,12 @@ public class UserList implements Serializable,Comparable {
         this.date = new Date();
     }
 
+    public void reduceNumOfChats() {
+        this.numOfChats = --this.numOfChats;
+    }
+
+
+
     public String getMyUser() {
         return myUser;
     }
@@ -77,6 +83,9 @@ public class UserList implements Serializable,Comparable {
 
     public void addNumOfUnSeen() {
         this.numOfUnSeen = ++numOfUnSeen;
+    }
+    public void reduceNumOfUnSeen() {
+        this.numOfUnSeen = --numOfUnSeen;
     }
 
     public int getNumOfUnSeen() {

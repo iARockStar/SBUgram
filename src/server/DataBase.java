@@ -1,5 +1,6 @@
 package server;
 
+import javafx.scene.shape.Ellipse;
 import other.User;
 
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class DataBase {
 
@@ -553,9 +555,14 @@ public class DataBase {
      * @param myUser the user who is controlling the app
      * @return the list of users which we want.
      */
-    public static Vector<UserList> getUsers(User myUser) {
+    public synchronized static Vector<UserList> getUsers(User myUser) {
         int indexOfUser = listOfUsers.indexOf(myUser);
-        return listOfUsers.get(indexOfUser).getUsers();
+        return listOfUsers
+                .get(indexOfUser)
+                .getUsers()
+                .stream()
+                .filter(userList -> userList.getNumOfChats() != 0)
+                .collect(Collectors.toCollection(Vector::new));
     }
 
     /**
@@ -581,9 +588,9 @@ public class DataBase {
         all.addAll(sent);
         all.addAll(received);
 
-        for (UserList list:
+        for (UserList list :
                 myUser.getUsers()) {
-            if(list.getAddressed().equalsIgnoreCase(theOtherUsername)){
+            if (list.getAddressed().equalsIgnoreCase(theOtherUsername)) {
                 list.restartNumOfUnSeen();
                 break;
             }
@@ -596,6 +603,7 @@ public class DataBase {
      * this method adds a message to the database of a chat between
      * two users and then returns a newList consisting of all the
      * chats.
+     *
      * @param message newMessage which is bout to be added.
      * @return the return value is a list of chats.
      */
@@ -608,37 +616,62 @@ public class DataBase {
                 receiver,
                 message.getText()
         );
-        User myUser = null;
-        User theOtherUser = null;
+        User myUser = findMyUser(message, sender, receiver);
+        User theOtherUser = findTheOtherUser(sender, receiver, reversedMessage, myUser);
+        addNumOfChats(sender, theOtherUser);
+        Vector<Message> all = findMessages(message, receiver, myUser, theOtherUser);
+        updateUser();
+        return all;
+    }
+
+    private static void addNumOfChats(String sender, User theOtherUser) {
         for (User user :
                 listOfUsers) {
             if (sender.equalsIgnoreCase(user.getUsername())) {
-                user.getSent().computeIfAbsent(receiver, k -> new Vector<>());
-                user.getSent().get(receiver).add(message);
-                myUser = user;
-
+                for (UserList list :
+                        user.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(theOtherUser.getUsername())) {
+                        list.addNumOfChats();
+                        break;
+                    }
+                }
             }
         }
+    }
+
+    private static User findTheOtherUser(String sender, String receiver, ReversedMessage reversedMessage, User myUser) {
+        User theOtherUser = null;
         for (User user :
                 listOfUsers) {
             if (receiver.equalsIgnoreCase(user.getUsername())) {
                 user.getReceived().computeIfAbsent(sender, k -> new Vector<>());
                 user.getReceived().get(sender).add(reversedMessage);
                 theOtherUser = user;
-                for (UserList list:
+                for (UserList list :
                         user.getUsers()) {
-                    if(list.getAddressed().equalsIgnoreCase(myUser.getUsername())){
+                    if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
+                        list.addNumOfChats();
                         list.addNumOfUnSeen();
                         break;
                     }
                 }
             }
-
         }
+        return theOtherUser;
+    }
 
-        Vector<Message> all = findMessages(message, receiver, myUser, theOtherUser);
-        updateUser();
-        return all;
+    private static User findMyUser(Message message, String sender, String receiver) {
+        User myUser = null;
+
+        for (User user :
+                listOfUsers) {
+            if (sender.equalsIgnoreCase(user.getUsername())) {
+                user.getSent().computeIfAbsent(receiver, k -> new Vector<>());
+                user.getSent().get(receiver).add(message);
+                myUser = user;
+            }
+        }
+        return myUser;
     }
 
     /**
@@ -661,5 +694,47 @@ public class DataBase {
         if (received != null)
             all.addAll(received);
         return all;
+    }
+
+    /**
+     * this method is for deleting a message from the
+     * database of the messages between two users.
+     *
+     * @param deletedMessage the message which is bout to be deleted.
+     */
+    public synchronized static void deleteMessage(Message deletedMessage) {
+        String sender = deletedMessage.getSender();
+        String receiver = deletedMessage.getReceiver();
+        ReversedMessage reversedMessage = new ReversedMessage(
+                deletedMessage.getDateOfPublish(),
+                sender,
+                receiver,
+                deletedMessage.getText()
+        );
+        User myUser = null;
+        for (User user :
+                listOfUsers) {
+            if (sender.equalsIgnoreCase(user.getUsername())) {
+                user.getSent().get(receiver).remove(deletedMessage);
+                myUser = user;
+            }
+        }
+        User theOtherUser = null;
+        for (User user :
+                listOfUsers) {
+            if (receiver.equalsIgnoreCase(user.getUsername())) {
+                user.getReceived().get(sender).remove(reversedMessage);
+                theOtherUser = user;
+                for (UserList list :
+                        user.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
+                        list.reduceNumOfChats();
+                        break;
+                    }
+                }
+            }
+        }
+
+        updateUser();
     }
 }

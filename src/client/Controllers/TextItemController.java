@@ -1,16 +1,21 @@
 package client.Controllers;
 
+import client.Client;
+import client.Main;
 import client.PageLoader;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import other.CommandSender;
+import other.CommandType;
 import other.Message;
 import other.ReversedMessage;
-import other.UserList;
 
 
 import java.io.IOException;
+import java.util.Vector;
 
 public class TextItemController implements ItemController {
 
@@ -41,5 +46,23 @@ public class TextItemController implements ItemController {
         dateLabel.setText(message.getDateOfPublish().toString());
         textLabel.setText(message.getText());
         return root;
+    }
+
+
+    public void deleteMessage(ActionEvent event) {
+        CommandSender sendMessageCommand = new CommandSender(CommandType.DELETEMESSAGE,message);
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(sendMessageCommand);
+            Main.loadAPage(event
+                    , "../FXMLs/ChatPage.fxml"
+                    , "SBUgram - PV"
+            );
+        }catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
+    public void editMessage(ActionEvent mouseEvent) {
     }
 }

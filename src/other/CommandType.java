@@ -35,7 +35,9 @@ public enum CommandType {
     CREATECHATITEM,
     GETUSERS,
     GETCHATS,
-    SENDMESSAGE
+    SENDMESSAGE,
+    DELETEMESSAGE,
+
 
 
 

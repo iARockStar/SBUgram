@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="51.0" prefWidth="454.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" prefHeight="81.0" prefWidth="454.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="usernameLabel" layoutX="325.0" layoutY="3.0" text="username">
+      <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="3.0" text="username">
          <font>
             <Font name="Georgia Bold Italic" size="18.0" />
          </font>
@@ -24,5 +26,38 @@
             </Label>
          </children></VBox>
       <Label fx:id="dateLabel" layoutX="14.0" layoutY="5.0" text="Date and Time" />
+      <ImageView fitHeight="22.0" fitWidth="36.0" layoutX="397.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/waste_512px.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="18.0" fitWidth="22.0" layoutX="372.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/edit_480px.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Button layoutX="396.0" layoutY="54.0" mnemonicParsing="false" onAction="#deleteMessage" opacity="0.0" prefHeight="18.0" prefWidth="6.0" text="Button">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button layoutX="369.0" layoutY="54.0" mnemonicParsing="false" onAction="#editMessage" opacity="0.0" prefHeight="18.0" prefWidth="5.0" text="Button">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
    </children>
+
 </AnchorPane>
