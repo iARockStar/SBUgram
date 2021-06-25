@@ -312,7 +312,6 @@ public class SignupController implements Initializable {
         chooser.setTitle("Upload your profile picture");
         file = chooser.showOpenDialog(null);
         if (file != null) {
-            System.out.println(file.toString());
             profilePicImage = new Image(file.toURI().toString());
             try {
                 this.userImage = new FileInputStream(file).readAllBytes();

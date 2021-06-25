@@ -208,6 +208,8 @@ public class ClientHandler extends Thread {
                     case SENDMESSAGE:
                         Message message = commandSender.getSentMessage();
                         sendMessage(message);
+                        Log.sendMessage(message);
+                        Log.receiveMessage(message);
                         break;
                     case DELETEMESSAGE:
                         Message deletedMessage = commandSender.getSentMessage();
@@ -217,6 +219,10 @@ public class ClientHandler extends Thread {
                         Message editedMessage = commandSender.getEditedMessage();
                         String editedText = commandSender.getEditedText();
                         editMessage(editedMessage, editedText);
+                        break;
+                    case SENDPICMESSAGE:
+                        PicMessage picMessage = (PicMessage) commandSender.getSentMessage();
+                        sendPicMessage(picMessage);
                         break;
                 }
             } catch (IOException | ClassNotFoundException ioException) {
@@ -232,6 +238,16 @@ public class ClientHandler extends Thread {
             objectInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void sendPicMessage(PicMessage picMessage) {
+        Vector<Message> all = DataBase.sendPicMessage(picMessage);
+        try {
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(new Vector<>(all));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
     }
 

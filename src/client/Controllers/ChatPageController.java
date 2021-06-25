@@ -13,9 +13,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import other.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collections;
@@ -68,7 +70,7 @@ public class ChatPageController extends mainPage {
         Image image = new Image(new ByteArrayInputStream(pic));
         proPicCircle.setFill(new ImagePattern(image));
         proPicCircle.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKGREEN));
-        usernameLabel.setText("@"+thisUser.getSearchedUserName());
+        usernameLabel.setText("@" + thisUser.getSearchedUserName());
     }
 
     /**
@@ -94,7 +96,47 @@ public class ChatPageController extends mainPage {
 
     }
 
+    /**
+     * this method is for sending a picMessage to the server.
+     */
     public void attach(ActionEvent event) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Upload your pic for this message");
+        File file = chooser.showOpenDialog(null);
+        if (file != null) {
+            try {
+                thisUser.setPicForMessage(new FileInputStream(file).readAllBytes());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        sendPicMessage();
+    }
+
+    /**
+     * this method sends the picMessage which its picture is taken from the
+     * attach method.
+     */
+    private void sendPicMessage() {
+        String info = message.getText();
+        Message picMessage = new PicMessage(
+                new Date()
+                , thisUser.getUser().getUsername()
+                , thisUser.getSearchedUserName()
+                , info
+                , thisUser.getPicForMessage()
+        );
+        CommandSender sendMessageCommand = new CommandSender(
+                CommandType.SENDPICMESSAGE, picMessage
+        );
+        try {
+            Client.getObjectOutputStream().reset();
+            Client.getObjectOutputStream().writeObject(sendMessageCommand);
+            allMessages = (Vector<Message>) Client.getObjectInputStream().readObject();
+            this.initialize();
+        } catch (IOException | ClassNotFoundException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     /**
@@ -109,13 +151,13 @@ public class ChatPageController extends mainPage {
                 , thisUser.getSearchedUserName()
                 , info
         );
-        CommandSender sendMessageCommand = new CommandSender(CommandType.SENDMESSAGE,message);
+        CommandSender sendMessageCommand = new CommandSender(CommandType.SENDMESSAGE, message);
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(sendMessageCommand);
             allMessages = (Vector<Message>) Client.getObjectInputStream().readObject();
             this.initialize();
-        }catch (IOException | ClassNotFoundException ioException){
+        } catch (IOException | ClassNotFoundException ioException) {
             ioException.printStackTrace();
         }
 

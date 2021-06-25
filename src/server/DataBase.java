@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
  * in order to synchronize the client with the server.
  * some methods are only updates and some are for returning a value
  * which is likely to be a list.
- * all of the methods in this class are defined synchronized
- * so that no problems would occur due to the multithreading.
  * (the lists and the variables are also thread - safe).
  */
 public class DataBase {
@@ -57,7 +55,7 @@ public class DataBase {
      * file if it's not created.
      * it also reads the id of the posts from the file.
      */
-    public static void initializeServer() {
+    public synchronized static void initializeServer() {
         File file;
         file = new File(USERS_FILE);
         if (!file.exists()) {
@@ -161,7 +159,7 @@ public class DataBase {
      * @return the return type declares if the signUp process was successful
      * or not.
      */
-    public synchronized static ApprovedType signupUpdate(User user) {
+    public static ApprovedType signupUpdate(User user) {
         if (!listOfUsers.contains(user)) {
             listOfUsers.add(user);
             updateUser();
@@ -176,7 +174,7 @@ public class DataBase {
      * it writes the new list to the file.
      * it also sorts the posts in the db by their date.
      */
-    private synchronized static void updateUser() {
+    private static void updateUser() {
         sortPosts();
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(USERS_FILE, false);
@@ -199,7 +197,7 @@ public class DataBase {
     /**
      * method for sorting the posts
      */
-    private synchronized static void sortPosts() {
+    private static void sortPosts() {
         for (User user :
                 listOfUsers) {
             Collections.sort(user.getListOfPosts());
@@ -212,7 +210,7 @@ public class DataBase {
      * @param post the new post added to the list
      * @param user owner of the post
      */
-    public synchronized static void updatePost(Post post, User user) {
+    public static void updatePost(Post post, User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (user.getUsername().equals(listOfUsers.get(i).getUsername())) {
                 post.setPostId();
@@ -231,7 +229,7 @@ public class DataBase {
      * @param requested the user whom se want to load his / her posts.
      * @return the value is a list of posts of the user.
      */
-    public synchronized static User loadPost(User requester, User requested) {
+    public static User loadPost(User requester, User requested) {
         User foundUser = null;
         for (User listUser :
                 listOfUsers) {
@@ -246,7 +244,7 @@ public class DataBase {
     /**
      * method for retrieving the password of a user
      */
-    public synchronized static User retrievePass(User user) {
+    public static User retrievePass(User user) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername()))
@@ -264,7 +262,7 @@ public class DataBase {
      * @return its false or true according to the answer of the
      * user to the security question.
      */
-    public synchronized static boolean saveNewPass(User user) {
+    public static boolean saveNewPass(User user) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -286,7 +284,7 @@ public class DataBase {
      * @return return value is null if the user is not found in the list
      * and a user if the username is found.
      */
-    public synchronized static User search(String username) {
+    public static User search(String username) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equalsIgnoreCase(username))
@@ -304,7 +302,7 @@ public class DataBase {
      * @param comment the comment the user committed
      * @return a list which contains the comments of the post.
      */
-    public synchronized static Vector<Comment> addAndSendComments(User user, Post post, Comment comment) {
+    public static Vector<Comment> addAndSendComments(User user, Post post, Comment comment) {
         List<Comment> commentList = new Vector<>();
         for (User listUser :
                 listOfUsers) {
@@ -329,7 +327,7 @@ public class DataBase {
      * @param post the post which we want its comments
      * @return the list of comments
      */
-    public synchronized static Vector<Comment> sendComments(User user, Post post) {
+    public static Vector<Comment> sendComments(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equals(listUser.getUsername())) {
@@ -352,7 +350,7 @@ public class DataBase {
      * @return return value is the num of the followers of the followed user.
      * the return value is -1 if the follower is blocked by the following.
      */
-    public synchronized static AtomicInteger follow(User following, User follower) {
+    public static AtomicInteger follow(User following, User follower) {
         AtomicInteger atomicInteger = new AtomicInteger(0);
         for (User listUser :
                 listOfUsers) {
@@ -385,7 +383,7 @@ public class DataBase {
      * @param unFollower  the unFollower.
      * @return return value is the new num of followers
      */
-    public synchronized static AtomicInteger unfollow(User unFollowing, User unFollower) {
+    public static AtomicInteger unfollow(User unFollowing, User unFollower) {
         AtomicInteger atomicInteger = new AtomicInteger(0);
         for (User listUser :
                 listOfUsers) {
@@ -412,7 +410,7 @@ public class DataBase {
      * @param user the user who wants his / her list of followings' posts.
      * @return a list which contains the list of the followings' post.
      */
-    public synchronized static Vector<Post> loadFollowingPosts(User user) {
+    public static Vector<Post> loadFollowingPosts(User user) {
         Vector<Post> posts = new Vector<>();
         User user2 = null;
         for (User listUser :
@@ -441,7 +439,7 @@ public class DataBase {
      * @param user the user who wants to like the post
      * @param post the post which is being liked.
      */
-    public synchronized static void like(User user, Post post) {
+    public static void like(User user, Post post) {
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(1);
@@ -468,7 +466,7 @@ public class DataBase {
      * @param user the user who wants to take back his like
      * @param post the target post which its likes is bout to be reduced.
      */
-    public synchronized static void dislike(User user, Post post) {
+    public static void dislike(User user, Post post) {
         for (User listUser : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 post.getNumOfLikes().addAndGet(-1);
@@ -492,7 +490,7 @@ public class DataBase {
     /**
      * don't remember what the hell this is :|.
      */
-    public synchronized static User updateUser(String username) {
+    public static User updateUser(String username) {
         for (User user :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(username))
@@ -512,12 +510,13 @@ public class DataBase {
      * repost his / her own post.
      * in the end it searches the likes of the post in other places and
      * replaces the new repost(with more num of reposts) in the whole db.
+     *
      * @param user the user who wants to repost
      * @param post the target post to repost.
      * @return return value is like a true or
      * false which shows the success in the process.
      */
-    public synchronized static ApprovedType repost(User user, Post post) {
+    public static ApprovedType repost(User user, Post post) {
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) &&
@@ -542,9 +541,10 @@ public class DataBase {
     /**
      * this method receives a user and updates its information in the whole
      * db.(comments,posts,...).
+     *
      * @param user the user who is updated.
      */
-    public synchronized static void settingUpdate(User user) {
+    public static void settingUpdate(User user) {
         for (int i = 0; i < listOfUsers.size(); i++) {
             if (listOfUsers.get(i).getUsername().equalsIgnoreCase(user.getUsername())) {
                 listOfUsers.remove(i);
@@ -584,9 +584,10 @@ public class DataBase {
     /**
      * this method is for deleting accounts and consists of deleting
      * different parts which are related to the deleted user.
+     *
      * @param deletedUser is the user whom the user tends to delete.
      */
-    public synchronized static void deleteAccount(User deletedUser) {
+    public static void deleteAccount(User deletedUser) {
         deleteLikes(deletedUser);
         deleteFollows(deletedUser);
         deleteReposts(deletedUser);
@@ -606,6 +607,7 @@ public class DataBase {
 
     /**
      * method for deleting the chats the deletedUser did
+     *
      * @param deletedUser the user who is out of the db.
      */
     private static void deleteChats(User deletedUser) {
@@ -622,6 +624,7 @@ public class DataBase {
 
     /**
      * method for deleting the reposts the deletedUser did
+     *
      * @param deletedUser the user who is out of the db.
      */
     private static void deleteReposts(User deletedUser) {
@@ -639,9 +642,10 @@ public class DataBase {
 
     /**
      * in this method the deleted user is out of the main list of users.
+     *
      * @param deletedUser the user who is out of the db.
      */
-    private synchronized static void deleteAcc(User deletedUser) {
+    private static void deleteAcc(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
             if (deletedUser.getUsername().equalsIgnoreCase(listUser.getUsername())) {
@@ -654,9 +658,10 @@ public class DataBase {
 
     /**
      * method for deleting the follows the deletedUser did
+     *
      * @param deletedUser the user who is out of the db.
      */
-    private synchronized static void deleteFollows(User deletedUser) {
+    private static void deleteFollows(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getFollowers().contains(deletedUser.getUsername())) {
@@ -673,9 +678,10 @@ public class DataBase {
 
     /**
      * method for deleting the likes the deletedUser did
+     *
      * @param deletedUser the user who is out of the db.
      */
-    private synchronized static void deleteLikes(User deletedUser) {
+    private static void deleteLikes(User deletedUser) {
         for (User listUser :
                 listOfUsers) {
             for (Post post :
@@ -691,7 +697,7 @@ public class DataBase {
     /**
      * the method for muting a user
      */
-    public synchronized static void mute(User muter, User muted) {
+    public static void mute(User muter, User muted) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equals(muter.getUsername())) {
@@ -705,7 +711,7 @@ public class DataBase {
     /**
      * the method for unMuting a user
      */
-    public synchronized static void unMute(User unMuter, User unMuted) {
+    public static void unMute(User unMuter, User unMuted) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equals(unMuter.getUsername())) {
@@ -721,7 +727,7 @@ public class DataBase {
      * if you block a user then you are no longer his / her follower
      * so the num of the followers of the blocked user reduces.
      */
-    public synchronized static void block(User blocker, User blocked) {
+    public static void block(User blocker, User blocked) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equals(blocker.getUsername())) {
@@ -746,7 +752,7 @@ public class DataBase {
     /**
      * the method for blocking a user.
      */
-    public synchronized static void unBlock(User unBlocker, User unblocked) {
+    public static void unBlock(User unBlocker, User unblocked) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equals(unBlocker.getUsername())) {
@@ -762,10 +768,11 @@ public class DataBase {
      * chat with the searchedUser.
      * this item which is created here will be available in the direct
      * section.
+     *
      * @param chatSender   the user who wants to chat with another user
      * @param chatReceiver the addressed user.
      */
-    public synchronized static void createChatItem(User chatSender, User chatReceiver) {
+    public static void createChatItem(User chatSender, User chatReceiver) {
         UserList newUserListForSender = new UserList(
                 chatSender.getUsername(), chatReceiver.getUsername(), new Date()
         );
@@ -786,10 +793,11 @@ public class DataBase {
 
     /**
      * this method is for finding the list of users our main user has chatted with.
+     *
      * @param myUser the user who is controlling the app
      * @return the list of users which we want.
      */
-    public synchronized static Vector<UserList> getUsers(User myUser) {
+    public static Vector<UserList> getUsers(User myUser) {
         int indexOfUser = listOfUsers.indexOf(myUser);
         return listOfUsers
                 .get(indexOfUser)
@@ -806,7 +814,7 @@ public class DataBase {
      * @param theOtherUsername the user we are chatting with.
      * @return a list of all messages sent and received
      */
-    public synchronized static Vector<Message> loadMessages(String myUsername, String theOtherUsername) {
+    public static Vector<Message> loadMessages(String myUsername, String theOtherUsername) {
         User myUser = null;
         for (User user : listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(myUsername))
@@ -842,7 +850,7 @@ public class DataBase {
      * @param message newMessage which is bout to be added.
      * @return the return value is a list of chats.
      */
-    public synchronized static Vector<Message> sendMessage(Message message) {
+    public static Vector<Message> sendMessage(Message message) {
         String sender = message.getSender();
         String receiver = message.getReceiver();
         ReversedMessage reversedMessage = new ReversedMessage(
@@ -879,7 +887,7 @@ public class DataBase {
     }
 
     /**
-     *this method is for adding to the number of unSeen chats for the user
+     * this method is for adding to the number of unSeen chats for the user
      * so when the other user(the addressed one) checks his list in direct
      * sees that he / she has unseen messages.
      */
@@ -905,7 +913,7 @@ public class DataBase {
     }
 
     /*
-    * don't know what the hell happened here so no javadoc :(
+     * don't know what the hell happened here so no javadoc :(
      */
     private static User findMyUser(Message message, String sender, String receiver) {
         User myUser = null;
@@ -949,19 +957,15 @@ public class DataBase {
      * but it seems that there is a bug in java FX listView so change of plans!
      * the message isn't actually deleted but its boolean is set to true
      * so the graphic changes when it is deleted.
+     *
      * @param deletedMessage the message which is bout to be deleted.
      */
-    public synchronized static void deleteMessage(Message deletedMessage) {
+    public static void deleteMessage(Message deletedMessage) {
+        User myUser = null;
         String sender = deletedMessage.getSender();
         String receiver = deletedMessage.getReceiver();
 
-        ReversedMessage reversedMessage = new ReversedMessage(
-                deletedMessage.getDateOfPublish(),
-                sender,
-                receiver,
-                deletedMessage.getText()
-        );
-        User myUser = null;
+
         for (User user :
                 listOfUsers) {
             if (sender.equalsIgnoreCase(user.getUsername())) {
@@ -969,15 +973,47 @@ public class DataBase {
                 myUser = user;
             }
         }
-        for (User user :
-                listOfUsers) {
-            if (receiver.equalsIgnoreCase(user.getUsername())) {
-                user.getReceived().get(sender).remove(reversedMessage);
-                for (UserList list :
-                        user.getUsers()) {
-                    if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
-                        list.reduceNumOfChats();
-                        break;
+        ReversedPicMessage reversedPicMessage;
+        ReversedMessage reversedMessage;
+
+        if (deletedMessage instanceof PicMessage) {
+            reversedPicMessage = new ReversedPicMessage(
+                    deletedMessage.getDateOfPublish(),
+                    sender,
+                    receiver,
+                    deletedMessage.getText(),
+                    ((PicMessage) deletedMessage).getPic()
+            );
+            for (User user :
+                    listOfUsers) {
+                if (receiver.equalsIgnoreCase(user.getUsername())) {
+                    user.getReceived().get(sender).remove(reversedPicMessage);
+                    for (UserList list :
+                            user.getUsers()) {
+                        if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
+                            list.reduceNumOfChats();
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            reversedMessage = new ReversedMessage(
+                    deletedMessage.getDateOfPublish(),
+                    sender,
+                    receiver,
+                    deletedMessage.getText()
+            );
+            for (User user :
+                    listOfUsers) {
+                if (receiver.equalsIgnoreCase(user.getUsername())) {
+                    user.getReceived().get(sender).remove(reversedMessage);
+                    for (UserList list :
+                            user.getUsers()) {
+                        if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
+                            list.reduceNumOfChats();
+                            break;
+                        }
                     }
                 }
             }
@@ -989,11 +1025,12 @@ public class DataBase {
      * this method is for editing an existing message.
      * the old message message and the new text is sent and is replaced with
      * the old one.
+     *
      * @param editedMessage the message we tend to edit
-     * @param editedText the new text of the message.
+     * @param editedText    the new text of the message.
      */
-    public synchronized static void editMessage
-            (Message editedMessage, String editedText) {
+    public static void editMessage
+    (Message editedMessage, String editedText) {
         String sender = editedMessage.getSender();
         String receiver = editedMessage.getReceiver();
         ReversedMessage reversedMessage = new ReversedMessage(
@@ -1026,7 +1063,7 @@ public class DataBase {
     /**
      * this method is for searching the user whom we want to chat with.
      */
-    public synchronized static User searchChat(User searcher, String username) {
+    public static User searchChat(User searcher, String username) {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equalsIgnoreCase(username)
@@ -1034,5 +1071,51 @@ public class DataBase {
                 return listUser;
         }
         return null;
+    }
+
+    /**
+     * this method is like sendMessage method but it adds a picMessage
+     * instead of a normal Message.
+     *
+     * @param picMessage the message we want to add to the database.
+     * @return the list of messages between two users.
+     */
+    public static Vector<Message> sendPicMessage(PicMessage picMessage) {
+        String sender = picMessage.getSender();
+        String receiver = picMessage.getReceiver();
+        ReversedPicMessage reversedMessage = new ReversedPicMessage(
+                picMessage.getDateOfPublish(),
+                sender,
+                receiver,
+                picMessage.getText(),
+                picMessage.getPic()
+        );
+        User myUser = findMyUser(picMessage, sender, receiver);
+        User theOtherUser = createOtherUserItem(sender, receiver, reversedMessage, myUser);
+        addNumOfChats(sender, theOtherUser);
+        Vector<Message> all = findMessages(picMessage, receiver, myUser, theOtherUser);
+        updateUser();
+        return all;
+    }
+
+    private static User createOtherUserItem(String sender, String receiver, ReversedPicMessage reversedMessage, User myUser) {
+        User theOtherUser = null;
+        for (User user :
+                listOfUsers) {
+            if (receiver.equalsIgnoreCase(user.getUsername())) {
+                user.getReceived().computeIfAbsent(sender, k -> new Vector<>());
+                user.getReceived().get(sender).add(reversedMessage);
+                theOtherUser = user;
+                for (UserList list :
+                        user.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
+                        list.addNumOfChats();
+                        list.addNumOfUnSeen();
+                        break;
+                    }
+                }
+            }
+        }
+        return theOtherUser;
     }
 }

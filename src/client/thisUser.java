@@ -18,6 +18,8 @@ public class thisUser {
     private static User searchedUser;
     private static String searchedUserName;
 
+    private static byte[] picForMessage;
+
     //getters and setters
     public static User getUser() {
         return user;
@@ -42,6 +44,15 @@ public class thisUser {
 
     public static void setSearchedUserName(String searchedUserName) {
         thisUser.searchedUserName = searchedUserName;
+    }
+
+
+    public static byte[] getPicForMessage() {
+        return picForMessage;
+    }
+
+    public static void setPicForMessage(byte[] picForMessage) {
+        thisUser.picForMessage = picForMessage;
     }
 }
 

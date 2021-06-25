@@ -1,5 +1,6 @@
 package server;
 
+import other.Message;
 import other.Post;
 import other.User;
 
@@ -154,5 +155,17 @@ public class Log {
         System.out.println("message: " + unblocked.getUsername());
         System.out.println(new Date());
         System.out.println();
+    }
+
+    public static void sendMessage(Message message) {
+        System.out.println(message.getSender() + " send");
+        System.out.println("Message: From "+message.getSender()+" to "+message.getReceiver());
+        System.out.println(message.getDateOfPublish());
+    }
+
+    public static void receiveMessage(Message message) {
+        System.out.println(message.getReceiver() + " receive");
+        System.out.println("Message: "+message.getSender());
+        System.out.println(message.getDateOfPublish());
     }
 }

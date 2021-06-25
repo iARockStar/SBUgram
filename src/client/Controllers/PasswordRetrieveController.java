@@ -51,8 +51,10 @@ public class PasswordRetrieveController {
      * user must remember the answer to it.
      */
     public void find(ActionEvent event) {
-        if(!Client.isServerUp())
+        if(!Client.isServerUp()) {
             Client.connectToServer();
+            Client.setServerUp(true);
+        }
         String username;
         if (usernameField.getText().length() != 0) {
             username = usernameField.getText();

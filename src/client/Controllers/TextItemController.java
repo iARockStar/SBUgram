@@ -3,6 +3,7 @@ package client.Controllers;
 import client.Client;
 import client.Main;
 import client.PageLoader;
+import client.thisUser;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
@@ -10,15 +11,14 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import other.CommandSender;
-import other.CommandType;
-import other.Message;
-import other.ReversedMessage;
+import other.*;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -47,10 +47,17 @@ public class TextItemController implements ItemController {
     private ImageView editImage;
     @FXML
     private Button editButton2;
+    @FXML
+    private ImageView picMessage;
+
 
     public TextItemController(Message message) throws IOException {
         if (message instanceof ReversedMessage) {
             new PageLoader().load("ReversedMessage", this);
+        } else if (message instanceof ReversedPicMessage) {
+            new PageLoader().load("ReversedPicMessage", this);
+        } else if (message instanceof PicMessage) {
+            new PageLoader().load("PicMessage", this);
         } else {
             new PageLoader().load("Message", this);
         }
@@ -68,6 +75,11 @@ public class TextItemController implements ItemController {
      */
     @Override
     public Node init() {
+        if (message instanceof PicMessage) {
+            byte[] pic = ((PicMessage) message).getPic();
+            Image image = new Image(new ByteArrayInputStream(pic));
+            picMessage.setImage(image);
+        }
         usernameLabel.setText(message.getSender());
         dateLabel.setText(message.getDateOfPublish().toString());
         textLabel.setText(message.getText());

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="28.0" layoutY="14.0" text="username">
+            <font>
+                <Font name="Georgia Bold Italic" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="dateLabel" layoutX="260.0" layoutY="16.0" text="Date and Time" />
+        <AnchorPane layoutY="195.0" prefWidth="376.0">
+            <children>
+                <VBox layoutX="7.0" layoutY="16.0" prefWidth="362.0" />
+                <JFXTextArea fx:id="editField" focusColor="#32dc32" layoutX="-1.0" layoutY="4.0" prefHeight="36.0" prefWidth="376.0" promptText="editYourText" visible="false" />
+                <Label fx:id="textLabel" alignment="TOP_LEFT" layoutX="11.0" layoutY="10.0" prefWidth="362.0" style="-fx-background-color: #00BFFF;" text="message">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Label>
+            </children>
+        </AnchorPane>
+        <ImageView fx:id="picMessage" fitHeight="162.0" fitWidth="343.0" layoutX="63.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/picture_320px.png" />
+            </image></ImageView>
+    </children>
+</AnchorPane>

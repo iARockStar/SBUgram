@@ -38,6 +38,7 @@ public enum CommandType {
     SENDMESSAGE,
     DELETEMESSAGE,
     EDITMESSAGE,
-    SEARCHCHAT
+    SEARCHCHAT,
+    SENDPICMESSAGE
 
 }

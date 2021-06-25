@@ -12,15 +12,17 @@
                 <Font name="Georgia Bold Italic" size="18.0" />
             </font>
         </Label>
-        <VBox layoutX="14.0" layoutY="37.0" prefWidth="362.0" />
+        <VBox layoutX="14.0" layoutY="29.0" prefWidth="362.0">
+         <children>
+                <Label fx:id="textLabel" alignment="TOP_LEFT" prefWidth="362.0" style="-fx-background-color: #00BFFF;" text="message">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Label>
+         </children></VBox>
         <Label fx:id="dateLabel" layoutX="263.0" layoutY="7.0" text="Date and Time" />
-          <Label fx:id="textLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="27.0" prefWidth="362.0" style="-fx-background-color: #00BFFF;" text="message">
-              <font>
-                  <Font name="System Bold" size="14.0" />
-              </font>
-              <effect>
-                  <DropShadow />
-              </effect>
-          </Label>
     </children>
 </AnchorPane>
