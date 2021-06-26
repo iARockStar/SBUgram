@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/USER/IdeaProjects/SBUgram/src</OriginalElement>
+  <nodes>
+    <node x="2718.0" y="2947.0">server.Server</node>
+    <node x="1496.5" y="2096.0">client.Controllers.ItemController</node>
+    <node x="544.0" y="3461.0">client.PageLoader</node>
+    <node x="1077.0" y="2367.0">client.Controllers.CommentItemController</node>
+    <node x="2428.0" y="2096.0">client.Client</node>
+    <node x="2702.0" y="1137.0">client.Controllers.SignupController</node>
+    <node x="0.0" y="1531.0">client.Controllers.MyProfileController</node>
+    <node x="281.0" y="3461.0">client.items.PostItem</node>
+    <node x="1269.0" y="1630.0">client.Controllers.MainPageController</node>
+    <node x="3208.0" y="2947.0">client.items.TextItem</node>
+    <node x="0.0" y="3461.0">client.items.UserListItem</node>
+    <node x="2186.0" y="1399.0">client.Controllers.ProfilePageController</node>
+    <node x="206.5" y="2947.0">other.Message</node>
+    <node x="1818.0" y="2246.0">client.Controllers.TextItemController</node>
+    <node x="1338.0" y="2202.0">client.Controllers.PostItemController</node>
+    <node x="2417.0" y="1465.0">client.Controllers.SettingPageController</node>
+    <node x="1964.0" y="1619.0">client.Controllers.NewPostPageController</node>
+    <node x="2486.0" y="2947.0">client.thisUser</node>
+    <node x="339.0" y="3242.5">other.ReversedMessage</node>
+    <node x="1320.0" y="2947.0">other.Comment</node>
+    <node x="393.0" y="2096.0">other.CommandType</node>
+    <node x="231.0" y="1652.5">client.Controllers.MainMenuController</node>
+    <node x="2915.0" y="2947.0">client.items.CommentItem</node>
+    <node x="2862.0" y="2096.0">server.Log</node>
+    <node x="1001.0" y="1652.0">client.Controllers.SearchPageController</node>
+    <node x="475.0" y="1542.0">client.Controllers.ChatPageController</node>
+    <node x="1251.0" y="1137.0">client.Controllers.mainPage</node>
+    <node x="1971.0" y="2947.0">other.SecurityQuestion</node>
+    <node x="1075.0" y="2947.0">other.UserList</node>
+    <node x="1481.0" y="1652.0">client.Controllers.SearchChatController</node>
+    <node x="457.0" y="0.0">other.User</node>
+    <node x="0.0" y="3360.0">other.ReversedPicMessage</node>
+    <node x="2233.0" y="2947.0">other.ApprovedType</node>
+    <node x="2509.5" y="2359.0">client.Controllers.PasswordRetrieveController</node>
+    <node x="648.0" y="2096.0">other.CommandSender</node>
+    <node x="0.0" y="2096.0">server.ClientHandler</node>
+    <node x="1749.0" y="1619.0">client.Controllers.UserListPageController</node>
+    <node x="1579.0" y="2345.0">client.Controllers.UserListItemController</node>
+    <node x="0.0" y="0.0">server.DataBase</node>
+    <node x="723.0" y="1597.0">client.Controllers.CommentPageController</node>
+    <node x="24.0" y="3231.0">other.PicMessage</node>
+    <node x="1610.0" y="2947.0">client.Main</node>
+    <node x="2091.0" y="2096.0">other.Post</node>
+    <node x="675.0" y="2947.0">client.Controllers.LoginController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="other.ReversedMessage" target="other.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-28.0" />
+      <point x="484.5" y="3206.0" />
+      <point x="328.0" y="3206.0" />
+      <point x="0.0" y="117.0" />
+    </edge>
+    <edge source="client.Controllers.PasswordRetrieveController" target="client.Client" relationship="GENERALIZATION">
+      <point x="0.0" y="-172.0" />
+      <point x="0.0" y="106.5" />
+    </edge>
+    <edge source="client.Controllers.PostItemController" target="client.Controllers.ItemController" relationship="REALIZATION">
+      <point x="0.0" y="-260.0" />
+      <point x="1448.5" y="2177.0" />
+      <point x="1568.5" y="2177.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="client.Controllers.UserListPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-106.0" />
+      <point x="1846.5" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.UserListItemController" target="client.Controllers.ItemController" relationship="REALIZATION">
+      <point x="0.0" y="-117.0" />
+      <point x="1688.5" y="2177.0" />
+      <point x="1568.5" y="2177.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="client.Controllers.MainMenuController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-72.5" />
+      <point x="343.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.CommentPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-128.0" />
+      <point x="852.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.ChatPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-183.0" />
+      <point x="589.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.SearchPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="1125.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.NewPostPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-106.0" />
+      <point x="2065.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.MyProfileController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-194.0" />
+      <point x="105.5" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="other.ReversedPicMessage" target="other.PicMessage" relationship="GENERALIZATION">
+      <point x="0.0" y="-28.0" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="other.PicMessage" target="other.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.5" />
+      <point x="171.5" y="3206.0" />
+      <point x="328.0" y="3206.0" />
+      <point x="0.0" y="117.0" />
+    </edge>
+    <edge source="client.Controllers.TextItemController" target="client.Controllers.ItemController" relationship="REALIZATION">
+      <point x="0.0" y="-216.0" />
+      <point x="1932.0" y="2177.0" />
+      <point x="1568.5" y="2177.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="client.Controllers.SearchChatController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-73.0" />
+      <point x="1605.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.MainPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.SettingPageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-260.0" />
+      <point x="2537.0" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.ProfilePageController" target="client.Controllers.mainPage" relationship="GENERALIZATION">
+      <point x="0.0" y="-326.0" />
+      <point x="2291.5" y="1374.0" />
+      <point x="1365.0" y="1374.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="client.Controllers.CommentItemController" target="client.Controllers.ItemController" relationship="REALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="1197.5" y="2177.0" />
+      <point x="1568.5" y="2177.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.3999999999999999" showDependencies="false" x="1343.7500000000002" y="-55.249999999999886" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

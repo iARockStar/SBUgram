@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import other.*;
 
-import javax.xml.crypto.Data;
 
 /**
  * this class is a thread and its run method is started each time a user
@@ -53,25 +52,25 @@ public class ClientHandler extends Thread {
                 CommandType commandType = commandSender.getCommandType();
                 switch (commandType) {
                     case UPDATEUSER:
-                        if(commandSender.getUser() == null)
+                        if(commandSender.getObject() == null)
                             break;
-                        String username = ((User) commandSender.getUser()).getUsername();
+                        String username = ((User) commandSender.getObject()).getUsername();
                         updateUser(username);
                         break;
                     case LOGIN:
-                        User user = (User) commandSender.getUser();
+                        User user = (User) commandSender.getObject();
                         username = user.getUsername();
                         String password = user.getPassword();
                         login(username, password);
                         Log.login(username);
                         break;
                     case SIGNUP:
-                        user = (User) commandSender.getUser();
+                        user = (User) commandSender.getObject();
                         signup(user);
                         Log.signup(user);
                         break;
                     case NEWPOST:
-                        Post post = (Post) commandSender.getUser();
+                        Post post = (Post) commandSender.getObject();
                         String owner = post.getOwner();
                         updatePost(post, owner);
                         Log.newPost(post, owner);
@@ -83,22 +82,22 @@ public class ClientHandler extends Thread {
                         Log.getMyPosts(requested);
                         break;
                     case RETRIEVEPASS:
-                        user = (User) commandSender.getUser();
+                        user = (User) commandSender.getObject();
                         retrievePass(user);
                         break;
                     case RETRIEVEPASS2NDPART:
-                        user = (User) commandSender.getUser();
+                        user = (User) commandSender.getObject();
                         saveNewPass(user);
                         break;
                     case SEARCHUSER:
-                        String searched = (String) commandSender.getUser();
+                        String searched = (String) commandSender.getObject();
                         User searcher = commandSender.getSearcher();
                         User searchedUser = search(searched);
                         Log.search(searchedUser, searcher);
                         break;
                     case LOGOUT:
                         isClientOnline = false;
-                        User loggedOut = (User) commandSender.getUser();
+                        User loggedOut = (User) commandSender.getObject();
                         Log.logout(loggedOut);
                         break;
                     case LOADCOMMENTS:
@@ -109,7 +108,7 @@ public class ClientHandler extends Thread {
                     case COMMENT:
                         Comment comment = commandSender.getComment();
                         commentUsername = commandSender.getUserOfThePost();
-                        User commenter = commandSender.getUserWhoWantsToPost();
+                        User commenter = commandSender.getCommenter();
                         post = commandSender.getPostToComment();
                         addAndSendComment(commentUsername, post, comment);
                         Log.comment(commenter, post);
@@ -127,7 +126,7 @@ public class ClientHandler extends Thread {
                         Log.unfollow(following, follower);
                         break;
                     case LOADFOLLOWINGPOSTS:
-                        user = (User) commandSender.getUser();
+                        user = (User) commandSender.getObject();
                         loadFollowingsPosts(user);
                         Log.getMyPosts(user);
                         break;
@@ -149,12 +148,12 @@ public class ClientHandler extends Thread {
                         Log.rePost(user, post);
                         break;
                     case SETTING:
-                        User updatedUser = (User) commandSender.getUser();
+                        User updatedUser = (User) commandSender.getObject();
                         settingUpdate(updatedUser);
                         Log.setting(updatedUser);
                         break;
                     case DELETEACCOUNT:
-                        User deletedUser = (User) commandSender.getUser();
+                        User deletedUser = (User) commandSender.getObject();
                         deleteAccount(deletedUser);
                         Log.deleteAcc(deletedUser);
                         break;
@@ -187,9 +186,9 @@ public class ClientHandler extends Thread {
                      * and its abilities.
                      */
                     case SEARCHCHAT:
-                        String searched1 = (String) commandSender.getUser();
+                        String searched1 = (String) commandSender.getObject();
                         User searcher1 = commandSender.getSearcher();
-                        User searchedUser1 = searchChat(searcher1, searched1);
+                        searchChat(searcher1, searched1);
                         break;
                     case CREATECHATITEM:
                         User chatSender = commandSender.getRequester();
@@ -197,7 +196,7 @@ public class ClientHandler extends Thread {
                         createChatItem(chatSender, chatReceiver);
                         break;
                     case GETUSERS:
-                        User myUser = (User) commandSender.getUser();
+                        User myUser = (User) commandSender.getObject();
                         getUsers(myUser);
                         break;
                     case GETCHATS:
@@ -254,7 +253,7 @@ public class ClientHandler extends Thread {
     /*
     * here are the methods which call the more important methods in the DB.
     */
-    private User searchChat(User searcher1, String searched1) {
+    private void searchChat(User searcher1, String searched1) {
         User user = DataBase.searchChat(searcher1, searched1);
         if (user != null) {
             try {
@@ -271,7 +270,6 @@ public class ClientHandler extends Thread {
                 e.printStackTrace();
             }
         }
-        return user;
     }
 
     private void editMessage(Message editedMessage, String editedText) {

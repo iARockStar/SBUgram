@@ -26,7 +26,7 @@ import other.*;
  * this class and its page allows user to
  * retrieve his/her password using the security question.
  */
-public class PasswordRetrieveController {
+public class PasswordRetrieveController extends Client {
     @FXML
     private Button submitButton;
     @FXML

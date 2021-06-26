@@ -34,7 +34,7 @@ public class LoginController implements Initializable {
     @FXML
     private TextField nameTextField;
     @FXML
-    private ImageView sbuPic = new ImageView(new Image("images/unnamed.png"));
+    private final ImageView sbuPic = new ImageView(new Image("images/unnamed.png"));
     @FXML
     private CheckBox show;
     @FXML

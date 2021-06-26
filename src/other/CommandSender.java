@@ -32,71 +32,142 @@ public class CommandSender implements Serializable {
     private String editedText;
     private Post newPost;
     private String owner;
+    private User commenter;
 
 
-    public CommandSender(CommandType commandType, Post newPost, String owner) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of creating a new post.
+     * @param createNewPost the commandType
+     * @param newPost the newPost
+     * @param owner the publisher of the new post
+     */
+    public CommandSender(CommandType createNewPost, Post newPost, String owner) {
+        this.commandType = createNewPost;
         this.newPost = newPost;
         this.owner = owner;
     }
 
-    public CommandSender(CommandType commandType, Message editedMessage, String editedText) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of editing a message
+     * @param editMessage the command type
+     * @param editedMessage the message which is bout to be deleted
+     * @param editedText the new text for the message.
+     */
+    public CommandSender(CommandType editMessage, Message editedMessage, String editedText) {
+        this.commandType = editMessage;
         this.editedMessage = editedMessage;
         this.editedText = editedText;
     }
 
-    public CommandSender(CommandType commandType, Message sentMessage) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of sending message
+     * @param sendMessage the command type
+     * @param sentMessage the message which is bout to be sent to the server
+     */
+    public CommandSender(CommandType sendMessage, Message sentMessage) {
+        this.commandType = sendMessage;
         this.sentMessage = sentMessage;
     }
 
-    public CommandSender(CommandType commandType, User reposter, User userOfTheRepostedPost, Post repostedPost) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of reposting a post
+     * @param repost the command type
+     * @param reposter the user who is reposting the post
+     * @param userOfTheRepostedPost the owner of the reposted post
+     * @param repostedPost the post which is reposted
+     */
+    public CommandSender(CommandType repost, User reposter, User userOfTheRepostedPost, Post repostedPost) {
+        this.commandType = repost;
         this.reposter = reposter;
         this.userOfTheRepostedPost = userOfTheRepostedPost;
         this.repostedPost = repostedPost;
     }
 
-    public CommandSender(CommandType commandType, Object object) {
-        this.commandType = commandType;
+    /**
+     *this constructor is user for holding the needs of deleting,
+     * logging in or signing up.
+     * @param deleteOrLoginOrSignup the commandType
+     * @param object the object which is set according to the commandType.
+     */
+    public CommandSender(CommandType deleteOrLoginOrSignup, Object object) {
+        this.commandType = deleteOrLoginOrSignup;
         this.object = object;
     }
 
-    public CommandSender(CommandType commandType, Object object, User searcher) {
-        this.commandType = commandType;
-        this.object = object;
+    /**
+     * this method is for loading the posts of a user for another user.
+     * @param searchUser the commandType.
+     * @param nameOfTheSearched the user whom we are looking for
+     * @param searcher the user who is loading the page.
+     */
+    public CommandSender(CommandType searchUser, Object nameOfTheSearched, User searcher) {
+        this.commandType = searchUser;
+        this.object = nameOfTheSearched;
         this.searcher = searcher;
     }
 
 
-    public CommandSender(CommandType commandType, Post postToComment, String userOfThePost, User userWhoWantsToPost, Comment comment) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of commenting
+     * @param commentCommand the commandType
+     * @param postToComment the comment which the user is posting on
+     * @param userOfThePost the username of the owner of the post.
+     * @param userWhoWantsToComment the user who wants to comment on the post
+     * @param comment the new Comment
+     */
+    public CommandSender(CommandType commentCommand, Post postToComment, String userOfThePost, User userWhoWantsToComment, Comment comment) {
+        this.commandType = commentCommand;
         this.postToComment = postToComment;
         this.userOfThePost = userOfThePost;
-        this.userWhoWantsToPost = userWhoWantsToPost;
+        this.commenter = userWhoWantsToComment;
         this.comment = comment;
     }
 
-    public CommandSender(CommandType commandType, Post postToLike, User userWhoLiked) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of liking a post
+     * @param like the commandType.
+     * @param postToLike the post which is bout to be liked
+     * @param userWhoLiked the user who liked the post
+     */
+    public CommandSender(CommandType like, Post postToLike, User userWhoLiked) {
+        this.commandType = like;
         this.postToLike = postToLike;
         this.userWhoLiked = userWhoLiked;
     }
 
 
-    public CommandSender(CommandType commandType, User userToFollow, User follower) {
-        this.commandType = commandType;
-        this.requested = userToFollow;
-        this.requester = follower;
+    /**
+     * this constructor is user for holding the needs of following,
+     * muting and blocking
+     * @param request the requested command
+     * @param requested the user whom requested the command
+     * @param requester the user whom received a requested to be done on.
+     */
+    public CommandSender(CommandType request, User requested, User requester) {
+        this.commandType = request;
+        this.requested = requested;
+        this.requester = requester;
     }
 
-    public CommandSender(CommandType commandType, String myUser, String theOtherUser) {
-        this.commandType = commandType;
+    /**
+     * this constructor is user for holding the needs of receiving the
+     * list of chats the user did with another user
+     * @param getChats the commandType.
+     * @param myUser the user who wants to see his chats list.
+     * @param theOtherUser the user whom the main user chatted with.
+     */
+    public CommandSender(CommandType getChats, String myUser, String theOtherUser) {
+        this.commandType = getChats;
         this.me = myUser;
         this.theOtherOne = theOtherUser;
     }
 
+    /**
+     * this constructor is user for holding the needs of reposting a post
+     * @param repost the commandType.
+     * @param user the user who wants to repost
+     * @param post the post which is bout to be reposted.
+     */
     public CommandSender(CommandType repost, User user, Post post) {
         this.commandType = repost;
         this.reposter = user;
@@ -139,7 +210,7 @@ public class CommandSender implements Serializable {
         return commandType;
     }
 
-    public Object getUser() {
+    public Object getObject() {
         return object;
     }
 
@@ -241,5 +312,13 @@ public class CommandSender implements Serializable {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public User getCommenter() {
+        return commenter;
+    }
+
+    public void setCommenter(User commenter) {
+        this.commenter = commenter;
     }
 }

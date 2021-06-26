@@ -2,7 +2,7 @@ package client.Controllers;
 
 import client.Client;
 import client.Main;
-import client.PostItem;
+import client.items.PostItem;
 import client.thisUser;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

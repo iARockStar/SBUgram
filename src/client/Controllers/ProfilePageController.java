@@ -1,7 +1,7 @@
 package client.Controllers;
 
 import client.Client;
-import client.PostItem;
+import client.items.PostItem;
 import client.thisUser;
 import com.jfoenix.controls.JFXCheckBox;
 import javafx.collections.FXCollections;

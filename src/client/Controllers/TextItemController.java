@@ -49,6 +49,8 @@ public class TextItemController implements ItemController {
     private Button editButton2;
     @FXML
     private ImageView picMessage;
+    @FXML
+    private ImageView cancelImage;
 
 
     public TextItemController(Message message) throws IOException {
@@ -112,6 +114,7 @@ public class TextItemController implements ItemController {
         editButton.setVisible(true);
         editField.setVisible(true);
         textLabel.setVisible(false);
+        cancelImage.setVisible(true);
     }
 
     /**
@@ -135,6 +138,14 @@ public class TextItemController implements ItemController {
         editButton.setVisible(false);
         editField.setVisible(false);
         textLabel.setVisible(true);
+        cancelImage.setVisible(false);
 
+    }
+
+    public void cancelEdit(){
+        editButton.setVisible(false);
+        editField.setVisible(false);
+        textLabel.setVisible(true);
+        cancelImage.setVisible(false);
     }
 }

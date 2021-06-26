@@ -1,9 +1,7 @@
 package client.Controllers;
 
 import client.PageLoader;
-import client.thisUser;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -20,7 +18,7 @@ import java.io.IOException;
  * this class sets the information for each cell of the comments' list.
  */
 public class CommentItemController implements ItemController {
-    private Comment thisComment;
+    private final Comment thisComment;
     @FXML
     private AnchorPane root;
     @FXML
@@ -33,9 +31,7 @@ public class CommentItemController implements ItemController {
 
     /**
      * a constructor which loads the commentItem's FXMl.
-     *
      * @param comment param which is bout to be set
-     * @throws IOException
      */
     public CommentItemController(Comment comment) throws IOException {
         new PageLoader().load("CommentItem", this);

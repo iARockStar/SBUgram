@@ -1,6 +1,7 @@
 package client.Controllers;
 
 import client.*;
+import client.items.TextItem;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -96,7 +97,7 @@ public class ChatPageController extends mainPage {
     /**
      * this method is for sending a picMessage to the server.
      */
-    public void attach(ActionEvent event) {
+    public void attach() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Upload your pic for this message");
         File file = chooser.showOpenDialog(null);
@@ -142,7 +143,7 @@ public class ChatPageController extends mainPage {
      * this method sends a new message for the other user he / she
      * is chatting with.
      */
-    public void send(ActionEvent event) {
+    public void send() {
         String info = message.getText();
         Message message = new Message(
                 new Date()
@@ -191,9 +192,7 @@ public class ChatPageController extends mainPage {
             Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.UPDATEUSER, thisUser.getSearchedUser()));
             User newUser = (User) Client.getObjectInputStream().readObject();
             thisUser.setSearchedUser(newUser);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

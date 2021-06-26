@@ -1,6 +1,7 @@
 package client.Controllers;
 
 import client.*;
+import client.items.UserListItem;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;

@@ -1,19 +1,20 @@
 package client.Controllers;
 
-import client.*;
+import client.Client;
+import client.Main;
+import client.items.CommentItem;
+import client.thisUser;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
-import other.*;
+import other.CommandSender;
+import other.CommandType;
+import other.Comment;
+import other.Post;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.Vector;
 
 
@@ -39,7 +40,6 @@ public class CommentPageController extends mainPage  {
     @FXML
     public void initialize() {
         Post post = thisUser.getUser().getPostToComment();
-        ;
         loadComments(post);
     }
 
@@ -93,10 +93,8 @@ public class CommentPageController extends mainPage  {
         try {
             Client.getObjectOutputStream().writeObject(commandSender);
             comments = (Vector<Comment>) Client.getObjectInputStream().readObject();
-        } catch (IOException ioException) {
+        } catch (IOException | ClassNotFoundException ioException) {
             ioException.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         //show the post array in list view
         commentListView.setItems(FXCollections.observableArrayList(comments));
@@ -130,7 +128,7 @@ public class CommentPageController extends mainPage  {
         }
     }
 
-    public void refresh(MouseEvent mouseEvent) {
+    public void refresh() {
         this.initialize();
     }
 }

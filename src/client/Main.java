@@ -46,7 +46,6 @@ public class Main extends Application {
      * This method loads first page of the app
      * which is the LoginController.
      * it also provides calling logout method when closing the app.
-     *
      * @param primaryStage sets the stage.
      * @throws Exception handles any exception.
      */
