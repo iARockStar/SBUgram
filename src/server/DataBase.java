@@ -206,7 +206,8 @@ public class DataBase {
 
     /**
      * this method adds a new post to the list of the posts of a user.
-     *  @param post the new post added to the list
+     *
+     * @param post the new post added to the list
      * @param user owner of the post
      */
     public static void updatePost(Post post, String user) {
@@ -322,6 +323,7 @@ public class DataBase {
 
     /**
      * this method sends the list of comments of a post
+     *
      * @param user the owner of the post which has the list of comments
      * @param post the post which we want its comments
      * @return the list of comments
@@ -740,6 +742,13 @@ public class DataBase {
                 if (blocked.getFollowings().contains(listUser.getUsername())) {
                     listUser.removeFollower(blocked.getUsername());
                 }
+                for (UserList list :
+                        listUser.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(blocked.getUsername())) {
+                        list.setBlockedEachOther(true);
+                        break;
+                    }
+                }
                 listUser.addToBlockedList(blocked.getUsername());
                 break;
             }
@@ -749,6 +758,13 @@ public class DataBase {
             if (blocked.getUsername().equalsIgnoreCase(listUser.getUsername())) {
                 if (blocker.getFollowers().contains(listUser.getUsername()))
                     listUser.removeFollowing(blocker.getUsername());
+                for (UserList list :
+                        listUser.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(blocker.getUsername())) {
+                        list.setBlockedEachOther(true);
+                        break;
+                    }
+                }
                 break;
             }
         }
@@ -762,7 +778,25 @@ public class DataBase {
         for (User listUser :
                 listOfUsers) {
             if (listUser.getUsername().equals(unBlocker.getUsername())) {
+                for (UserList list : listUser.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(unblocked.getUsername())) {
+                        list.setBlockedEachOther(false);
+                        break;
+                    }
+                }
                 listUser.removeFromBlockedList(unblocked.getUsername());
+                break;
+            }
+        }
+        for (User listUser :
+                listOfUsers) {
+            if (listUser.getUsername().equals(unblocked.getUsername())) {
+                for (UserList list : listUser.getUsers()) {
+                    if (list.getAddressed().equalsIgnoreCase(unBlocker.getUsername())) {
+                        list.setBlockedEachOther(false);
+                        break;
+                    }
+                }
                 break;
             }
         }
@@ -810,6 +844,7 @@ public class DataBase {
                 .getUsers()
                 .stream()
                 .filter(userList -> userList.getNumOfChats() != 0)
+                .filter(userList -> !userList.isBlockedEachOther())
                 .collect(Collectors.toCollection(Vector::new));
     }
 
@@ -840,6 +875,7 @@ public class DataBase {
                 myUser.getUsers()) {
             if (list.getAddressed().equalsIgnoreCase(theOtherUsername)) {
                 list.restartNumOfUnSeen();
+                list.setSeen(true);
                 break;
             }
         }
@@ -998,6 +1034,8 @@ public class DataBase {
                             user.getUsers()) {
                         if (list.getAddressed().equalsIgnoreCase(myUser.getUsername())) {
                             list.reduceNumOfChats();
+                            if (!list.isSeen())
+                                list.reduceNumOfUnSeen();
                             break;
                         }
                     }
@@ -1041,7 +1079,7 @@ public class DataBase {
         String receiver = editedMessage.getReceiver();
         ReversedPicMessage reversedPicMessage = null;
         ReversedMessage reversedMessage = null;
-        if(editedMessage instanceof PicMessage) {
+        if (editedMessage instanceof PicMessage) {
             reversedPicMessage = new ReversedPicMessage(
                     editedMessage.getDateOfPublish(),
                     sender,
@@ -1058,7 +1096,7 @@ public class DataBase {
                     break;
                 }
             }
-        }else{
+        } else {
             reversedMessage = new ReversedMessage(
                     editedMessage.getDateOfPublish(),
                     sender,

@@ -13,6 +13,8 @@ public class UserList implements Serializable,Comparable {
     private Date date;
     private int numOfChats = 0;
     private int numOfUnSeen = 0;
+    private boolean seen = false;
+    private boolean blockedEachOther = false;
 
     public UserList(String myUser, String addressed, Date date) {
         this.myUser = myUser;
@@ -95,4 +97,19 @@ public class UserList implements Serializable,Comparable {
         return numOfUnSeen;
     }
 
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
+
+    public boolean isBlockedEachOther() {
+        return blockedEachOther;
+    }
+
+    public void setBlockedEachOther(boolean blockedEachOther) {
+        this.blockedEachOther = blockedEachOther;
+    }
 }

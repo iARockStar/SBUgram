@@ -41,7 +41,7 @@
     <node x="0.0" y="2096.0">server.ClientHandler</node>
     <node x="1749.0" y="1619.0">client.Controllers.UserListPageController</node>
     <node x="1579.0" y="2345.0">client.Controllers.UserListItemController</node>
-    <node x="0.0" y="0.0">server.DataBase</node>
+    <node x="-22.5" y="0.0">server.DataBase</node>
     <node x="723.0" y="1597.0">client.Controllers.CommentPageController</node>
     <node x="24.0" y="3231.0">other.PicMessage</node>
     <node x="1610.0" y="2947.0">client.Main</node>
@@ -159,8 +159,10 @@
       <point x="0.0" y="28.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="0.3999999999999999" showDependencies="false" x="1343.7500000000002" y="-55.249999999999886" />
-  <SelectedNodes />
+  <settings layout="Hierarchic" zoom="0.3999999999999999" showDependencies="false" x="1190.2500000000005" y="320.0000000000002" />
+  <SelectedNodes>
+    <node>server.DataBase</node>
+  </SelectedNodes>
   <Categories>
     <Category>Constructors</Category>
     <Category>Fields</Category>
