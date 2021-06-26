@@ -255,8 +255,8 @@ public class SignupController implements Initializable {
         }
         if (isAllowed == ApprovedType.APPROVED)
             Main.loadAPage(event
-                    , "../FXMLs/MainPage.fxml"
-                    , "SBUgram - Home page"
+                    , "../FXMLs/MainMenu.fxml"
+                    , "SBUgram - Main menu"
             );
         else {
             warningLabel.setText(

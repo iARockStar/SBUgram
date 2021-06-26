@@ -143,6 +143,7 @@ public class DataBase {
         try {
             objectOutputStream.writeObject(ApprovedType.NOT_APPROVED);
             objectOutputStream.flush();
+            assert objectInputStream1 != null;
             objectInputStream1.close();
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -304,7 +305,7 @@ public class DataBase {
      * @return a list which contains the comments of the post.
      */
     public static Vector<Comment> addAndSendComments(String user, Post post, Comment comment) {
-        List<Comment> commentList = new Vector<>();
+        Vector<Comment> commentList = new Vector<>();
         for (User listUser :
                 listOfUsers) {
             if (user.equals(listUser.getUsername())) {
@@ -315,7 +316,7 @@ public class DataBase {
                     }
                 }
                 updateUser();
-                return (Vector<Comment>) commentList;
+                return commentList;
             }
         }
         return null;
@@ -518,7 +519,6 @@ public class DataBase {
      * false which shows the success in the process.
      */
     public static ApprovedType repost(User user, Post post) {
-        Post repostedPost;
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) &&
@@ -603,7 +603,7 @@ public class DataBase {
             for (Post post :
                     listUser.getListOfPosts()) {
                 post.getComments().removeIf(
-                        comment -> comment.getOwner().equals(deletedUser)
+                        comment -> comment.getOwner().equals(deletedUser.getUsername())
                 );
             }
         }
@@ -1077,8 +1077,8 @@ public class DataBase {
     (Message editedMessage, String editedText) {
         String sender = editedMessage.getSender();
         String receiver = editedMessage.getReceiver();
-        ReversedPicMessage reversedPicMessage = null;
-        ReversedMessage reversedMessage = null;
+        ReversedPicMessage reversedPicMessage;
+        ReversedMessage reversedMessage;
         if (editedMessage instanceof PicMessage) {
             reversedPicMessage = new ReversedPicMessage(
                     editedMessage.getDateOfPublish(),

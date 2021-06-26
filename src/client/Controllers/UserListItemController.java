@@ -6,10 +6,8 @@ import client.PageLoader;
 import client.thisUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import other.CommandSender;
 import other.CommandType;
 import other.User;
@@ -21,7 +19,7 @@ import java.io.IOException;
  * this class helps to control the items of users available for chatting
  */
 public class UserListItemController implements ItemController {
-    private UserList userList;
+    private final UserList userList;
     @FXML
     private AnchorPane root;
     @FXML

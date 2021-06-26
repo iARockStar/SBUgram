@@ -57,8 +57,8 @@ public class NewPostPageController extends mainPage {
 
 
         Main.loadAPage(actionEvent
-                , "../FXMLs/MainPage.fxml"
-                , "SBUgram - Home page"
+                , "../FXMLs/MyProfile.fxml"
+                , "SBUgram - Your Profile"
         );
     }
 
