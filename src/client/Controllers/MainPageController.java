@@ -1,13 +1,10 @@
 package client.Controllers;
 
 import client.*;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import other.*;
 
 

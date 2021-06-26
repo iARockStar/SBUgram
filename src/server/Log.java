@@ -49,10 +49,10 @@ public class Log {
 
     }
 
-    public static void newPost(Post post, User user1) {
-        System.out.println(user1.getUsername() + " Publish");
+    public static void newPost(Post post, String owner) {
+        System.out.println(owner + " Publish");
         System.out.println(
-                post.getTitle() + " " + post.getPostPicAddress() + " " + user1.getName());
+                post.getTitle() + " " + post.getPostPicAddress() + " " + owner);
         System.out.println(new Date());
         System.out.println();
 
@@ -94,7 +94,7 @@ public class Log {
 
     public static void like(User liker, Post post) {
         System.out.println(liker.getUsername() + " Like");
-        System.out.println(post.getOwner().getUsername() + " " + post.getTitle());
+        System.out.println(post.getOwner() + " " + post.getTitle());
         System.out.println(new Date());
         System.out.println();
 
@@ -102,7 +102,7 @@ public class Log {
 
     public static void rePost(User rePoster, Post post) {
         System.out.println(rePoster.getUsername() + " Repost");
-        System.out.println(post.getOwner().getUsername() + " " + post.getTitle());
+        System.out.println(post.getOwner() + " " + post.getTitle());
         System.out.println(new Date());
         System.out.println();
 
@@ -144,14 +144,14 @@ public class Log {
     }
 
     public static void block(User blocker, User blocked) {
-        System.out.println(blocker.getUsername() + " Mute");
+        System.out.println(blocker.getUsername() + " Block");
         System.out.println("message: " + blocked.getUsername());
         System.out.println(new Date());
         System.out.println();
     }
 
     public static void unBlock(User unBlocker, User unblocked) {
-        System.out.println(unBlocker.getUsername() + " Mute");
+        System.out.println(unBlocker.getUsername() + " Unblock");
         System.out.println("message: " + unblocked.getUsername());
         System.out.println(new Date());
         System.out.println();
@@ -161,11 +161,13 @@ public class Log {
         System.out.println(message.getSender() + " send");
         System.out.println("Message: From "+message.getSender()+" to "+message.getReceiver());
         System.out.println(message.getDateOfPublish());
+        System.out.println();
     }
 
     public static void receiveMessage(Message message) {
         System.out.println(message.getReceiver() + " receive");
         System.out.println("Message: "+message.getSender());
         System.out.println(message.getDateOfPublish());
+        System.out.println();
     }
 }

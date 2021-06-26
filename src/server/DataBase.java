@@ -206,15 +206,15 @@ public class DataBase {
 
     /**
      * this method adds a new post to the list of the posts of a user.
-     *
-     * @param post the new post added to the list
+     *  @param post the new post added to the list
      * @param user owner of the post
      */
-    public static void updatePost(Post post, User user) {
-        for (int i = 0; i < listOfUsers.size(); i++) {
-            if (user.getUsername().equals(listOfUsers.get(i).getUsername())) {
+    public static void updatePost(Post post, String user) {
+        for (User listOfUser : listOfUsers) {
+            if (user.equals(listOfUser.getUsername())) {
                 post.setPostId();
-                listOfUsers.get(i).addPost(post);
+                listOfUser.addPost(post);
+                break;
             }
         }
         updateUser();
@@ -302,11 +302,11 @@ public class DataBase {
      * @param comment the comment the user committed
      * @return a list which contains the comments of the post.
      */
-    public static Vector<Comment> addAndSendComments(User user, Post post, Comment comment) {
+    public static Vector<Comment> addAndSendComments(String user, Post post, Comment comment) {
         List<Comment> commentList = new Vector<>();
         for (User listUser :
                 listOfUsers) {
-            if (user.getUsername().equals(listUser.getUsername())) {
+            if (user.equals(listUser.getUsername())) {
                 for (Post listUserPost : listUser.getListOfPosts()) {
                     if (listUserPost.equals(post)) {
                         listUserPost.getComments().add(comment);
@@ -322,15 +322,14 @@ public class DataBase {
 
     /**
      * this method sends the list of comments of a post
-     *
      * @param user the owner of the post which has the list of comments
      * @param post the post which we want its comments
      * @return the list of comments
      */
-    public static Vector<Comment> sendComments(User user, Post post) {
+    public static Vector<Comment> sendComments(String user, Post post) {
         for (User listUser :
                 listOfUsers) {
-            if (user.getUsername().equals(listUser.getUsername())) {
+            if (user.equals(listUser.getUsername())) {
                 for (Post listUserPost : listUser.getListOfPosts()) {
                     if (listUserPost.equals(post))
                         return listUserPost.getComments();
@@ -517,6 +516,7 @@ public class DataBase {
      * false which shows the success in the process.
      */
     public static ApprovedType repost(User user, Post post) {
+        Post repostedPost;
         for (User listUser :
                 listOfUsers) {
             if (user.getUsername().equalsIgnoreCase(listUser.getUsername()) &&
@@ -551,7 +551,7 @@ public class DataBase {
                 listOfUsers.add(i, user);
                 listOfUsers.get(i).setPassword(user.getPassword());
                 for (Post post : listOfUsers.get(i).getListOfPosts()) {
-                    if (post.getOwner().getUsername()
+                    if (post.getOwner()
                             .equalsIgnoreCase(listOfUsers.get(i).getUsername())) {
                         for (Comment comment :
                                 post.getComments()) {
@@ -561,7 +561,7 @@ public class DataBase {
                                 comment.setProPic(user.getProfileImage());
                             }
                         }
-                        post.setOwner(user);
+                        post.setProfilePic(user.getProfileImage());
                     }
                 }
             } else {
@@ -569,15 +569,18 @@ public class DataBase {
                     for (Comment comment :
                             post.getComments()) {
                         if (comment.getOwner()
-                                .equalsIgnoreCase(user.getUsername())) {
+                                .equalsIgnoreCase(listOfUsers.get(i).getUsername())) {
                             comment.setOwner(user.getUsername());
                             comment.setProPic(user.getProfileImage());
                         }
                     }
+                    if (post.getOwner()
+                            .equalsIgnoreCase(user.getUsername())) {
+                        post.setProfilePic(user.getProfileImage());
+                    }
                 }
             }
         }
-
         updateUser();
     }
 
@@ -619,7 +622,10 @@ public class DataBase {
             listUser.getUsers()
                     .removeIf(userList -> userList.getMyUser()
                             .equalsIgnoreCase(deletedUser.getUsername()));
+            listUser.getReceived().remove(deletedUser.getUsername());
+            listUser.getSent().remove(deletedUser.getUsername());
         }
+        updateUser();
     }
 
     /**
@@ -1033,27 +1039,48 @@ public class DataBase {
     (Message editedMessage, String editedText) {
         String sender = editedMessage.getSender();
         String receiver = editedMessage.getReceiver();
-        ReversedMessage reversedMessage = new ReversedMessage(
-                editedMessage.getDateOfPublish(),
-                sender,
-                receiver,
-                editedMessage.getText()
-        );
+        ReversedPicMessage reversedPicMessage = null;
+        ReversedMessage reversedMessage = null;
+        if(editedMessage instanceof PicMessage) {
+            reversedPicMessage = new ReversedPicMessage(
+                    editedMessage.getDateOfPublish(),
+                    sender,
+                    receiver,
+                    editedMessage.getText(),
+                    ((PicMessage) editedMessage).getPic()
+            );
+            for (User user :
+                    listOfUsers) {
+                if (receiver.equalsIgnoreCase(user.getUsername())) {
+                    user.getReceived().get(sender).remove(reversedPicMessage);
+                    reversedPicMessage.setText(editedText);
+                    user.getReceived().get(sender).add(reversedPicMessage);
+                    break;
+                }
+            }
+        }else{
+            reversedMessage = new ReversedMessage(
+                    editedMessage.getDateOfPublish(),
+                    sender,
+                    receiver,
+                    editedMessage.getText()
+            );
+            for (User user :
+                    listOfUsers) {
+                if (receiver.equalsIgnoreCase(user.getUsername())) {
+                    user.getReceived().get(sender).remove(reversedMessage);
+                    reversedMessage.setText(editedText);
+                    user.getReceived().get(sender).add(reversedMessage);
+                    break;
+                }
+            }
+        }
         for (User user :
                 listOfUsers) {
             if (sender.equalsIgnoreCase(user.getUsername())) {
                 user.getSent().get(receiver).remove(editedMessage);
                 editedMessage.setText(editedText);
                 user.getSent().get(receiver).add(editedMessage);
-                break;
-            }
-        }
-        for (User user :
-                listOfUsers) {
-            if (receiver.equalsIgnoreCase(user.getUsername())) {
-                user.getReceived().get(sender).remove(reversedMessage);
-                reversedMessage.setText(editedText);
-                user.getReceived().get(sender).add(reversedMessage);
                 break;
             }
         }

@@ -17,7 +17,7 @@ public class Post implements Serializable, Comparable {
     private String writer;
     private String title;
     private String description;
-    private User owner;
+    private String owner;
     private byte[] profilePic;
     private byte[] postPic;
     private String postPicAddress;
@@ -99,11 +99,11 @@ public class Post implements Serializable, Comparable {
     }
 
 
-    public void setOwner(User owner) {
+    public void setOwner(String owner) {
         this.owner = owner;
     }
 
-    public User getOwner() {
+    public String getOwner() {
         return owner;
     }
 

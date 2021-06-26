@@ -48,7 +48,7 @@ public class NewPostPageController extends mainPage {
             post.setPostPicAddress("No postPic");
         }
 
-        post.setOwner(thisUser.getUser());
+        post.setOwner(thisUser.getUser().getUsername());
 
         CommandSender commandSender = new CommandSender(CommandType.NEWPOST
                 , post);

@@ -114,4 +114,15 @@
          </DropShadow>
       </effect>
    </ListView>
+    <ImageView fitHeight="38.0" fitWidth="51.0" layoutX="405.0" layoutY="6.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/reset_500px.png" />
+        </image>
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <effect>
+            <DropShadow blurType="GAUSSIAN" />
+        </effect>
+    </ImageView>
 </AnchorPane>

@@ -49,7 +49,7 @@ public class UserListPageController extends mainPage{
         updateUser();
         try{
             Client.getObjectOutputStream().reset();
-            CommandSender getUsersListCommand = new CommandSender(CommandType.GETUSERS,user);
+            CommandSender getUsersListCommand = new CommandSender(CommandType.GETUSERS, user);
             Client.getObjectOutputStream().writeObject(getUsersListCommand);
             users = (Vector<UserList>) Client.getObjectInputStream().readObject();
         }catch (IOException | ClassNotFoundException ioException){

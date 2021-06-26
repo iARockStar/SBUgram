@@ -129,7 +129,7 @@ public class Main extends Application {
             Client.setServerUp(false);
             stage.close();
             try {
-                Client.objectOutputStream.writeObject(new CommandSender(CommandType.LOGOUT, thisUser.getUser()));
+                Client.objectOutputStream.writeObject(new CommandSender(CommandType.LOGOUT, thisUser.getUser(), thisUser.getUser()));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

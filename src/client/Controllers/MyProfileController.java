@@ -7,7 +7,6 @@ import client.thisUser;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
@@ -23,8 +22,6 @@ import other.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.Vector;
 
 /**
@@ -121,7 +118,7 @@ public class MyProfileController extends mainPage {
      */
     public void loadPosts(User user) throws IOException {
         Client.getObjectOutputStream().reset();
-        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user, thisUser.getUser()));
+        Client.getObjectOutputStream().writeObject(new CommandSender(CommandType.LOADAPOST, user,thisUser.getUser()));
         Object object = null;
         try {
             if ((object = Client.getObjectInputStream().readObject()) instanceof Vector)

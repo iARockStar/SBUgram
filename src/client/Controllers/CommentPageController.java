@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import other.*;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.util.Vector;
  * it also adds a comment which the user tends to add.
  * </p>
  */
-public class CommentPageController extends mainPage implements Initializable {
+public class CommentPageController extends mainPage  {
 
     @FXML
     private ListView<Comment> commentListView;
@@ -35,8 +36,8 @@ public class CommentPageController extends mainPage implements Initializable {
      * this method is called before all other methods
      * and gets the post which the user wants to see it's comments.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         Post post = thisUser.getUser().getPostToComment();
         ;
         loadComments(post);
@@ -66,7 +67,7 @@ public class CommentPageController extends mainPage implements Initializable {
      */
     private void addComment(Post post, Comment comment) {
         CommandSender commandSender =
-                new CommandSender(CommandType.COMMENT, post, post.getOwner(), thisUser.getUser(), comment);
+                new CommandSender(CommandType.COMMENT, post,post.getOwner(), thisUser.getUser(), comment);
         try {
             Client.getObjectOutputStream().writeObject(commandSender);
             Client.getObjectOutputStream().flush();
@@ -127,5 +128,9 @@ public class CommentPageController extends mainPage implements Initializable {
                         , "SBUgram - Profile page"
                 );
         }
+    }
+
+    public void refresh(MouseEvent mouseEvent) {
+        this.initialize();
     }
 }

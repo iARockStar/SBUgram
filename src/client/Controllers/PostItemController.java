@@ -90,7 +90,7 @@ public class PostItemController implements ItemController {
         descriptionLabel.setText(post.getDescription());
         Image image;
         byte[] pic;
-        pic = post.getOwner().getProfileImage();
+        pic = post.getProfilePic();
         image = new Image(new ByteArrayInputStream(pic));
         byte[] postPic = post.getPostPic();
         if (postPic != null) {
@@ -184,7 +184,7 @@ public class PostItemController implements ItemController {
      */
     public void rePost(ActionEvent actionEvent) {
         CommandSender repostCommand = new CommandSender
-                (CommandType.REPOST, thisUser.getUser(), post.getOwner(), post);
+                (CommandType.REPOST, thisUser.getUser(), post);
         try {
             Client.getObjectOutputStream().reset();
             Client.getObjectOutputStream().writeObject(repostCommand);

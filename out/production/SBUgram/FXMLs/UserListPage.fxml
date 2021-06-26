@@ -80,6 +80,12 @@
                <Cursor fx:constant="HAND" />
             </cursor>
          </ImageView>
+         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="65.0" layoutY="8.0" text="find users &#10;to chat with them" />
+         <ImageView fitHeight="28.0" fitWidth="23.0" layoutX="38.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/left_arrow_500px.png" />
+            </image>
+         </ImageView>
         </children>
         <effect>
             <DropShadow>

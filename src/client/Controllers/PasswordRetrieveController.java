@@ -2,6 +2,7 @@ package client.Controllers;
 
 import client.Client;
 import client.Main;
+import client.thisUser;
 import other.SecurityQuestion;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;

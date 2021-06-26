@@ -53,6 +53,8 @@ public class ClientHandler extends Thread {
                 CommandType commandType = commandSender.getCommandType();
                 switch (commandType) {
                     case UPDATEUSER:
+                        if(commandSender.getUser() == null)
+                            break;
                         String username = ((User) commandSender.getUser()).getUsername();
                         updateUser(username);
                         break;
@@ -70,9 +72,9 @@ public class ClientHandler extends Thread {
                         break;
                     case NEWPOST:
                         Post post = (Post) commandSender.getUser();
-                        User user1 = post.getOwner();
-                        updatePost(post, user1);
-                        Log.newPost(post, user1);
+                        String owner = post.getOwner();
+                        updatePost(post, owner);
+                        Log.newPost(post, owner);
                         break;
                     case LOADAPOST:
                         User requester = commandSender.getRequester();
@@ -83,12 +85,10 @@ public class ClientHandler extends Thread {
                     case RETRIEVEPASS:
                         user = (User) commandSender.getUser();
                         retrievePass(user);
-                        System.out.println("done part 1");
                         break;
                     case RETRIEVEPASS2NDPART:
                         user = (User) commandSender.getUser();
                         saveNewPass(user);
-                        System.out.println("done part 2");
                         break;
                     case SEARCHUSER:
                         String searched = (String) commandSender.getUser();
@@ -103,15 +103,15 @@ public class ClientHandler extends Thread {
                         break;
                     case LOADCOMMENTS:
                         post = commandSender.getPostToComment();
-                        user = commandSender.getUserOfThePost();
-                        sendComments(user, post);
+                        String commentUsername = commandSender.getUserOfThePost();
+                        sendComments(commentUsername, post);
                         break;
                     case COMMENT:
                         Comment comment = commandSender.getComment();
-                        user = commandSender.getUserOfThePost();
+                        commentUsername = commandSender.getUserOfThePost();
                         User commenter = commandSender.getUserWhoWantsToPost();
                         post = commandSender.getPostToComment();
-                        addAndSendComment(user, post, comment);
+                        addAndSendComment(commentUsername, post, comment);
                         Log.comment(commenter, post);
                         break;
                     case FOLLOW:
@@ -414,7 +414,7 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void sendComments(User user, Post post) {
+    private void sendComments(String user, Post post) {
         Vector<Comment> comments = DataBase.sendComments(user, post);
         try {
             if (comments != null) {
@@ -427,7 +427,7 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void addAndSendComment(User user, Post post, Comment comment) {
+    private void addAndSendComment(String user, Post post, Comment comment) {
         List<Comment> comments = DataBase.addAndSendComments(user, post, comment);
         if (comments != null) {
             try {
@@ -505,7 +505,7 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public synchronized void updatePost(Post post, User user) {
+    public synchronized void updatePost(Post post, String user) {
 
         DataBase.updatePost(post, user);
 

@@ -20,11 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * this class loads the page of a user chatting with another user.
@@ -109,6 +106,8 @@ public class ChatPageController extends mainPage {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+        }else{
+            return;
         }
         sendPicMessage();
     }

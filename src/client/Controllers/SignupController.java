@@ -243,11 +243,11 @@ public class SignupController implements Initializable {
         thisUser.setUser(newUser);
         if (file != null)
             thisUser.getUser().setProfilePicAddress(file.toString());
-        CommandSender commandSender = new CommandSender(CommandType.SIGNUP, newUser);
+        CommandSender signupCommand = new CommandSender(CommandType.SIGNUP, newUser);
         ApprovedType isAllowed = ApprovedType.NOT_APPROVED;
         try {
             Client.getObjectOutputStream().reset();
-            Client.getObjectOutputStream().writeObject(commandSender);
+            Client.getObjectOutputStream().writeObject(signupCommand);
             Client.getObjectOutputStream().flush();
             isAllowed = (ApprovedType) Client.getObjectInputStream().readObject();
         } catch (IOException | ClassNotFoundException ioException) {

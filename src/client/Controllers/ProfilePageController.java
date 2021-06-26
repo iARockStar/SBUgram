@@ -1,14 +1,12 @@
 package client.Controllers;
 
 import client.Client;
-import client.Controllers.mainPage;
 import client.PostItem;
 import client.thisUser;
 import com.jfoenix.controls.JFXCheckBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
@@ -25,10 +23,7 @@ import other.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.Vector;
-import java.util.concurrent.CompletionException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -78,6 +73,10 @@ public class ProfilePageController extends mainPage {
         updateMyUser(thisUser.getUser());
         User user = thisUser.getSearchedUser();
         User myUser = thisUser.getUser();
+        if(user == null || myUser == null){
+            errorLabel.setText("this user has deleted his / her account");
+            return;
+        }
         boolean isBlocked = myUser.getBlockedList().contains(thisUser.getSearchedUser().getUsername());
         if (isBlocked)
             blockCheckbox.setSelected(true);

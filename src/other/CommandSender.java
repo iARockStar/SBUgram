@@ -2,8 +2,6 @@ package other;
 
 import java.io.Serializable;
 
-import client.*;
-
 /**
  * this class acts like a holder for the information needed to be sent
  * to the server and to be received from it.
@@ -16,7 +14,7 @@ public class CommandSender implements Serializable {
     private Object object;
     private Post postToLike;
     private Post postToComment;
-    private User userOfThePost;
+    private String userOfThePost;
     private User userWhoWantsToPost;
     ;
     private Comment comment;
@@ -32,6 +30,15 @@ public class CommandSender implements Serializable {
     private Message sentMessage;
     private Message editedMessage;
     private String editedText;
+    private Post newPost;
+    private String owner;
+
+
+    public CommandSender(CommandType commandType, Post newPost, String owner) {
+        this.commandType = commandType;
+        this.newPost = newPost;
+        this.owner = owner;
+    }
 
     public CommandSender(CommandType commandType, Message editedMessage, String editedText) {
         this.commandType = commandType;
@@ -63,7 +70,7 @@ public class CommandSender implements Serializable {
     }
 
 
-    public CommandSender(CommandType commandType, Post postToComment, User userOfThePost, User userWhoWantsToPost, Comment comment) {
+    public CommandSender(CommandType commandType, Post postToComment, String userOfThePost, User userWhoWantsToPost, Comment comment) {
         this.commandType = commandType;
         this.postToComment = postToComment;
         this.userOfThePost = userOfThePost;
@@ -77,6 +84,7 @@ public class CommandSender implements Serializable {
         this.userWhoLiked = userWhoLiked;
     }
 
+
     public CommandSender(CommandType commandType, User userToFollow, User follower) {
         this.commandType = commandType;
         this.requested = userToFollow;
@@ -87,6 +95,12 @@ public class CommandSender implements Serializable {
         this.commandType = commandType;
         this.me = myUser;
         this.theOtherOne = theOtherUser;
+    }
+
+    public CommandSender(CommandType repost, User user, Post post) {
+        this.commandType = repost;
+        this.reposter = user;
+        this.repostedPost = post;
     }
 
 
@@ -112,14 +126,13 @@ public class CommandSender implements Serializable {
         return postToComment;
     }
 
-    public User getUserOfThePost() {
+    public String getUserOfThePost() {
         return userOfThePost;
     }
 
     public Comment getComment() {
         return comment;
     }
-
 
 
     public CommandType getCommandType() {
@@ -212,5 +225,21 @@ public class CommandSender implements Serializable {
 
     public void setEditedText(String editedText) {
         this.editedText = editedText;
+    }
+
+    public Post getNewPost() {
+        return newPost;
+    }
+
+    public void setNewPost(Post newPost) {
+        this.newPost = newPost;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }
