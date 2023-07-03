@@ -55,11 +55,12 @@ public class NewPostPageController extends mainPage {
 
         Client.getObjectOutputStream().writeObject(commandSender);
 
-
+        thisUser.setSearchedUser(thisUser.getUser());
         Main.loadAPage(actionEvent
                 , "../FXMLs/MyProfile.fxml"
                 , "SBUgram - Your Profile"
         );
+
     }
 
     private File file;
